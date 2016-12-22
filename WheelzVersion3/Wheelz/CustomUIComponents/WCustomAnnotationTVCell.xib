@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="HelveticaNeue.ttc">
+            <string>HelveticaNeue</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="WCustomAnnotationTVCellID" rowHeight="70" id="KGk-i7-Jjw" customClass="WCustomAnnotationTVCell" customModule="Wheelz" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="540" height="70"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="540" height="69"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HFB-gn-ahO">
+                        <rect key="frame" x="10" y="8" width="470" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="3bd-K9-hbE"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="15"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dkw-jv-bb1">
+                        <rect key="frame" x="10" y="37" width="470" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="Qzj-5h-gRs"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ffy-pF-oSf">
+                        <rect key="frame" x="480" y="0.0" width="60" height="70"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="60" id="CdH-fd-sfG"/>
+                            <constraint firstAttribute="height" constant="70" id="jRC-E4-nNG"/>
+                        </constraints>
+                        <state key="normal" image="frwrdArrow"/>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="ffy-pF-oSf" firstAttribute="leading" secondItem="HFB-gn-ahO" secondAttribute="trailing" id="EtX-c0-tRD"/>
+                    <constraint firstItem="ffy-pF-oSf" firstAttribute="leading" secondItem="dkw-jv-bb1" secondAttribute="trailing" id="Iuo-Jn-td6"/>
+                    <constraint firstItem="dkw-jv-bb1" firstAttribute="top" secondItem="HFB-gn-ahO" secondAttribute="bottom" constant="8" id="JBD-Nd-Seo"/>
+                    <constraint firstItem="ffy-pF-oSf" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="Jhw-sO-G2R"/>
+                    <constraint firstItem="HFB-gn-ahO" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="KDj-bI-Wd2"/>
+                    <constraint firstAttribute="bottom" secondItem="dkw-jv-bb1" secondAttribute="bottom" constant="11" id="L4K-by-gnf"/>
+                    <constraint firstItem="dkw-jv-bb1" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="Skk-FP-eZR"/>
+                    <constraint firstItem="HFB-gn-ahO" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="fHF-SM-aAm"/>
+                    <constraint firstAttribute="trailing" secondItem="ffy-pF-oSf" secondAttribute="trailing" id="gqw-9T-u0X"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="arrowButton" destination="ffy-pF-oSf" id="et2-Tw-ZA6"/>
+                <outlet property="dateLabel" destination="HFB-gn-ahO" id="Qx4-Dj-jhD"/>
+                <outlet property="timeLabel" destination="dkw-jv-bb1" id="igL-ZP-TGe"/>
+            </connections>
+            <point key="canvasLocation" x="309" y="325"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="frwrdArrow" width="30" height="30"/>
+    </resources>
+</document>

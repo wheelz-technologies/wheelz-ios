@@ -1,0 +1,11 @@
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '8.0'
+use_frameworks!
+
+target 'Wheelz' do
+pod 'AFNetworking', '~> 3.0'
+pod 'Stripe'
+pod 'Socket.IO-Client-Swift' # Or latest version
+pod 'SCLAlertView'
+end
+
