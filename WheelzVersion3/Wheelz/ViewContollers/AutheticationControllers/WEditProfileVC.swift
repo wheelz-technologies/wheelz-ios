@@ -115,7 +115,7 @@ class WEditProfileVC: UIViewController ,UITableViewDelegate,UITableViewDataSourc
     }
     
     //MARK:- UIButton Validations
-    func isAllFieldVerified()  {
+    func VerifyInput()  {
         if (userObj.userFName.length == 0) {
             //AlertController.alert("",message: "Please enter first name.")
             presentFancyAlert("Whoops!", msgStr: "Please enter first name.", type: AlertStyle.Info, controller: self)
@@ -353,7 +353,7 @@ class WEditProfileVC: UIViewController ,UITableViewDelegate,UITableViewDataSourc
     
     @IBAction func saveButtonAction(_ sender: UIButton) {
           self.view .endEditing(true)
-        isAllFieldVerified()
+        VerifyInput()
     }
     
     @IBAction func instructor(_ sender: UIButton) {

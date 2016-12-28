@@ -41,9 +41,9 @@ class WSignUpStepTwoVC: UIViewController,UIGestureRecognizerDelegate,UITextField
     }
     
     
-    fileprivate func isAllFieldVerified() ->Bool {
+    fileprivate func VerifyInput() ->Bool {
         
-        var fieldVerified: Bool = false
+        var isVerified: Bool = false
         
         if (stepTwoObj.userFName.trimWhiteSpace().length == 0) {
             presentFancyAlert("Whoops!", msgStr: "Please, enter your first name.", type: AlertStyle.Info, controller: self)
@@ -59,10 +59,10 @@ class WSignUpStepTwoVC: UIViewController,UIGestureRecognizerDelegate,UITextField
             //presentAlert("", msgStr: "Please enter valid last name.", controller: self)
             presentFancyAlert("Whoops!", msgStr: "Please enter a valid last name.", type: AlertStyle.Info, controller: self)
         } else {
-            fieldVerified = true
+            isVerified = true
         }
         
-        return fieldVerified
+        return isVerified
     }
 
     // MARK: TextField Delegate Methods
@@ -97,7 +97,7 @@ class WSignUpStepTwoVC: UIViewController,UIGestureRecognizerDelegate,UITextField
     
     @IBAction func continueButtonAction(_ sender: UIButton) {
         self.view.endEditing(true)
-        if isAllFieldVerified() {
+        if VerifyInput() {
             let signUpVC = self.storyboard?.instantiateViewController(withIdentifier: "WSignUpStepThreeVCID") as! WSignUpStepThreeVC
             signUpVC.stepThreeObj = stepTwoObj
             self.navigationController?.pushViewController(signUpVC, animated: true)

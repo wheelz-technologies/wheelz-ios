@@ -84,9 +84,9 @@ class WLoginVC: UIViewController,UITextFieldDelegate,UIGestureRecognizerDelegate
         loginButton.setBorder(KAppWhiteColor, borderWidth: 2)
     }
     
-    func isAllFieldVerified() ->Bool {
+    func VerifyInput() ->Bool {
         
-        var fieldVerified: Bool = false
+        var isVerified: Bool = false
         
         if (userObj.userName.trimWhiteSpace().length == 0) {
             //presentAlert("", msgStr: "Please enter your username.", controller: self)
@@ -101,10 +101,10 @@ class WLoginVC: UIViewController,UITextFieldDelegate,UIGestureRecognizerDelegate
             //presentAlert("", msgStr: "Password must be at least 8 characters long.", controller: self)
             presentFancyAlert("Sorry :(", msgStr: "Password must be at least 8 characters long.", type: AlertStyle.Info, controller: self)
         } else {
-            fieldVerified = true
+            isVerified = true
         }
         
-        return fieldVerified
+        return isVerified
     }
     
     // MARK: TextField Delegate Methods
@@ -149,7 +149,7 @@ class WLoginVC: UIViewController,UITextFieldDelegate,UIGestureRecognizerDelegate
     // MARK: UIButton Action Methods
     @IBAction func loginBtnAction(_ sender: UIButton) {
         self.view.endEditing(true)
-        if self.isAllFieldVerified() {
+        if self.VerifyInput() {
             self.callAPIForLogin()
         }
     }
@@ -236,7 +236,7 @@ class WLoginVC: UIViewController,UITextFieldDelegate,UIGestureRecognizerDelegate
                         
                         UserDefaults.standard.synchronize()
                         WAppData.appInfoSharedInstance.appUserInfo = WUserInfo.getUserInfo(responseObject!)
-                        SocketIOManager.sharedInstance.establishConnection()
+                        SignalRManager.sharedInstance.manageConnection()
                         
                         DispatchQueue.main.async {
                             self.navigationController?.pushViewController(kAppDelegate.addSidePanel(), animated: false)

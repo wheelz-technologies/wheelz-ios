@@ -14,7 +14,7 @@ import Stripe
 import AirshipKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
     var window: UIWindow?
     var navController: UINavigationController?
     var locationManager: CLLocationManager!
@@ -25,13 +25,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate 
     var sidePanel = KYDrawerController()
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        registerForPushNotifications(application)
         //Reachability.sharedManager!.startMonitoring()
         self.setUpDefaults()
         STPPaymentConfiguration.shared().publishableKey = "pk_test_ARXZIzNBH3Q7rMoLTIpGlyzo"
         STPTheme.default().accentColor = UIColor(red: CGFloat(255.0/255.0), green: CGFloat(85.0/255.0), blue: CGFloat(40.0/255.0), alpha: CGFloat(100.0))
         STPTheme.default().primaryBackgroundColor = UIColor(red: CGFloat(255.0/255.0), green: CGFloat(250.0/255.0), blue: CGFloat(250.0/255.0), alpha: CGFloat(100.0))
-        //STPPaymentConfiguration.sharedConfiguration().appleMerchantIdentifier = "apple merchant identifier"
+        //STPPaymentConfiguration.sharedConfiguration().appleMerchantIdentifier = "apple merchant identifier" //to use Apple Pay
         
         UAirship.takeOff()
         UAirship.push().userPushNotificationsEnabled = true
@@ -50,6 +49,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate 
         return true
     }
     
+    func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
+        // remove mask when animation completes
+        kAppDelegate.navController!.topViewController!.view.layer.mask = nil
+    }
+    
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
@@ -58,7 +62,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate 
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-        SocketIOManager.sharedInstance.closeConnection()
+        SignalRManager.sharedInstance.manageConnection()
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -66,10 +70,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate 
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.        
-        if(!(UserDefaults.standard.value(forKey: "wheelzUserID") as? String ?? "").isEmpty) {
-            SocketIOManager.sharedInstance.establishConnection()
-        }
+        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        SignalRManager.sharedInstance.manageConnection()
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
@@ -187,30 +189,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate 
                 return
             }
         })
-    }
-    
-    func registerForPushNotifications(_ application: UIApplication) {
-        /*let startAction = UIMutableUserNotificationAction()
-        startAction.identifier = "START_LESSON"
-        startAction.title = "Start"
-        startAction.activationMode = .foreground
-        
-        let stopAction = UIMutableUserNotificationAction()
-        stopAction.identifier = "STOP_LESSON"
-        stopAction.title = "Stop"
-        stopAction.activationMode = .foreground
-        
-        let startCategory = UIMutableUserNotificationCategory()
-        startCategory.identifier = "LESSON_START_CATEGORY"
-        startCategory.setActions([startAction], for: .default)
-        
-        let stopCategory = UIMutableUserNotificationCategory()
-        stopCategory.identifier = "LESSON_STOP_CATEGORY"
-        stopCategory.setActions([stopAction], for: .default)*/
-        
-        let notificationSettings = UIUserNotificationSettings(
-            types: [.badge, .sound, .alert], categories: nil)
-        application.registerUserNotificationSettings(notificationSettings)
     }
     
     func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {

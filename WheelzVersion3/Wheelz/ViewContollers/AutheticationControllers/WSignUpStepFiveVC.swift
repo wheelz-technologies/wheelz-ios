@@ -202,7 +202,7 @@ class WSignUpStepFiveVC: UIViewController,UIImagePickerControllerDelegate,UINavi
                          UserDefaults.standard.setValue(responseObject?.object(forKey: "pic") as? String ?? "", forKey: "wheelzUserPic")
                         UserDefaults.standard.synchronize()
                         WAppData.appInfoSharedInstance.appUserInfo = WUserInfo.getUserInfo(responseObject!)
-                        SocketIOManager.sharedInstance.establishConnection()
+                        SignalRManager.sharedInstance.manageConnection()
                         
                         DispatchQueue.main.async {
                             if(self.stepFiveObj.userType == "Driver") {

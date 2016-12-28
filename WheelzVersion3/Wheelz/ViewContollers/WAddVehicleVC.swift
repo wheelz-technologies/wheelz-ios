@@ -152,9 +152,9 @@ class WAddVehicleVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
        
     }
 
-    fileprivate func isAllFieldVerified() ->Bool {
+    fileprivate func VerifyInput() ->Bool {
         
-        var fieldVerified: Bool = false
+        var isVerified: Bool = false
         if (self.makeTextField.text!.trimWhiteSpace().length == 0) {
             presentAlert("", msgStr: "Please select a maker.", controller: self)
         } else if (self.modelTextField.text!.trimWhiteSpace().length == 0) {
@@ -162,10 +162,10 @@ class WAddVehicleVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
         }  else if (self.yearTextField.text!.trimWhiteSpace().length == 0) {
             presentAlert("", msgStr: "Please select a year.", controller: self)
         } else {
-            fieldVerified = true
+            isVerified = true
         }
         
-        return fieldVerified
+        return isVerified
     }
     
     // MARK: GestureRecogniser Delegate Methods
@@ -245,7 +245,7 @@ class WAddVehicleVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
 
     @IBAction func addVehicleButtonAction(_ sender: UIButton) {
           self.view .endEditing(true)
-        if isAllFieldVerified() {
+        if VerifyInput() {
             if isUpdateVehicle {
                 print(vehicleObj.vehicleId)
                 callAPIForUpdateVehicle(vehicleObj.vehicleId)

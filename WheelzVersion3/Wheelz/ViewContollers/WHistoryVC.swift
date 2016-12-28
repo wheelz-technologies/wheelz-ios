@@ -43,7 +43,7 @@ class WHistoryVC: UIViewController,UITableViewDataSource,UITableViewDelegate,les
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.customInit()
-        self.callAPIForGetHistoryLesson()
+        self.callApiGetLessonHistory()
     }
     
     // MARK: - Private Methods
@@ -91,6 +91,11 @@ class WHistoryVC: UIViewController,UITableViewDataSource,UITableViewDelegate,les
         kAppDelegate.window?.rootViewController!.view.addSubview(lessonDetailView)
     }
     
+    func imageTapped(img: AnyObject)
+    {
+        //TODO: view user profile on image tap
+    }
+    
     //MARK:- Tableview Datasource And Delegate Methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return historyArray.count
@@ -98,7 +103,7 @@ class WHistoryVC: UIViewController,UITableViewDataSource,UITableViewDelegate,les
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "WHistoryTVCellID", for: indexPath) as! WHistoryTVCell
-        //cell.contentView.backgroundColor = indexPath.row % 2 == 0 ? RGBA(255, g: 245, b: 245, a: 1) : RGBA(255, g: 255, b: 255, a: 1)
+        //cell.contentView.backgroundColor = indexPath.row % 2 == 0 ? RGBA(252, g: 252, b: 252, a: 1) : RGBA(255, g: 255, b: 255, a: 1)
         let historyInfo = historyArray.object(at: indexPath.row) as! WLessonInfo
         cell.lessonId = historyInfo.lessonID
         
@@ -121,6 +126,9 @@ class WHistoryVC: UIViewController,UITableViewDataSource,UITableViewDelegate,les
         
         cell.userImageView.setImageWithUrl(URL(string: historyInfo.lessonHolderPic)!, placeHolderImage: UIImage(named: "userPic"))
         
+        let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(imageTapped(img:)))
+        cell.userImageView.addGestureRecognizer(tapGestureRecognizer)
+        
         return cell
     }
     
@@ -135,7 +143,7 @@ class WHistoryVC: UIViewController,UITableViewDataSource,UITableViewDelegate,les
     }
     
     func handleRefresh(_ refreshControl: UIRefreshControl) {
-        self.callAPIForGetHistoryLesson()
+        self.callApiGetLessonHistory()
         refreshControl.endRefreshing()
     }
     
@@ -155,12 +163,12 @@ class WHistoryVC: UIViewController,UITableViewDataSource,UITableViewDelegate,les
                 AlertController.alert("", message: msg)
             })
         } else {
-            self.callAPIForGetHistoryLesson()
+            self.callApiGetLessonHistory()
         }
     }
     
     //MARK:- Web API Section
-    fileprivate func callAPIForGetHistoryLesson() {
+    fileprivate func callApiGetLessonHistory() {
         
         let paramDict = NSMutableDictionary()
         print(UserDefaults.standard.value(forKey: "wheelzUserID") as? String)

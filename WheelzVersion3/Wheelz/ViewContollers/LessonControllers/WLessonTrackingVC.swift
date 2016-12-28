@@ -53,8 +53,7 @@ class WLessonTrackingVC: UIViewController, MKMapViewDelegate, CLLocationManagerD
         newCamera.altitude = self.mapView.camera.altitude;
         let annotationsToRemove = mapView.annotations.filter { $0 !== mapView.userLocation }
         mapView.removeAnnotations( annotationsToRemove)
-        mapView.setUserTrackingMode(MKUserTrackingMode.follow, animated: true)
-        mapView.showsUserLocation = true
+        //mapView.setUserTrackingMode(MKUserTrackingMode.follow, animated: true)
         
         self.navigationItem.title = "Lesson Progress"
         
@@ -85,8 +84,6 @@ class WLessonTrackingVC: UIViewController, MKMapViewDelegate, CLLocationManagerD
         
         let mapVC = self.storyboard?.instantiateViewController(withIdentifier: "WMapViewControllerID") as! WMapViewController
         drawerController.mainViewController = UINavigationController(rootViewController : mapVC)
-        
-        drawerController.mainViewController = UINavigationController(rootViewController : mapVC)
         drawerController.setDrawerState(.closed, animated: true)
     }
 
@@ -114,7 +111,11 @@ class WLessonTrackingVC: UIViewController, MKMapViewDelegate, CLLocationManagerD
         let flags = NSCalendar.Unit.second
         let components = calendar.components(flags, from: lessonStartTime, to: Date(), options: [])
         
-        let hoursDiff = (Double(components.second!) / Double(3600))
+        var hoursDiff = (Double(components.second!) / Double(3600))
+        
+        if hoursDiff < 0 {
+            hoursDiff = -hoursDiff;
+        }
         
         //figure out if we need instructor or regular rates
         if(lessonObj.isInstructorRequired) {

@@ -18,8 +18,9 @@ let kAppOrangeColor = RGBA(255, g: 85, b: 40, a: 1) //RGBA(64, g: 183, b: 255, a
 let KAppWhiteColor = UIColor.white
 let KAppPlaceholderColor = UIColor.lightGray
 let KAppTextColor = UIColor.darkGray
-let KAppHeaderFont = UIFont(name:"Futura", size:20)!
-let KAppRegularFont = UIFont(name:"HelveticaNeue", size: 18)!
+let KAppHeaderFont = UIFont.boldSystemFont(ofSize: 18)
+let KAppRegularFont = UIFont.boldSystemFont(ofSize: 18)
+//let KAppRegularFont = UIFont(name:"HelveticaNeue", size: 18)!
 let kAppDarkGrayColor = RGBA(29, g: 35, b: 34, a: 0.2)
 
 let showLog = true
@@ -174,7 +175,7 @@ class WAppUtils: NSObject {
     
     class  func rightBarButton(_ imageName : NSString,controller : UIViewController) -> UIBarButtonItem {
         let button:UIButton = UIButton.init(type: UIButtonType.custom)
-        button.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
+        button.frame = CGRect(x: 0, y: 0, width: 26, height: 26)
         button.setImage(UIImage(named: imageName as String), for: UIControlState())
         button.addTarget(controller, action: #selector(rightBarButtonAction(_:)), for: UIControlEvents.touchUpInside)
         let leftBarButtonItem:UIBarButtonItem = UIBarButtonItem(customView: button)

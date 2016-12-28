@@ -7,5 +7,6 @@
 #import "MZSelectableLabel.h"
 #import "UIImageView+WebCache.h"
 #import <Stripe/Stripe.h>
+#import <SwiftR/SwiftR-Swift.h>
 #import <AirshipKit/AirshipKit.h>
 #include <ifaddrs.h>

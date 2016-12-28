@@ -34,9 +34,9 @@ class WResetPasswordVC: UIViewController {
         alertLabel.isHidden = true
     }
 
-    func isAllFieldVerified() ->Bool {
+    func VerifyInput() ->Bool {
         
-        var fieldVerified: Bool = false
+        var isVerified: Bool = false
         
         if (accessCodeTextField.text!.trimWhiteSpace().length == 0) {
             //alertLabel.text = "*Please enter your Access Code"
@@ -54,16 +54,16 @@ class WResetPasswordVC: UIViewController {
             //alertLabel.text = "*Password does not match"
             presentAlert("", msgStr: "Passwords do not match.", controller: self)
         }   else {
-            fieldVerified = true
+            isVerified = true
         }
-        return fieldVerified
+        return isVerified
     }
 
     //MARK:- UIButton Action Methods
     @IBAction func submitButtonAction(_ sender: UIButton) {
         alertLabel.isHidden = false
         self.view.endEditing(true)
-        if isAllFieldVerified() {
+        if VerifyInput() {
             alertLabel.isHidden = true
             self.callAPIToSendPassword()
         } else {

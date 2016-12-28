@@ -85,9 +85,9 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
         drawerController.navigationController?.isNavigationBarHidden = true
         self.navigationItem.title = "Wheelz"
         self.navigationItem.leftBarButtonItem = WAppUtils.leftBarButton("menuBar",controller : self)
-                 distanceSegment.isHidden = SignUp.isDriving  ? false : true
-//                    self.view.layoutSubviews()
-//                    self.view.layoutIfNeeded()
+        self.navigationItem.rightBarButtonItem = WAppUtils.rightBarButton("infoIcon",controller : self)
+        distanceSegment.isHidden = SignUp.isDriving  ? false : true
+        
         if CLLocationManager.locationServicesEnabled() {
             switch(CLLocationManager.authorizationStatus()) {
             case .notDetermined, .restricted, .denied:
@@ -119,7 +119,7 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
         } else {
             requestLessionButton.isHidden = false
             let uilgr = UILongPressGestureRecognizer(target: self, action: #selector(WMapViewController.requestLessonAtLocation(sender:)))
-            uilgr.minimumPressDuration = 2.0
+            uilgr.minimumPressDuration = 0.8
             mapView.addGestureRecognizer(uilgr)
         }
     }
@@ -142,6 +142,20 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
         calloutView.removeFromSuperview()
         let drawerController = navigationController?.parent as! KYDrawerController
       drawerController.setDrawerState(.opened, animated: true)
+    }
+    
+    func rightBarButtonAction(_ button : UIButton) {
+        let mapTipVc = self.storyboard?.instantiateViewController(withIdentifier: "WMapTipVCID") as! WMapTipVC
+        mapTipVc.modalPresentationStyle = .overCurrentContext
+        
+        if (UserDefaults.standard.value(forKey: "wheelzIsDriver") as? Bool) == true {
+            mapTipVc.isDriver = true
+            //presentFancyAlert("Hi!", msgStr: "It's simple - tap the lesson icon on the map, claim it and then just show up on time ;)", type: AlertStyle.Info, controller: self)
+        } else {
+            //presentFancyAlert("Hi!", msgStr: "Tap the wheel icon on the bottom of the screen to request a lesson, fill out the details and let us find you a perfect instructor.\n\n" + "We'll let you know right away!", type: AlertStyle.Info, controller: self)
+            mapTipVc.isDriver = false
+        }
+        kAppDelegate.window?.rootViewController!.present(mapTipVc, animated: true, completion: nil)
     }
     
     func updateMapNotificationObserver()  {
@@ -215,20 +229,6 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
         callAPIToRequestLesson(location: nil)
     }
     
-    @IBAction func infoButtonAction(_ sender: Any) {
-        let mapTipVc = self.storyboard?.instantiateViewController(withIdentifier: "WMapTipVCID") as! WMapTipVC
-        mapTipVc.modalPresentationStyle = .overCurrentContext
-        
-        if (UserDefaults.standard.value(forKey: "wheelzIsDriver") as? Bool) == true {
-            mapTipVc.isDriver = true
-           //presentFancyAlert("Hi!", msgStr: "It's simple - tap the lesson icon on the map, claim it and then just show up on time ;)", type: AlertStyle.Info, controller: self)
-        } else {
-            //presentFancyAlert("Hi!", msgStr: "Tap the wheel icon on the bottom of the screen to request a lesson, fill out the details and let us find you a perfect instructor.\n\n" + "We'll let you know right away!", type: AlertStyle.Info, controller: self)
-            mapTipVc.isDriver = false
-        }
-        kAppDelegate.window?.rootViewController!.present(mapTipVc, animated: true, completion: nil)
-    }
-    
     @IBAction func onDistanceSegment(_ sender: AnyObject) {
     }
     
@@ -247,22 +247,22 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
             annotationView?.annotation = annotation
         }
         
-        annotationView?.image = resizeImage(imageName: "wheelzOrange", width: 30, height: 30)
+        annotationView?.image = resizeImage(imageName: "wheelzOrange", width: 50, height: 50)
         
         if (UserDefaults.standard.value(forKey: "wheelzIsDriver") as? Bool) == true {
             
             //if lesson is claimed by the active user (driver), show green icon
             if((annotation as! WCustomAnnotation).driverID == (UserDefaults.standard.value(forKey: "wheelzUserID") as? String ?? "")) {
-                annotationView?.image = resizeImage(imageName: "wheelzGreen", width: 40, height: 40)
+                annotationView?.image = resizeImage(imageName: "wheelzGreen", width: 66, height: 66)
             } else
             //if instructor is required, show blue icon, else show orange
             if ((annotation as! WCustomAnnotation).isInstructorRequired) {
-                annotationView?.image = resizeImage(imageName: "wheelzBlue", width: 35, height: 35)
+                annotationView?.image = resizeImage(imageName: "wheelzBlue", width: 55, height: 55)
             }
         } else {
             //if lesson is claimed, show blue icon, else show orange
             if (!(annotation as! WCustomAnnotation).driverID.isEmpty) {
-                annotationView?.image = resizeImage(imageName: "wheelzBlue", width: 35, height: 35)
+                annotationView?.image = resizeImage(imageName: "wheelzBlue", width: 55, height: 55)
             }
         }
         annotationView?.cornerRadius = (annotationView?.frame.size.width)!/2
@@ -280,6 +280,8 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
             (value: Bool) in
             return
         })
+        
+        annotationView?.layer.anchorPoint = CGPoint(x: 0.5, y: 1.0)
         
         return annotationView
     }

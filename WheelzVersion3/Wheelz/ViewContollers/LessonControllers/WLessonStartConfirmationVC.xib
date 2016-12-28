@@ -28,11 +28,11 @@
                             <constraints>
                                 <constraint firstAttribute="height" constant="32" id="ypW-Cj-XHx"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="24"/>
+                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
                             <color key="textColor" red="1" green="0.33481882219999998" blue="0.15788724500000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Chargeable time will start immedeately. Confirm?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PiI-sX-dDG">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Chargeable time will begin immedeately. Confirm?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PiI-sX-dDG">
                             <rect key="frame" x="20" y="60" width="275" height="45"/>
                             <constraints>
                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="45" id="Ndy-FW-gEp"/>
@@ -47,7 +47,7 @@
                             <constraints>
                                 <constraint firstAttribute="height" constant="45" id="9PA-aI-wbE"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="24"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
                             <state key="normal" title="CONFIRM">
                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>

@@ -52,12 +52,23 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
     
     @IBOutlet weak var mapView: MKMapView!
     
+    @IBOutlet weak var backArrowBtn: UIButton!
+    
+    @IBOutlet weak var forwardArrowBtn: UIButton!
+    
+    @IBOutlet weak var userTypeLabel: UILabel!
+    
+    @IBOutlet weak var hatImage: UIImageView!
+    
     var lessonObj = WLessonInfo()
+    var driverInfo: WUserInfo? = nil
     var latDelta:CLLocationDegrees = 0.001
     var longDelta:CLLocationDegrees = 0.001
     var lessonID : String!
     let isDriver = UserDefaults.standard.value(forKey: "wheelzIsDriver") as! Bool
+    var userId = UserDefaults.standard.value(forKey: "wheelzUserID") as? String ?? ""
     var fromHistory = false;
+    var driverSelected = false;
     
     @IBOutlet weak var lessonView: UIView!
     
@@ -123,7 +134,6 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
         
         let loc = CLLocation(latitude: lessonObj.locLat, longitude: lessonObj.locLon)
         let lessonPosition = WCustomAnnotation(coordinate: CLLocationCoordinate2D(latitude: loc.coordinate.latitude, longitude: loc.coordinate.longitude))
-        //            lessonPosition.coordinate = loc.coordinate
         lessonPosition.title = getDateFromTimeStamp(lessonObj.lessonTimestamp)
         lessonPosition.subtitle = getTimeFromTimeStamp(lessonObj.lessonTimestamp)
         lessonPosition.lessonID = lessonObj.lessonID
@@ -131,6 +141,9 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
         lessonPosition.isInstructorRequired = lessonObj.isInstructorRequired
         newCamera.centerCoordinate = lessonPosition.coordinate
         mapView.addAnnotation(lessonPosition)
+        mapView.layer.borderColor = UIColor.lightGray.cgColor
+        mapView.layer.borderWidth = 1.0;
+        
         let drawerController = kAppDelegate.navController!.topViewController as! KYDrawerController
         
         if (self.lessonObj.studentStarted && self.lessonObj.driverStarted && !self.lessonObj.finished) {
@@ -147,11 +160,9 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
             confirmLessonView.lessonObj = self.lessonObj
             confirmLessonView.customInit()
             confirmLessonView.frame = (kAppDelegate.window?.bounds)!
-            //confirmLessonView.delegate = self
             
             kAppDelegate.window?.rootViewController!.view.addSubview(confirmLessonView)
         } else if (self.lessonObj.finished && (!self.isDriver && !self.lessonObj.studentRated || self.isDriver && !self.lessonObj.driverRated)) {
-            //let lessonObj = WLessonInfo.getLessonInfo(responseObject! as! NSMutableDictionary)
             //redirect to Rate screen
             
             let rateLessonView = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WRateLessonVCID") as! WRateLessonVC
@@ -159,10 +170,70 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
             
             drawerController.mainViewController = UINavigationController(rootViewController : rateLessonView)
             drawerController.setDrawerState(.closed, animated: true)
-            
-            //kAppDelegate.window?.rootViewController!.present(rateLessonView, animated: true, completion: nil)
+
             delegate?.removeViewWithLessonobj!(lessonObj, isEdit : false,msg:"")
         }
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(WLessonDetailView.imageTapped))
+        userPicImageView.addGestureRecognizer(tapGestureRecognizer)
+        
+        if(!lessonObj.driverID.isEmpty) {
+            let backArrowGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(WLessonDetailView.switchUserInfo))
+            let forwardArrowGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(WLessonDetailView.switchUserInfo))
+            backArrowBtn.addGestureRecognizer(backArrowGestureRecognizer)
+            forwardArrowBtn.addGestureRecognizer(forwardArrowGestureRecognizer)
+        } else {
+            backArrowBtn.isHidden = true
+            forwardArrowBtn.isHidden = true
+            userTypeLabel.isHidden = true
+        }
+    }
+    
+    func switchUserInfo()
+    {
+        if(driverSelected)
+        {
+            self.userNameLabel.text = self.lessonObj.lessonHolderName
+            self.userPicImageView.setImageWithUrl(URL(string: self.lessonObj.lessonHolderPic)!, placeHolderImage: UIImage(named: "userPic"))
+            self.hatImage.isHidden = true
+            self.userTypeLabel.text = "Student"
+            driverSelected = false
+        } else {
+            callAPIToGetUserInfo(userId: lessonObj.driverID)
+        }
+    }
+    
+    func imageTapped()
+    {
+        let drawerController = kAppDelegate.navController!.topViewController as! KYDrawerController
+        let userProfileView = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WProfileVCID") as! WProfileVC
+        userProfileView.lessonId = lessonObj.lessonID
+        
+        if(self.driverSelected)
+        {
+            if(lessonObj.driverID == userId)
+            {
+                //do nothing for now? Later open own account screen
+                return
+            }
+            //student account should be opened
+            userProfileView.userId = lessonObj.driverID
+            
+        } else {
+            if(lessonObj.studentID == userId)
+            {
+                //do nothing for now? Later open own account screen
+                return
+            }
+            //driver account should be opened
+            userProfileView.userId = lessonObj.studentID
+        }
+        (drawerController.mainViewController as! UINavigationController).pushViewController(userProfileView, animated: true)
+        //drawerController.navigationController?.pushViewController(userProfileView, animated: true)
+        //drawerController.mainViewController = UINavigationController(rootViewController : userProfileView)
+        //drawerController.setDrawerState(.closed, animated: true)
+        
+        delegate?.removeViewWithLessonobj!(lessonObj, isEdit : false,msg:"")
     }
     
     func getDateFromTimeStamp(_ timeStamp : Double) -> String {
@@ -238,13 +309,13 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
             anView!.annotation = annotation
         }
 
-        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 35, height: 35))
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 55, height: 55))
         imageView.image = UIImage(named: "wheelzOrange");
         
         if (UserDefaults.standard.value(forKey: "wheelzIsDriver") as? Bool) == true {
             
             //if lesson is claimed by the active user (driver), show green icon
-            if((annotation as! WCustomAnnotation).driverID == (UserDefaults.standard.value(forKey: "wheelzUserID") as? String ?? "")) {
+            if((annotation as! WCustomAnnotation).driverID == userId) {
                     imageView.image = UIImage(named: "wheelzGreen");
             } else
                 //if instructor is required, show blue icon, else show orange
@@ -374,7 +445,6 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
         
         let paramDict = NSMutableDictionary()
         
-        //        let userID = NSUserDefaults.standardUserDefaults().valueForKey("wheelzUserID") as? String
         let apiNameGetLesson = kAPINameGetLesson(lessonID)
         paramDict[WLessonID] = lessonID
         ServiceHelper.sharedInstance.callAPIWithParameters(paramDict, method: .get, apiName: apiNameGetLesson, hudType: .default) { (responseObject :AnyObject?, error:NSError?,data:Data?) in
@@ -464,9 +534,9 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
         
         let paramDict = NSMutableDictionary()
         paramDict[WLessonID] = lessonObj.lessonID
-        paramDict[WDriverID] = UserDefaults.standard.value(forKey: "wheelzUserID") as? String
+        paramDict[WDriverID] = userId
         
-        let apiNameClaimLesson = kAPINameClaimLesson(lessonObj.lessonID, driverId: (UserDefaults.standard.value(forKey: "wheelzUserID") as? String)!)
+        let apiNameClaimLesson = kAPINameClaimLesson(lessonObj.lessonID, driverId: userId)
         
         ServiceHelper.sharedInstance.callAPIWithParameters(paramDict, method: .put, apiName: apiNameClaimLesson, hudType: .default) { (responseObject :AnyObject?, error:NSError?,data:Data?) in
             
@@ -530,9 +600,9 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
         
         let paramDict = NSMutableDictionary()
         paramDict[WLessonID] = lessonObj.lessonID
-        paramDict[WDriverID] = UserDefaults.standard.value(forKey: "wheelzUserID") as? String
+        paramDict[WDriverID] = userId
         
-        let apiNameUnclaimLesson = kAPINameUnclaimLesson(lessonObj.lessonID, driverId: (UserDefaults.standard.value(forKey: "wheelzUserID") as? String)!)
+        let apiNameUnclaimLesson = kAPINameUnclaimLesson(lessonObj.lessonID, driverId: userId)
         ServiceHelper.sharedInstance.callAPIWithParameters(paramDict, method: .put, apiName: apiNameUnclaimLesson, hudType: .default) { (responseObject :AnyObject?, error:NSError?,data:Data?) in
             
             if error != nil {
@@ -545,15 +615,6 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
                     } else {
                           let message = responseObject?.object(forKey: "Message") as? String ?? ""
                         self.delegate?.removeViewWithLessonobj!(self.lessonObj, isEdit : false,msg : message)
-//                        AlertController.alert("", message: message,controller: (kAppDelegate.window?.rootViewController)!, buttons: ["OK"], tapBlock: { (alertAction, position) -> Void in
-//                            if position == 0 {
-////                                self.navigationController?.popViewControllerAnimated(true)
-//                            }
-//                        })
-                        
-                        //                        dispatch_async(dispatch_get_main_queue()) {
-                        //                            self.navigationController?.pushViewController(kAppDelegate.addSidePanel(), animated: false)
-                        //                        }
                     }
                 }
             }
@@ -564,11 +625,11 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
     fileprivate func callAPIForPaymentSetupDetails() {
         
         let paramDict = NSMutableDictionary()
-        paramDict[WUserID] = UserDefaults.standard.value(forKey: "wheelzUserID") as? String
+        paramDict[WUserID] = userId
         
         let parentController = UIApplication.shared.keyWindow?.rootViewController
         
-        let apiNameGetSetupDetails = kAPINameGetSetupDetails(paramDict.value(forKey: WUserID) as! String)
+        let apiNameGetSetupDetails = kAPINameGetSetupDetails(userId)
         
         ServiceHelper.sharedInstance.callAPIWithParameters(paramDict, method: .get, apiName: apiNameGetSetupDetails, hudType: .default) { (responseObject :AnyObject?, error:NSError?,data:Data?) in
             
@@ -610,11 +671,11 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
         
         let paramDict = NSMutableDictionary()
         
-        paramDict[WDriverID] = UserDefaults.standard.value(forKey: "wheelzUserID") as? String
+        paramDict[WDriverID] = userId
         
         let parentController = UIApplication.shared.keyWindow?.rootViewController
         
-        let apiNameGetVehicle = kAPINameGetDriverVehicles(paramDict.value(forKey: WDriverID) as! String)
+        let apiNameGetVehicle = kAPINameGetDriverVehicles(userId)
         
         ServiceHelper.sharedInstance.callAPIWithParameters(paramDict, method: .get, apiName: apiNameGetVehicle, hudType: .default) { (responseObject :AnyObject?, error:NSError?,data:Data?) in
             
@@ -653,11 +714,11 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
         var apiNameStartLesson = ""
         
         if(self.isDriver) {
-            paramDict[WDriverID] = UserDefaults.standard.value(forKey: "wheelzUserID") as? String
+            paramDict[WDriverID] = userId
             apiNameStartLesson = kAPINameStartLessonDriver(lessonObj.lessonID, driverId: paramDict.value(forKey: WDriverID) as! String)
         }
         else {
-            paramDict[WStudentID] = UserDefaults.standard.value(forKey: "wheelzUserID") as? String
+            paramDict[WStudentID] = userId
             apiNameStartLesson = kAPINameStartLessonStudent(lessonObj.lessonID, studentId: paramDict.value(forKey: WStudentID) as! String)
         }
         
@@ -680,34 +741,42 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
         }
     }
     
-    func callAPIToFinishLesson() {
+    func callAPIToGetUserInfo(userId: String) {
         
-        let paramDict = NSMutableDictionary()
-        paramDict[WUserID] = UserDefaults.standard.value(forKey: "wheelzUserID") as? String
-        paramDict[WLessonID] = lessonObj.lessonID
+            let paramDict = NSMutableDictionary()
         
-        let apiNameFinishLesson = kAPINameFinishLesson(lessonObj.lessonID, userId: paramDict.value(forKey: WUserID) as! String)
+            paramDict[WUserID] = userId
         
-        ServiceHelper.sharedInstance.callAPIWithParameters(paramDict, method: .put, apiName: apiNameFinishLesson, hudType: .default) { (responseObject :AnyObject?, error:NSError?,data:Data?) in
+            let apiNameGetUser = kAPINameGetUser(userId)
+        
+            ServiceHelper.sharedInstance.callAPIWithParameters(paramDict, method: .get, apiName: apiNameGetUser, hudType: .default) { (responseObject :AnyObject?, error:NSError?,data:Data?) in
             
-            if error != nil {
-                AlertController.alert("",message: (error?.localizedDescription)!)
-            } else {
-                if (responseObject != nil) {
-                    let message = responseObject?.object(forKey: "message") as? String ?? ""
-                    if message == "OK" {
-                        //Redirect to "Rate" screen
-                        let rateLessonView = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WRateLessonVCID") as! WRateLessonVC
-                        rateLessonView.lessonObj = self.lessonObj
-                        
-                        kAppDelegate.window?.rootViewController!.present(rateLessonView, animated: true, completion: nil)
+                    if error != nil {
+                        AlertController.alert("",message: (error?.localizedDescription)!)
                     } else {
-                        let message = responseObject?.object(forKey: "Message") as? String ?? ""
-                        self.delegate?.removeViewWithLessonobj!(self.lessonObj, isEdit : false,msg : message)
+                        if (responseObject != nil) {
+                            let message = responseObject?.object(forKey: "Message") as? String ?? ""
+                            if message != "" {
+                                AlertController.alert("", message: message,controller: self, buttons: ["OK"], tapBlock: { (alertAction,         position) -> Void in
+                                    if position == 0 {
+                                        // do nothing
+                                    }
+                                })
+                            } else {
+                            self.driverInfo = WUserInfo.getUserInfo(responseObject!)
+                                self.userNameLabel.text = self.driverInfo!.userFName
+                                self.userPicImageView.setImageWithUrl(URL(string: self.driverInfo!.userImage)!, placeHolderImage: UIImage(named: "userPic"))
+                                if(self.driverInfo!.isRegisteredDriver)
+                                {
+                                    self.hatImage.isHidden = false
+                                } else {
+                                    self.hatImage.isHidden = true
+                                }
+                                self.userTypeLabel.text = "Driver"
+                                self.driverSelected = true
+                        }
                     }
                 }
             }
-            
-        }
     }
 }

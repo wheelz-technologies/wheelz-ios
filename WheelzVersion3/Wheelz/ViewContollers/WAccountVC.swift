@@ -45,6 +45,7 @@ class WAccountVC: UIViewController {
     @IBOutlet weak var lessonCountLabel: UILabel!
     @IBOutlet weak var staticLessonLabel: UILabel!
     @IBOutlet weak var ratingImage: UIImageView!
+    @IBOutlet weak var hatImage: UIImageView!
     
     //MARK:- View Life Cycle
     override func viewDidLoad() {
@@ -122,7 +123,6 @@ class WAccountVC: UIViewController {
                         self.lessonCountLabel.text = self.userInfo.lessonCount
                         getRoundImage(self.profileImgView)
                         self.staticLessonLabel.text = (self.userInfo.lessonCount as NSString).integerValue == 1 ? "LESSON" : "LESSONS"
-                        //self.profileImgView.setImageWithUrl(NSURL(string: self.userInfo.userImage)!, placeHolderImage: UIImage(named: "default.png"))
                         if (self.userInfo.userImage != "") {
                             //self.profileImgView.layer.borderColor = UIColor.gray.cgColor
                             //self.profileImgView.layer.borderWidth = 2.0
@@ -130,11 +130,10 @@ class WAccountVC: UIViewController {
                         } else {
                             self.profileImgView.layer.borderColor = UIColor.clear.cgColor
                         }
-                        if self.userEmailLabel.text?.length > 20 {
-                            self.userEmailLabel.font = kAppFont(15)
-                            self.contactLabel.font = kAppFont(15)
-                            self.licenseNumberLabel.font = kAppFont(15)
-                            self.licenseLevelLabel.font = kAppFont(15)
+                        
+                        if(self.userInfo.isDriver && self.userInfo.isRegisteredDriver)
+                        {
+                            self.hatImage.isHidden = false
                         }
                         
                         switch self.userInfo.userRating
@@ -158,14 +157,10 @@ class WAccountVC: UIViewController {
                             self.ratingImage.image = UIImage(named:"star0")!
                             break
                         }
-//                        dispatch_async(dispatch_get_main_queue()) {
-//                            self.navigationController?.pushViewController(kAppDelegate.addSidePanel(), animated: false)
-//                        }
                     }
                 }
             }
             
         }
     }
-
 }

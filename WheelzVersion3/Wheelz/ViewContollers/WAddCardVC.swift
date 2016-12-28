@@ -110,9 +110,9 @@ class WAddCardVC: UIViewController,UITextFieldDelegate, STPAddCardViewController
         }
     }
     
-    fileprivate func isAllFieldVerified() ->Bool {
+    fileprivate func VerifyInput() ->Bool {
         
-        var fieldVerified: Bool = false
+        var isVerified: Bool = false
         
         if (self.userNameTextField.text!.trimWhiteSpace().length == 0) {
             //alertLabel.text = "Please enter email address"
@@ -128,10 +128,10 @@ class WAddCardVC: UIViewController,UITextFieldDelegate, STPAddCardViewController
         } else if (self.securityCodeTextField.text!.trimWhiteSpace().length != 3 || !self.securityCodeTextField.text!.containsNumberOnly()) {
             presentAlert("", msgStr: "Please enter a valid 3 digit secure code.", controller: self)
         } else {
-            fieldVerified = true
+            isVerified = true
         }
         
-        return fieldVerified
+        return isVerified
     }
     
     // MARK:- --->UIResponder Method
@@ -261,7 +261,7 @@ class WAddCardVC: UIViewController,UITextFieldDelegate, STPAddCardViewController
     }
     
     @IBAction func addCardButtonAction(_ sender: UIButton) {
-        if isAllFieldVerified() {
+        if VerifyInput() {
             self.navigationController?.popViewController(animated: true)
         }
     }

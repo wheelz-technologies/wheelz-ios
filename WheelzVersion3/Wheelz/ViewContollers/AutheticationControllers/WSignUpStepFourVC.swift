@@ -66,9 +66,9 @@ class WSignUpStepFourVC: UIViewController,UIGestureRecognizerDelegate,UITextFiel
         licenseLevelSegmetController.setTitleTextAttributes([NSForegroundColorAttributeName: kAppOrangeColor], for: UIControlState())
     }
     
-    fileprivate func isAllFieldVerified() ->Bool {
+    fileprivate func VerifyInput() ->Bool {
         
-        var fieldVerified: Bool = false
+        var isVerified: Bool = false
         
         if (stepFourObj.userLicenseNumber.trimWhiteSpace().length == 0) {
             //presentAlert("", msgStr: "Please enter your license number.", controller: self)
@@ -77,10 +77,10 @@ class WSignUpStepFourVC: UIViewController,UIGestureRecognizerDelegate,UITextFiel
             //presentAlert("", msgStr: "Please enter a valid license number.", controller: self)
             presentFancyAlert("Whoops!", msgStr: "Please enter a valid license number.", type: AlertStyle.Info, controller: self)
         } else {
-            fieldVerified = true
+            isVerified = true
         }
         
-        return fieldVerified
+        return isVerified
     }
 
     // MARK: TextField Delegate Methods
@@ -109,7 +109,7 @@ class WSignUpStepFourVC: UIViewController,UIGestureRecognizerDelegate,UITextFiel
     
     @IBAction func continueButtonAction(_ sender: UIButton) {
         self.view.endEditing(true)
-        if self.isAllFieldVerified() {
+        if self.VerifyInput() {
             let signUpVC = self.storyboard?.instantiateViewController(withIdentifier: "WSignUpStepFiveVCID") as! WSignUpStepFiveVC
             signUpVC.stepFiveObj = stepFourObj
             self.navigationController?.pushViewController(signUpVC, animated: true)

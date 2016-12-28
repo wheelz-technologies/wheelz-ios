@@ -102,7 +102,7 @@
 		D61164951DEA02990039E267 /* WLessonStartConfirmationVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = D61164931DEA02990039E267 /* WLessonStartConfirmationVC.xib */; };
 		D61164971DEA07D90039E267 /* WLessonTrackingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61164961DEA07D90039E267 /* WLessonTrackingVC.swift */; };
 		D61164991DEA78CA0039E267 /* WThankYouVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61164981DEA78CA0039E267 /* WThankYouVC.swift */; };
-		D61AEBC71DEE879D00436192 /* SocketIOManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61AEBC61DEE879D00436192 /* SocketIOManager.swift */; };
+		D61AEBC71DEE879D00436192 /* SignalRManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61AEBC61DEE879D00436192 /* SignalRManager.swift */; };
 		D61C452D1D8DDCD100B2B95A /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61C452C1D8DDCD100B2B95A /* CustomImageView.swift */; };
 		D61C452F1D8DDF2C00B2B95A /* CircularLoaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61C452E1D8DDF2C00B2B95A /* CircularLoaderView.swift */; };
 		D61C45321D8DE33500B2B95A /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D61C45311D8DE33500B2B95A /* ImageIO.framework */; };
@@ -122,6 +122,7 @@
 		D61C45621D8DE45E00B2B95A /* UIImageView+HighlightedWebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = D61C45501D8DE45E00B2B95A /* UIImageView+HighlightedWebCache.m */; };
 		D61C45631D8DE45E00B2B95A /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = D61C45521D8DE45E00B2B95A /* UIImageView+WebCache.m */; };
 		D61C45641D8DE45E00B2B95A /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = D61C45541D8DE45E00B2B95A /* UIView+WebCacheOperation.m */; };
+		D61EC7911E122510008E731F /* WProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61EC7901E122510008E731F /* WProfileVC.swift */; };
 		D625E5201D5CDF2100863E0B /* WAccountVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D625E51F1D5CDF2100863E0B /* WAccountVC.swift */; };
 		D625E5221D5CDF3D00863E0B /* WHistoryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D625E5211D5CDF3D00863E0B /* WHistoryVC.swift */; };
 		D625E5241D5CDF4C00863E0B /* WPaymentsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D625E5231D5CDF4C00863E0B /* WPaymentsVC.swift */; };
@@ -365,7 +366,7 @@
 		D61164931DEA02990039E267 /* WLessonStartConfirmationVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WLessonStartConfirmationVC.xib; sourceTree = "<group>"; };
 		D61164961DEA07D90039E267 /* WLessonTrackingVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WLessonTrackingVC.swift; sourceTree = "<group>"; };
 		D61164981DEA78CA0039E267 /* WThankYouVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WThankYouVC.swift; sourceTree = "<group>"; };
-		D61AEBC61DEE879D00436192 /* SocketIOManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketIOManager.swift; sourceTree = "<group>"; };
+		D61AEBC61DEE879D00436192 /* SignalRManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignalRManager.swift; sourceTree = "<group>"; };
 		D61C452C1D8DDCD100B2B95A /* CustomImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomImageView.swift; sourceTree = "<group>"; };
 		D61C452E1D8DDF2C00B2B95A /* CircularLoaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularLoaderView.swift; sourceTree = "<group>"; };
 		D61C45311D8DE33500B2B95A /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
@@ -402,6 +403,7 @@
 		D61C45521D8DE45E00B2B95A /* UIImageView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+WebCache.m"; sourceTree = "<group>"; };
 		D61C45531D8DE45E00B2B95A /* UIView+WebCacheOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+WebCacheOperation.h"; sourceTree = "<group>"; };
 		D61C45541D8DE45E00B2B95A /* UIView+WebCacheOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+WebCacheOperation.m"; sourceTree = "<group>"; };
+		D61EC7901E122510008E731F /* WProfileVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WProfileVC.swift; sourceTree = "<group>"; };
 		D625E51F1D5CDF2100863E0B /* WAccountVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WAccountVC.swift; sourceTree = "<group>"; };
 		D625E5211D5CDF3D00863E0B /* WHistoryVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WHistoryVC.swift; sourceTree = "<group>"; };
 		D625E5231D5CDF4C00863E0B /* WPaymentsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WPaymentsVC.swift; sourceTree = "<group>"; };
@@ -431,6 +433,7 @@
 		D68124F41D4EEE18005B2A21 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D68124F61D4EEE3F005B2A21 /* wheelOnly.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wheelOnly.png; sourceTree = "<group>"; };
 		D68F48721D49A39E00F39F0A /* star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star.png; sourceTree = "<group>"; };
+		D6C336D61E0DD46100EFE13F /* SwiftR.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftR.framework; path = "../../../../../Library/Developer/Xcode/DerivedData/Wheelz-fdbtrgmvbxdnzlecizlqylurvfur/Build/Products/Debug-iphonesimulator/SwiftR/SwiftR.framework"; sourceTree = "<group>"; };
 		D6FCE7E31DB0FF9A0073B17F /* WUserIdentity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WUserIdentity.swift; sourceTree = "<group>"; };
 		D6FCE7E51DB103830073B17F /* WPaymentSetupDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WPaymentSetupDetails.swift; sourceTree = "<group>"; };
 		D6FD4AD51DBD32DD005585BB /* WSetupDriversBankAccountVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WSetupDriversBankAccountVC.swift; sourceTree = "<group>"; };
@@ -481,6 +484,7 @@
 		21ECAF987F5854A9C4986EF5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D6C336D61E0DD46100EFE13F /* SwiftR.framework */,
 				D61C45311D8DE33500B2B95A /* ImageIO.framework */,
 				5D4B3F2F1D546920003F608B /* MapKit.framework */,
 				42D862C81D3770A000504ED3 /* CoreLocation.framework */,
@@ -659,7 +663,7 @@
 				42EF42751D38BFDC005D30F3 /* WConstants.swift */,
 				42B8F2651D34AEEE003882A0 /* WAppUtils.swift */,
 				42B8F2691D34B91B003882A0 /* AlertController.swift */,
-				D61AEBC61DEE879D00436192 /* SocketIOManager.swift */,
+				D61AEBC61DEE879D00436192 /* SignalRManager.swift */,
 				42B8F27B1D34BB64003882A0 /* Resources */,
 			);
 			path = AppUtils;
@@ -889,6 +893,7 @@
 				D64CA3311DA566C900FDF3F1 /* WDriverPaymentsVC.swift */,
 				D64CA3351DA6DF7400FDF3F1 /* WSetupDriverPaymentsVC.swift */,
 				D6FD4AD51DBD32DD005585BB /* WSetupDriversBankAccountVC.swift */,
+				D61EC7901E122510008E731F /* WProfileVC.swift */,
 			);
 			name = AccountControllers;
 			sourceTree = "<group>";
@@ -1024,11 +1029,13 @@
 					};
 					42A33E021D336AE2001FD6E3 = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = 2S2SE3P6D2;
 						LastSwiftMigration = 0810;
 						TestTargetID = 42A33DEE1D336AE2001FD6E3;
 					};
 					42A33E0D1D336AE2001FD6E3 = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = 9PP58CB2NH;
 						LastSwiftMigration = 0810;
 						TestTargetID = 42A33DEE1D336AE2001FD6E3;
 					};
@@ -1239,7 +1246,7 @@
 				42EF428E1D38C002005D30F3 /* PKHUDErrorView.swift in Sources */,
 				5D5932541D533BA1001AEAD9 /* KYDrawerController.swift in Sources */,
 				42B8F2851D34F631003882A0 /* WCustomTextField.swift in Sources */,
-				D61AEBC71DEE879D00436192 /* SocketIOManager.swift in Sources */,
+				D61AEBC71DEE879D00436192 /* SignalRManager.swift in Sources */,
 				D61C455C1D8DE45E00B2B95A /* SDWebImageManager.m in Sources */,
 				D61C45561D8DE45E00B2B95A /* NSData+ImageContentType.m in Sources */,
 				428E24A81D380C68006AAF08 /* NSData+Base64.m in Sources */,
@@ -1255,6 +1262,7 @@
 				D625E5201D5CDF2100863E0B /* WAccountVC.swift in Sources */,
 				42EF42901D38C002005D30F3 /* PKHUDProgressView.swift in Sources */,
 				5D4AC6AA1D70619700895468 /* MonthYearPickerView.swift in Sources */,
+				D61EC7911E122510008E731F /* WProfileVC.swift in Sources */,
 				42A33E331D33BB21001FD6E3 /* WSignUpStepFiveVC.swift in Sources */,
 				42A33E291D33BABA001FD6E3 /* WLoginVC.swift in Sources */,
 				D61C455F1D8DE45E00B2B95A /* UIImage+GIF.m in Sources */,
@@ -1541,6 +1549,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 2S2SE3P6D2;
 				INFOPLIST_FILE = WheelzTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mobiloitte;
@@ -1554,6 +1564,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 2S2SE3P6D2;
 				INFOPLIST_FILE = WheelzTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mobiloitte;
@@ -1566,10 +1578,13 @@
 		42A33E1E1D336AE2001FD6E3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEVELOPMENT_TEAM = 9PP58CB2NH;
 				INFOPLIST_FILE = WheelzUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mobiloitte;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "042ac13c-2a47-4968-9711-0dc4a8805e2f";
+				PROVISIONING_PROFILE_SPECIFIER = "Arseny's development profile";
 				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = Wheelz;
 			};

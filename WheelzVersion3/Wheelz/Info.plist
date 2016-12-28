@@ -45,9 +45,9 @@
 		<true/>
 	</dict>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Wheelz would like to access your location.</string>
+	<string>Wheelz needs your location to display lessons around you and track lesson progress.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Wheelz woul like to access your location.</string>
+	<string>Wheelz needs your location to display lessons around you and track lesson progress.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>

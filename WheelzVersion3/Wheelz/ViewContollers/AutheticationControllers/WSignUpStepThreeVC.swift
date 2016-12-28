@@ -33,9 +33,9 @@ class WSignUpStepThreeVC: UIViewController,UIGestureRecognizerDelegate,UITextFie
         progressStepThreeView.setProgress(0.6, animated: true)
     }
     
-    fileprivate func isAllFieldVerified() ->Bool {
+    fileprivate func VerifyInput() ->Bool {
         
-        var fieldVerified: Bool = false
+        var isVerified: Bool = false
         
         if (stepThreeObj.userName.trimWhiteSpace().length == 0) {
             //presentAlert("", msgStr: "Please enter your email address.", controller: self)
@@ -50,10 +50,10 @@ class WSignUpStepThreeVC: UIViewController,UIGestureRecognizerDelegate,UITextFie
             //presentAlert("", msgStr: "Password must be at least 8 characters long.", controller: self)
             presentFancyAlert("Whoops!", msgStr: "Password must be at least 8 characters long.", type: AlertStyle.Info, controller: self)
         } else {
-            fieldVerified = true
+            isVerified = true
         }
         
-        return fieldVerified
+        return isVerified
     }
     
     // MARK: TextField Delegate Methods
@@ -98,7 +98,7 @@ class WSignUpStepThreeVC: UIViewController,UIGestureRecognizerDelegate,UITextFie
     
     @IBAction func continueButtonAction(_ sender: UIButton) {
         self.view.endEditing(true)
-        if self.isAllFieldVerified() {
+        if self.VerifyInput() {
             self.callAPIForCheckingExistingEmail()
         }
     }

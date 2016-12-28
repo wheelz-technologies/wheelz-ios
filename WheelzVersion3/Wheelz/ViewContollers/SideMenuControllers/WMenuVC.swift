@@ -163,7 +163,7 @@ class WMenuVC: UIViewController,UITableViewDataSource,UITableViewDelegate {
                         UserDefaults.standard.set(false, forKey: "wheelzIsInstructor")
                         UserDefaults.standard.setValue("", forKey: "wheelzUserPic")
                         UserDefaults.standard.synchronize()
-                        SocketIOManager.sharedInstance.closeConnection()
+                        SignalRManager.sharedInstance.manageConnection()
                         self.navigationController?.popToRootViewController(animated: true)
                     }
                 })

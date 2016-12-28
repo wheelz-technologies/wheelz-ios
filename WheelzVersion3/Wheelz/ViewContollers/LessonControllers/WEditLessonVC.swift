@@ -163,9 +163,9 @@ class WEditLessonVC: UIViewController, UIPickerViewDelegate {
         return strDate
     }
 
-    fileprivate func isAllFieldVerified() ->Bool {
+    fileprivate func VerifyInput() ->Bool {
         
-        var fieldVerified: Bool = false
+        var isVerified: Bool = false
         
         if (self.dateTextField.text!.trimWhiteSpace().length == 0) {
             //alertLabel.text = "Please enter email address"
@@ -175,9 +175,9 @@ class WEditLessonVC: UIViewController, UIPickerViewDelegate {
         } else if (self.durationTextField.text?.trimWhiteSpace().length == 0) {
             presentAlert("", msgStr: "Please select duration.", controller: self)
         }else {
-            fieldVerified = true
+            isVerified = true
         }
-        return fieldVerified
+        return isVerified
     }
 
     func locationMethod()  {

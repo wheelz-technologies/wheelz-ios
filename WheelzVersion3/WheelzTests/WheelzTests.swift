@@ -7,7 +7,6 @@
 //
 
 import XCTest
-@testable import Wheelz
 
 class WheelzTests: XCTestCase {
     
