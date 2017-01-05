@@ -399,8 +399,7 @@ class WAddVehicleVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
                         if(self.isFirstTime) {
                             DispatchQueue.main.async {
                                 self.navigationController?.pushViewController(kAppDelegate.addSidePanel(), animated: false)
-                                let tipVc = self.storyboard?.instantiateViewController(withIdentifier: "WTipVCID") as! WTipVC
-                                tipVc.isDriver = true
+                                let tipVc = self.storyboard?.instantiateViewController(withIdentifier: "WTipManagerVCID") as! WTipManagerVC
                                 
                                 kAppDelegate.window?.rootViewController!.present(tipVc, animated: true, completion: nil)
                             }

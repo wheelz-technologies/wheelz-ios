@@ -26,6 +26,7 @@ class WLessonTrackingVC: UIViewController, MKMapViewDelegate, CLLocationManagerD
     var lessonObj = WLessonInfo()
     var startTime = TimeInterval()
     var timer = Timer()
+    var updateTimer = Timer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,12 +67,28 @@ class WLessonTrackingVC: UIViewController, MKMapViewDelegate, CLLocationManagerD
         
         self.navigationItem.leftBarButtonItem = leftBarButtonItem
         
+        //triggered when app is brought to foreground with this view loaded
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(applicationDidBecomeActive),
                                                name: .UIApplicationDidBecomeActive,
                                                object: nil)
         
+        // Scheduling timer to update lesson status with the interval of 10 seconds
+        updateTimer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(WLessonTrackingVC.checkLessonStatus), userInfo: nil, repeats: true)
+        
         callAPIForGetRates()
+    }
+    
+    deinit  {
+        NotificationCenter.default.removeObserver(self)
+        timer.invalidate()
+        updateTimer.invalidate()
+    }
+    
+    func checkLessonStatus() {
+        if (self.isViewLoaded && self.view.window != nil) {
+            callAPIForGetLessons(lessonObj.lessonID)
+        }
     }
     
     @objc func applicationDidBecomeActive() {
@@ -105,7 +122,6 @@ class WLessonTrackingVC: UIViewController, MKMapViewDelegate, CLLocationManagerD
         
         let calendar = NSCalendar.current as NSCalendar
         
-        // Replace the hour (time) of both dates with 00:00
         let lessonStartTime = Date(timeIntervalSince1970: lessonObj.lessonTimestamp)
         
         let flags = NSCalendar.Unit.second
@@ -119,43 +135,10 @@ class WLessonTrackingVC: UIViewController, MKMapViewDelegate, CLLocationManagerD
         
         //figure out if we need instructor or regular rates
         if(lessonObj.isInstructorRequired) {
-            lessonTimeLabel.text = String(format:"$%.0f",hoursDiff *  instructorRate)
+            lessonTimeLabel.text = "$\((hoursDiff * instructorRate).roundTo(places: 2))"
         } else {
-            lessonTimeLabel.text = String(format:"$%.0f",hoursDiff *  regularDriverRate)
+            lessonTimeLabel.text = "$\((hoursDiff * regularDriverRate).roundTo(places: 2))"
         }
-        //apply rates
-        
-        /*var currentTime = NSDate.timeIntervalSinceReferenceDate
-        
-        //Find the difference between current time and start time.
-        
-        var elapsedTime: TimeInterval = currentTime - startTime
-        
-        //calculate the minutes in elapsed time.
-        
-        let minutes = UInt8(elapsedTime / 60.0)
-        
-        elapsedTime -= (TimeInterval(minutes) * 60)
-        
-        //calculate the seconds in elapsed time.
-        
-        let seconds = UInt8(elapsedTime)
-        
-        elapsedTime -= TimeInterval(seconds)
-        
-        //find out the fraction of milliseconds to be displayed.
-        
-        //let fraction = UInt8(elapsedTime * 100)
-        
-        //add the leading zero for minutes, seconds and millseconds and store them as string constants
-        
-        let strMinutes = String(format: "%02d", minutes)
-        let strSeconds = String(format: "%02d", seconds)
-        //let strFraction = String(format: "%02d", fraction)
-        
-        //concatenate minuets, seconds and milliseconds as assign it to the UILabel
-        
-        lessonTimeLabel.text = "\(strMinutes):\(strSeconds)"*/
     }
     
     // MARK : Web API Methods

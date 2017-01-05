@@ -215,7 +215,7 @@ class WSignUpStepFiveVC: UIViewController,UIImagePickerControllerDelegate,UINavi
                             }
                             else {
                                 self.navigationController?.pushViewController(kAppDelegate.addSidePanel(), animated: false)
-                                let tipVc = self.storyboard?.instantiateViewController(withIdentifier: "WTipVCID") as! WTipVC
+                                let tipVc = self.storyboard?.instantiateViewController(withIdentifier: "WTipManagerVCID") as! WTipManagerVC
                                 
                                 kAppDelegate.window?.rootViewController!.present(tipVc, animated: true, completion: nil)
                             }

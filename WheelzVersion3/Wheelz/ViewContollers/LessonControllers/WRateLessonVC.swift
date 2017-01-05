@@ -11,8 +11,10 @@ import UIKit
 class WRateLessonVC: UIViewController {
     
     @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var totalPriceLabel: UILabel!
     
     var lessonObj : WLessonInfo!
+    var totalPrice: Double = 0.0
     var rating = 3;
     var isDriver = UserDefaults.standard.value(forKey: "wheelzIsDriver") as! Bool
     
@@ -38,6 +40,7 @@ class WRateLessonVC: UIViewController {
         
         self.navigationItem.leftBarButtonItem = nil
         self.navigationItem.setHidesBackButton(true, animated:true);
+        self.totalPriceLabel.text = "$\(self.totalPrice.roundTo(places: 2))"
     }
     
     //MARK:- UIButton Action Methods

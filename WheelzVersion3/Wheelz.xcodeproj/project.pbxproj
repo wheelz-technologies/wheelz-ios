@@ -102,6 +102,9 @@
 		D61164951DEA02990039E267 /* WLessonStartConfirmationVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = D61164931DEA02990039E267 /* WLessonStartConfirmationVC.xib */; };
 		D61164971DEA07D90039E267 /* WLessonTrackingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61164961DEA07D90039E267 /* WLessonTrackingVC.swift */; };
 		D61164991DEA78CA0039E267 /* WThankYouVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61164981DEA78CA0039E267 /* WThankYouVC.swift */; };
+		D61979DF1E19E67A0032B833 /* studentInfo3.png in Resources */ = {isa = PBXBuildFile; fileRef = D61979DE1E19E67A0032B833 /* studentInfo3.png */; };
+		D61979E61E19E7040032B833 /* whiteLeftArrowIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = D61979E51E19E7040032B833 /* whiteLeftArrowIcon.png */; };
+		D61979E81E19F2B50032B833 /* driverInfo1.png in Resources */ = {isa = PBXBuildFile; fileRef = D61979E71E19F2B50032B833 /* driverInfo1.png */; };
 		D61AEBC71DEE879D00436192 /* SignalRManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61AEBC61DEE879D00436192 /* SignalRManager.swift */; };
 		D61C452D1D8DDCD100B2B95A /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61C452C1D8DDCD100B2B95A /* CustomImageView.swift */; };
 		D61C452F1D8DDF2C00B2B95A /* CircularLoaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61C452E1D8DDF2C00B2B95A /* CircularLoaderView.swift */; };
@@ -148,15 +151,24 @@
 		D64CA3361DA6DF7400FDF3F1 /* WSetupDriverPaymentsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64CA3351DA6DF7400FDF3F1 /* WSetupDriverPaymentsVC.swift */; };
 		D64E36D31E0C33A4005F479C /* AirshipAppExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D64E36CA1E0C3355005F479C /* AirshipAppExtensions.framework */; };
 		D657562A1DCE35F0002AC399 /* WRateLessonVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65756291DCE35F0002AC399 /* WRateLessonVC.swift */; };
+		D66FA7BC1E1C7F8E0058BF68 /* WTipStudentPaymentsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66FA7BB1E1C7F8E0058BF68 /* WTipStudentPaymentsVC.swift */; };
+		D66FA7C31E1C7FA30058BF68 /* WTipDriverPaymentsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66FA7C21E1C7FA30058BF68 /* WTipDriverPaymentsVC.swift */; };
 		D67384FF1D9ACD52002A6364 /* WCardInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67384FE1D9ACD52002A6364 /* WCardInfo.swift */; };
 		D68124F51D4EEE18005B2A21 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D68124F41D4EEE18005B2A21 /* LaunchScreen.storyboard */; };
 		D68124F71D4EEE3F005B2A21 /* wheelOnly.png in Resources */ = {isa = PBXBuildFile; fileRef = D68124F61D4EEE3F005B2A21 /* wheelOnly.png */; };
 		D68F48731D49A39E00F39F0A /* star.png in Resources */ = {isa = PBXBuildFile; fileRef = D68F48721D49A39E00F39F0A /* star.png */; };
+		D6D33B6F1E1C11BB0042E6B7 /* WTipManagerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D33B6E1E1C11BB0042E6B7 /* WTipManagerVC.swift */; };
+		D6D33B761E1C286F0042E6B7 /* whiteRightArrowIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = D6D33B751E1C286F0042E6B7 /* whiteRightArrowIcon.png */; };
+		D6D33B781E1C2C480042E6B7 /* nextArrows.png in Resources */ = {isa = PBXBuildFile; fileRef = D6D33B771E1C2C480042E6B7 /* nextArrows.png */; };
+		D6FA14CC1E19CBC900B68AD8 /* studentInfo1.png in Resources */ = {isa = PBXBuildFile; fileRef = D6FA14CB1E19CBC900B68AD8 /* studentInfo1.png */; };
+		D6FA60E01E1EB19700C2316C /* driverLessonTip1.PNG in Resources */ = {isa = PBXBuildFile; fileRef = D6FA60DF1E1EB19700C2316C /* driverLessonTip1.PNG */; };
+		D6FA60E71E1EB19D00C2316C /* studentLessonTip1.PNG in Resources */ = {isa = PBXBuildFile; fileRef = D6FA60E61E1EB19D00C2316C /* studentLessonTip1.PNG */; };
 		D6FCE7E41DB0FF9A0073B17F /* WUserIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FCE7E31DB0FF9A0073B17F /* WUserIdentity.swift */; };
 		D6FCE7E61DB103830073B17F /* WPaymentSetupDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FCE7E51DB103830073B17F /* WPaymentSetupDetails.swift */; };
 		D6FD4AD61DBD32DD005585BB /* WSetupDriversBankAccountVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FD4AD51DBD32DD005585BB /* WSetupDriversBankAccountVC.swift */; };
 		D6FE07071D4C54DB00F1B1D2 /* greyBg.png in Resources */ = {isa = PBXBuildFile; fileRef = D6FE07061D4C54DB00F1B1D2 /* greyBg.png */; };
 		D6FE070B1D4C5CDD00F1B1D2 /* welcomeBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = D6FE070A1D4C5CDD00F1B1D2 /* welcomeBackground.png */; };
+		D6FE92941E19E27500DD6769 /* studentInfo2.png in Resources */ = {isa = PBXBuildFile; fileRef = D6FE92931E19E27500DD6769 /* studentInfo2.png */; };
 		D6FF5E8B1DC1A4FD002D28C2 /* close_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D6FF5E8A1DC1A4FD002D28C2 /* close_icon.png */; };
 /* End PBXBuildFile section */
 
@@ -366,6 +378,9 @@
 		D61164931DEA02990039E267 /* WLessonStartConfirmationVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WLessonStartConfirmationVC.xib; sourceTree = "<group>"; };
 		D61164961DEA07D90039E267 /* WLessonTrackingVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WLessonTrackingVC.swift; sourceTree = "<group>"; };
 		D61164981DEA78CA0039E267 /* WThankYouVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WThankYouVC.swift; sourceTree = "<group>"; };
+		D61979DE1E19E67A0032B833 /* studentInfo3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = studentInfo3.png; sourceTree = "<group>"; };
+		D61979E51E19E7040032B833 /* whiteLeftArrowIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whiteLeftArrowIcon.png; sourceTree = "<group>"; };
+		D61979E71E19F2B50032B833 /* driverInfo1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = driverInfo1.png; sourceTree = "<group>"; };
 		D61AEBC61DEE879D00436192 /* SignalRManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignalRManager.swift; sourceTree = "<group>"; };
 		D61C452C1D8DDCD100B2B95A /* CustomImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomImageView.swift; sourceTree = "<group>"; };
 		D61C452E1D8DDF2C00B2B95A /* CircularLoaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularLoaderView.swift; sourceTree = "<group>"; };
@@ -429,16 +444,25 @@
 		D64CA3351DA6DF7400FDF3F1 /* WSetupDriverPaymentsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WSetupDriverPaymentsVC.swift; sourceTree = "<group>"; };
 		D64E36C41E0C3355005F479C /* AirshipAppExtensions.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AirshipAppExtensions.xcodeproj; path = AirshipAppExtensions/AirshipAppExtensions.xcodeproj; sourceTree = "<group>"; };
 		D65756291DCE35F0002AC399 /* WRateLessonVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WRateLessonVC.swift; sourceTree = "<group>"; };
+		D66FA7BB1E1C7F8E0058BF68 /* WTipStudentPaymentsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WTipStudentPaymentsVC.swift; sourceTree = "<group>"; };
+		D66FA7C21E1C7FA30058BF68 /* WTipDriverPaymentsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WTipDriverPaymentsVC.swift; sourceTree = "<group>"; };
 		D67384FE1D9ACD52002A6364 /* WCardInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WCardInfo.swift; sourceTree = "<group>"; };
 		D68124F41D4EEE18005B2A21 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D68124F61D4EEE3F005B2A21 /* wheelOnly.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wheelOnly.png; sourceTree = "<group>"; };
 		D68F48721D49A39E00F39F0A /* star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star.png; sourceTree = "<group>"; };
 		D6C336D61E0DD46100EFE13F /* SwiftR.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftR.framework; path = "../../../../../Library/Developer/Xcode/DerivedData/Wheelz-fdbtrgmvbxdnzlecizlqylurvfur/Build/Products/Debug-iphonesimulator/SwiftR/SwiftR.framework"; sourceTree = "<group>"; };
+		D6D33B6E1E1C11BB0042E6B7 /* WTipManagerVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WTipManagerVC.swift; sourceTree = "<group>"; };
+		D6D33B751E1C286F0042E6B7 /* whiteRightArrowIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whiteRightArrowIcon.png; sourceTree = "<group>"; };
+		D6D33B771E1C2C480042E6B7 /* nextArrows.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nextArrows.png; sourceTree = "<group>"; };
+		D6FA14CB1E19CBC900B68AD8 /* studentInfo1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = studentInfo1.png; sourceTree = "<group>"; };
+		D6FA60DF1E1EB19700C2316C /* driverLessonTip1.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = driverLessonTip1.PNG; sourceTree = "<group>"; };
+		D6FA60E61E1EB19D00C2316C /* studentLessonTip1.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = studentLessonTip1.PNG; sourceTree = "<group>"; };
 		D6FCE7E31DB0FF9A0073B17F /* WUserIdentity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WUserIdentity.swift; sourceTree = "<group>"; };
 		D6FCE7E51DB103830073B17F /* WPaymentSetupDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WPaymentSetupDetails.swift; sourceTree = "<group>"; };
 		D6FD4AD51DBD32DD005585BB /* WSetupDriversBankAccountVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WSetupDriversBankAccountVC.swift; sourceTree = "<group>"; };
 		D6FE07061D4C54DB00F1B1D2 /* greyBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = greyBg.png; sourceTree = "<group>"; };
 		D6FE070A1D4C5CDD00F1B1D2 /* welcomeBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = welcomeBackground.png; sourceTree = "<group>"; };
+		D6FE92931E19E27500DD6769 /* studentInfo2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = studentInfo2.png; sourceTree = "<group>"; };
 		D6FF5E8A1DC1A4FD002D28C2 /* close_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close_icon.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -712,11 +736,20 @@
 				42B8F27E1D34BB71003882A0 /* bg.png */,
 				D60052811DEFDA5C00B4D2FC /* default.png */,
 				08E2242F1D46F0A900E16631 /* clock-xxl.png */,
+				D6FA14CB1E19CBC900B68AD8 /* studentInfo1.png */,
+				D6FE92931E19E27500DD6769 /* studentInfo2.png */,
+				D61979DE1E19E67A0032B833 /* studentInfo3.png */,
+				D6FA60DF1E1EB19700C2316C /* driverLessonTip1.PNG */,
+				D6FA60E61E1EB19D00C2316C /* studentLessonTip1.PNG */,
+				D61979E71E19F2B50032B833 /* driverInfo1.png */,
 				D68F48721D49A39E00F39F0A /* star.png */,
 				D6FE07061D4C54DB00F1B1D2 /* greyBg.png */,
 				D6FE070A1D4C5CDD00F1B1D2 /* welcomeBackground.png */,
 				D6FF5E8A1DC1A4FD002D28C2 /* close_icon.png */,
+				D61979E51E19E7040032B833 /* whiteLeftArrowIcon.png */,
 				D60E29DF1E04DBB0004FFB1A /* whiteArrowIcon.png */,
+				D6D33B771E1C2C480042E6B7 /* nextArrows.png */,
+				D6D33B751E1C286F0042E6B7 /* whiteRightArrowIcon.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -774,6 +807,9 @@
 				D61164961DEA07D90039E267 /* WLessonTrackingVC.swift */,
 				D61164981DEA78CA0039E267 /* WThankYouVC.swift */,
 				D60E29E11E04DE9D004FFB1A /* WMapTipVC.swift */,
+				D6D33B6E1E1C11BB0042E6B7 /* WTipManagerVC.swift */,
+				D66FA7BB1E1C7F8E0058BF68 /* WTipStudentPaymentsVC.swift */,
+				D66FA7C21E1C7FA30058BF68 /* WTipDriverPaymentsVC.swift */,
 			);
 			path = LessonControllers;
 			sourceTree = "<group>";
@@ -1131,7 +1167,11 @@
 				D6FE070B1D4C5CDD00F1B1D2 /* welcomeBackground.png in Resources */,
 				D60052821DEFDA5C00B4D2FC /* default.png in Resources */,
 				D6FF5E8B1DC1A4FD002D28C2 /* close_icon.png in Resources */,
+				D61979E81E19F2B50032B833 /* driverInfo1.png in Resources */,
 				42A33DFA1D336AE2001FD6E3 /* Assets.xcassets in Resources */,
+				D6D33B761E1C286F0042E6B7 /* whiteRightArrowIcon.png in Resources */,
+				D6D33B781E1C2C480042E6B7 /* nextArrows.png in Resources */,
+				D6FA60E71E1EB19D00C2316C /* studentLessonTip1.PNG in Resources */,
 				D62799871DE3FA74000F27C9 /* AirshipConfig.plist in Resources */,
 				D62799701DE3F985000F27C9 /* Airship in Resources */,
 				42A33DF81D336AE2001FD6E3 /* Main.storyboard in Resources */,
@@ -1142,10 +1182,15 @@
 				5D1E10CB1D812DC0003C213F /* WLessonDetailView.xib in Resources */,
 				08E224301D46F0A900E16631 /* clock-xxl.png in Resources */,
 				42B8F2811D34F057003882A0 /* wheelzIconMap.png in Resources */,
+				D6FA14CC1E19CBC900B68AD8 /* studentInfo1.png in Resources */,
+				D61979DF1E19E67A0032B833 /* studentInfo3.png in Resources */,
 				D64CA3341DA56C3200FDF3F1 /* dollarSign.png in Resources */,
+				D6FE92941E19E27500DD6769 /* studentInfo2.png in Resources */,
 				5D1E10D31D814831003C213F /* WCustomAnnotationTVCell.xib in Resources */,
 				5D1E10CD1D81468F003C213F /* WCustomAnnotationView.xib in Resources */,
+				D6FA60E01E1EB19700C2316C /* driverLessonTip1.PNG in Resources */,
 				42B8F27F1D34BB71003882A0 /* bg.png in Resources */,
+				D61979E61E19E7040032B833 /* whiteLeftArrowIcon.png in Resources */,
 				D68F48731D49A39E00F39F0A /* star.png in Resources */,
 				D68124F51D4EEE18005B2A21 /* LaunchScreen.storyboard in Resources */,
 				085837D21D43E9C7006E191D /* stars.php.png in Resources */,
@@ -1252,6 +1297,7 @@
 				428E24A81D380C68006AAF08 /* NSData+Base64.m in Sources */,
 				42B8F2631D34A2BB003882A0 /* WCustomButton.swift in Sources */,
 				D61C45621D8DE45E00B2B95A /* UIImageView+HighlightedWebCache.m in Sources */,
+				D66FA7BC1E1C7F8E0058BF68 /* WTipStudentPaymentsVC.swift in Sources */,
 				D625E5261D5CDF6500863E0B /* WVehiclesVC.swift in Sources */,
 				42A33E351D33BB35001FD6E3 /* WForgotPswrdVC.swift in Sources */,
 				D625E5281D5CDF8900863E0B /* WAlertsVC.swift in Sources */,
@@ -1291,6 +1337,7 @@
 				6844BCB51D5078D100D34CCD /* StringExtensions.swift in Sources */,
 				42A33E2D1D33BAEE001FD6E3 /* WSignUpStepTwoVC.swift in Sources */,
 				D6FD4AD61DBD32DD005585BB /* WSetupDriversBankAccountVC.swift in Sources */,
+				D66FA7C31E1C7FA30058BF68 /* WTipDriverPaymentsVC.swift in Sources */,
 				D61C455B1D8DE45E00B2B95A /* SDWebImageDownloaderOperation.m in Sources */,
 				42EF428D1D38C002005D30F3 /* PKHUDAssets.swift in Sources */,
 				5D4B3F3B1D547150003F608B /* LocationPickerViewController.swift in Sources */,
@@ -1303,6 +1350,7 @@
 				42EF428A1D38C002005D30F3 /* FrameView.swift in Sources */,
 				42B8F2661D34AEEE003882A0 /* WAppUtils.swift in Sources */,
 				42EF428F1D38C002005D30F3 /* PKHUDImageView.swift in Sources */,
+				D6D33B6F1E1C11BB0042E6B7 /* WTipManagerVC.swift in Sources */,
 				42B8F26A1D34B91B003882A0 /* AlertController.swift in Sources */,
 				42EF42951D38C002005D30F3 /* PKHUDSystemActivityIndicatorView.swift in Sources */,
 				42A33E2B1D33BADD001FD6E3 /* WSignUpStepOneVC.swift in Sources */,

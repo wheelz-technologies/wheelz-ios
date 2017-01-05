@@ -40,9 +40,9 @@ class WMenuVC: UIViewController,UITableViewDataSource,UITableViewDelegate {
     //MARK:- Helper Methods
     func customInit() -> Void {
         if (UserDefaults.standard.value(forKey: "wheelzIsDriver") as? Bool) == true {
-        menuArray = ["HOME","ACCOUNT","LESSONS","PAYMENTS","VEHICLES","ALERTS", /*"HELP",*/"SIGN OUT"]
+        menuArray = ["HOME","ACCOUNT","LESSONS","PAYMENTS","VEHICLES",/*"ALERTS",*/ "HELP", "SIGN OUT"]
         } else {
-        menuArray = ["HOME","ACCOUNT","LESSONS","PAYMENTS","ALERTS", /*"HELP",*/"SIGN OUT"]
+        menuArray = ["HOME","ACCOUNT","LESSONS","PAYMENTS",/*"ALERTS",*/ "HELP", "SIGN OUT"]
         }
         getRoundImage(userProfileImageView)
     }
@@ -91,16 +91,16 @@ class WMenuVC: UIViewController,UITableViewDataSource,UITableViewDelegate {
                 drawerController.mainViewController = UINavigationController(rootViewController : vehiclesVC)
                 drawerController.setDrawerState(.closed, animated: true)
                 break
-            case 5:
+            /*case 5:
                 let alertsVC = self.storyboard?.instantiateViewController(withIdentifier: "WAlertsVCID") as! WAlertsVC
                 drawerController.mainViewController = UINavigationController(rootViewController : alertsVC)
                 drawerController.setDrawerState(.closed, animated: true)
+                break */
+            case 5:
+                let helpVC = self.storyboard?.instantiateViewController(withIdentifier: "WTipManagerVCID") as! WTipManagerVC
+                drawerController.mainViewController = UINavigationController(rootViewController : helpVC)
+                drawerController.setDrawerState(.closed, animated: true)
                 break
-            //case 6:
-            //    let helpVC = self.storyboard?.instantiateViewControllerWithIdentifier("WHelpVCID") as! WHelpVC
-            //    drawerController.mainViewController = UINavigationController(rootViewController : helpVC)
-            //    drawerController.setDrawerState(.Closed, animated: true)
-            //    break
             default:
                 AlertController.alert("", message: "Are you sure you want to sign out?", controller: self,buttons: ["No", "Yes"], tapBlock: { (alertAction, position) -> Void in
                     if position == 0 {
@@ -141,16 +141,16 @@ class WMenuVC: UIViewController,UITableViewDataSource,UITableViewDelegate {
                 drawerController.mainViewController = UINavigationController(rootViewController : paymentsVC)
                 drawerController.setDrawerState(.closed, animated: true)
                 break
-            case 4:
+            /* case 4:
                 let alertsVC = self.storyboard?.instantiateViewController(withIdentifier: "WAlertsVCID") as! WAlertsVC
                 drawerController.mainViewController = UINavigationController(rootViewController : alertsVC)
                 drawerController.setDrawerState(.closed, animated: true)
-                break
-            /*case 5:
-                let helpVC = self.storyboard?.instantiateViewController(withIdentifier: "WHelpVCID") as! WHelpVC
+                break */
+            case 4:
+                let helpVC = self.storyboard?.instantiateViewController(withIdentifier: "WTipManagerVCID") as! WTipManagerVC
                 drawerController.mainViewController = UINavigationController(rootViewController : helpVC)
                 drawerController.setDrawerState(.closed, animated: true)
-                break */
+                break
             default:
                 AlertController.alert("", message: "Are you sure you want to sign out?", controller: self,buttons: ["No", "Yes"], tapBlock: { (alertAction, position) -> Void in
                     if position == 0 {

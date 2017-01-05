@@ -113,6 +113,10 @@ class WHistoryVC: UIViewController,UITableViewDataSource,UITableViewDelegate,les
         } else if historyInfo.lessonStatus == "Started" {
             cell.statusLabel.textColor = kAppOrangeColor
             cell.statusLabel.text = historyInfo.lessonStatus
+        }
+        else if historyInfo.lessonStatus == "Missed" {
+                cell.statusLabel.textColor = UIColor.red
+                cell.statusLabel.text = historyInfo.lessonStatus
         } else {
             cell.statusLabel.textColor = UIColor.darkGray
             cell.statusLabel.text = historyInfo.lessonStatus

@@ -60,6 +60,10 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
     
     @IBOutlet weak var hatImage: UIImageView!
     
+    @IBOutlet weak var awaitingConfIndicator: UIActivityIndicatorView!
+    
+    @IBOutlet weak var awaitingConfLabel: UILabel!
+    
     var lessonObj = WLessonInfo()
     var driverInfo: WUserInfo? = nil
     var latDelta:CLLocationDegrees = 0.001
@@ -69,12 +73,22 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
     var userId = UserDefaults.standard.value(forKey: "wheelzUserID") as? String ?? ""
     var fromHistory = false;
     var driverSelected = false;
+    var updateTimer: Timer?
     
     @IBOutlet weak var lessonView: UIView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         //addSubviewWithBounce(lessonView)
+        setUpOnLoad()
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(applicationDidBecomeActive),
+                                               name: .UIApplicationDidBecomeActive,
+                                               object: nil)
+        
+        // Scheduling timer to update lesson info with the interval of 10 seconds
+        self.updateTimer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(WLessonDetailView.checkLessonStatus), userInfo: nil, repeats: true)
     }
     
     //MARK:- Helper Methods
@@ -104,15 +118,10 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
        self.userPicImageView.layer.cornerRadius = self.userPicImageView.frame.size.width/2
         self.userPicImageView.clipsToBounds = true
         self.userPicImageView.layer.masksToBounds = true
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(applicationDidBecomeActive),
-                                               name: .UIApplicationDidBecomeActive,
-                                               object: nil)
     }
     
     @objc func applicationDidBecomeActive() {
-        customInit()
+        self.customInit()
     }
     
     func rightBarButtonAction(_ button : UIButton) {
@@ -153,7 +162,7 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
             
             drawerController.mainViewController = UINavigationController(rootViewController : lessonTrackingView)
             drawerController.setDrawerState(.closed, animated: true)
-
+            
             delegate?.removeViewWithLessonobj!(lessonObj, isEdit : false,msg:"")
         } else if ((self.isDriver && self.lessonObj.studentStarted && !self.lessonObj.driverStarted) || (!self.isDriver && !self.lessonObj.studentStarted && self.lessonObj.driverStarted)) {
             let confirmLessonView = Bundle.main.loadNibNamed("WLessonStartConfirmationVC", owner: nil, options: nil)?[0] as! WLessonStartConfirmationVC
@@ -170,7 +179,7 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
             
             drawerController.mainViewController = UINavigationController(rootViewController : rateLessonView)
             drawerController.setDrawerState(.closed, animated: true)
-
+            
             delegate?.removeViewWithLessonobj!(lessonObj, isEdit : false,msg:"")
         }
         
@@ -187,6 +196,10 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
             forwardArrowBtn.isHidden = true
             userTypeLabel.isHidden = true
         }
+    }
+    
+    func checkLessonStatus() {
+        callAPIForGetLessons(lessonObj.lessonID)
     }
     
     func switchUserInfo()
@@ -229,9 +242,6 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
             userProfileView.userId = lessonObj.studentID
         }
         (drawerController.mainViewController as! UINavigationController).pushViewController(userProfileView, animated: true)
-        //drawerController.navigationController?.pushViewController(userProfileView, animated: true)
-        //drawerController.mainViewController = UINavigationController(rootViewController : userProfileView)
-        //drawerController.setDrawerState(.closed, animated: true)
         
         delegate?.removeViewWithLessonobj!(lessonObj, isEdit : false,msg:"")
     }
@@ -342,8 +352,14 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
     //MARK:- UIButton Action Methods
     @IBAction func editLessonButtonAction(_ sender: UIButton) {
         if(self.claimLessonButton.titleLabel?.text == "START LESSON") {
-            callAPIToStartLesson()
-            return
+            if self.lessonObj.lessonTimestamp > Date().addingTimeInterval(600).timeIntervalSince1970 {
+                //the lesson is more than 10 minutes from now
+                presentFancyAlert("A bit too soon!", msgStr: "You can only start your lesson within 10 minutes of scheduled time.", type: AlertStyle.Info, controller: self)
+                return
+            } else {
+                callAPIToStartLesson()
+                return
+            }
         }
         
         if (self.isDriver) == true {
@@ -472,7 +488,7 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
                         self.timeLabel.text = self.getTimeFromTimeStamp(self.lessonObj.lessonTimestamp)
                         self.dateLabel.text = self.getDateFromTimeStamp(self.lessonObj.lessonTimestamp)
 
-                        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high).async(execute: {
+                        /*DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high).async(execute: {
                             for i in stride(from: 0, to: self.lessonObj.lessonAmount + 1, by: 1) {
                                 usleep(40000); // sleep in microseconds
                                 DispatchQueue.main.async(execute: {
@@ -482,23 +498,42 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
                             DispatchQueue.main.async(execute: {
                                 self.priceLabel.text = String(format:"$%.0f", self.lessonObj.lessonAmount)
                             });
-                        })
+                        }) */
                         
+                        DispatchQueue.main.async(execute: {
+                            self.priceLabel.text = String(format:"$%.0f", self.lessonObj.lessonAmount)
+                        });
+                        
+                        if(self.lessonObj.finished)
+                        {
+                            self.claimLessonButton.isHidden = true
+                            self.cancelButton.isHidden = true
+                        } else {
                         if (self.isDriver) == true {
                             if(self.lessonObj.driverID == "") {
                                 self.claimLessonButton.setTitle("CLAIM", for: UIControlState())
                                 self.claimLessonButton.isHidden = false
                                 self.hideCancelButton()
                             } else {
+                                self.claimLessonButton.setTitle("START LESSON", for: UIControlState())
+                                self.claimLessonButton.isHidden = false
+                                self.claimLessonButton.backgroundColor = UIColor.lightGray
+                                
                                 if self.lessonObj.lessonTimestamp > Date().addingTimeInterval(600).timeIntervalSince1970 {
+                                    //if the lesson more than 10 minutes from now
                                     self.cancelButton.isHidden = false
                                 } else {
                                     self.hideCancelButton()
                                     if(!self.lessonObj.driverStarted) {
-                                        self.claimLessonButton.setTitle("START LESSON", for: UIControlState())
-                                        self.claimLessonButton.isHidden = false
+                                        self.claimLessonButton.isEnabled = true
+                                        self.claimLessonButton.backgroundColor = kAppLightBlueColor
                                     } else {
+                                        //if lesson is already started by user (driver)
                                         self.claimLessonButton.isHidden = true
+                                        if(!self.lessonObj.studentStarted) {
+                                            self.awaitingConfLabel.isHidden = false
+                                            self.awaitingConfIndicator.isHidden = false
+                                        }
                                     }
                                   }
                               }
@@ -508,17 +543,28 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
                                 self.claimLessonButton.isHidden = false
                                 self.cancelButton.isHidden = false
                             } else {
+                                self.claimLessonButton.setTitle("START LESSON", for: UIControlState())
+                                self.claimLessonButton.isHidden = false
+                                self.claimLessonButton.backgroundColor = UIColor.lightGray
+                                
                                 if self.lessonObj.lessonTimestamp > Date().addingTimeInterval(600).timeIntervalSince1970 {
+                                    //if the lesson more than 10 minutes from now
                                     self.cancelButton.isHidden = false
                                 } else {
                                     self.hideCancelButton()
                                         if(!self.lessonObj.studentStarted) {
-                                            self.claimLessonButton.setTitle("START LESSON", for: UIControlState())
-                                            self.claimLessonButton.isHidden = false
+                                            self.claimLessonButton.isEnabled = true
+                                            self.claimLessonButton.backgroundColor = kAppLightBlueColor
                                         } else {
+                                            //if lesson is already started by user (student)
                                             self.claimLessonButton.isHidden = true
+                                            if(!self.lessonObj.driverStarted) {
+                                                self.awaitingConfLabel.isHidden = false
+                                                self.awaitingConfIndicator.isHidden = false
+                                            }
                                         }
                                 }
+                            }
                             }
                         }
                         self.mapView.delegate = self
@@ -730,7 +776,6 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
                 if (responseObject != nil) {
                     let message = responseObject?.object(forKey: "message") as? String ?? ""
                     if message == "OK" {
-                        //TO DO: Show "pending confirmation" screen
                         self.customInit()
                     } else {
                         let message = responseObject?.object(forKey: "Message") as? String ?? ""

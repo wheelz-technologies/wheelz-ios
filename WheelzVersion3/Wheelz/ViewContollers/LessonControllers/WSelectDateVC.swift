@@ -120,21 +120,22 @@ class WSelectDateVC: UIViewController {
             //AlertController.alert("Lesson Duration", message: "Lesson must be at least 30 minutes long.")
             presentFancyAlert("Lesson Duration", msgStr: "Lesson must be at least 30 minutes long.", type: AlertStyle.Info, controller: self)
             self.durationTimePicker.setDate(dateFormatter.date(from: "00:30")!, animated: true)
+            lessonInfo.lessonDuration = ("00.50" as NSString).doubleValue
             return
         } else if (!(arrStr.first! == "12") && (strDate.replacingOccurrences(of: ":", with: ".") as NSString).doubleValue > 5) {
             //AlertController.alert("Lesson Duration", message: "Maximum lesson duration is 5 hours.")
             presentFancyAlert("Lesson Duration", msgStr: "Maximum lesson duration is 5 hours.", type: AlertStyle.Info, controller: self)
             self.durationTimePicker.setDate(dateFormatter.date(from: "05:00")!, animated: true)
+            lessonInfo.lessonDuration = ("05.00" as NSString).doubleValue
             return
         } else {
             strDate = strDate.replacingOccurrences(of: "12", with: "00")
             strDate = strDate.replacingOccurrences(of: "15", with: "25")
             strDate = strDate.replacingOccurrences(of: "30", with: "50")
             strDate = strDate.replacingOccurrences(of: "45", with: "75")
-            lessonInfo.lessonDuration = (strDate.replacingOccurrences(of: ":", with: ".") as NSString).doubleValue
-            print(lessonInfo.lessonDuration)
-            //durationLabel.text = NSString(format: "Select Lesson Interval : %@%@ : %@mins", arrStr.first! == "12" ? "00" : arrStr.first!,arrStr.first! == "01" ? "hour" : "hours",arrStr.last!) as String
         }
+        
+        lessonInfo.lessonDuration = (strDate.replacingOccurrences(of: ":", with: ".") as NSString).doubleValue
     }
     
     @IBAction func continueButtonAction(_ sender: UIButton) {

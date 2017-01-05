@@ -45,20 +45,17 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
         self.customInit()
-        scheduledTimerWithTimeInterval()
+        
+        // Scheduling timer to update map with the interval of 10 seconds
+        timer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(WMapViewController.scheduledUpdate), userInfo: nil, repeats: true)
         
         let aSelector : Selector = #selector(WMapViewController.updateButton)
         buttonTimer = Timer.scheduledTimer(timeInterval: 8.0, target: self, selector: aSelector, userInfo: nil, repeats: true)
         startTime = NSDate.timeIntervalSinceReferenceDate
     }
     
-    func scheduledTimerWithTimeInterval(){
-        // Scheduling timer to Call the function **Countdown** with the interval of 1 seconds
-        timer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(WMapViewController.scheduledUpdate), userInfo: nil, repeats: true)
-    }
-    
     func scheduledUpdate() {
-        if (self.isViewLoaded && self.view.window != nil){
+        if (self.isViewLoaded && self.view.window != nil && lessonDetailView.lessonID == nil) {
             callAPIForGetAvailableLessons()
         }
     }
@@ -77,6 +74,8 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
     
     deinit  {
         NotificationCenter.default.removeObserver(self)
+        timer.invalidate()
+        buttonTimer.invalidate()
     }
 
     // MARK: - Private Methods
@@ -150,9 +149,7 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
         
         if (UserDefaults.standard.value(forKey: "wheelzIsDriver") as? Bool) == true {
             mapTipVc.isDriver = true
-            //presentFancyAlert("Hi!", msgStr: "It's simple - tap the lesson icon on the map, claim it and then just show up on time ;)", type: AlertStyle.Info, controller: self)
         } else {
-            //presentFancyAlert("Hi!", msgStr: "Tap the wheel icon on the bottom of the screen to request a lesson, fill out the details and let us find you a perfect instructor.\n\n" + "We'll let you know right away!", type: AlertStyle.Info, controller: self)
             mapTipVc.isDriver = false
         }
         kAppDelegate.window?.rootViewController!.present(mapTipVc, animated: true, completion: nil)
@@ -328,6 +325,12 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
     //MARK:- Lesson Detail Delegate Methods
     func removeViewWithLessonobj(_ lessonObj: WLessonInfo, isEdit : Bool,msg:String)  {
         lessonDetailView.removeFromSuperview()
+        lessonDetailView.updateTimer?.invalidate()
+        lessonDetailView.updateTimer = nil
+        lessonDetailView.lessonObj = WLessonInfo()
+        lessonDetailView.lessonID = nil
+        NotificationCenter.default.removeObserver(lessonDetailView)
+        
         if isEdit {
             let editLessonVC = self.storyboard?.instantiateViewController(withIdentifier: "WEditLessonVCID") as! WEditLessonVC
             editLessonVC.lessonObj = lessonObj
@@ -335,7 +338,6 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
                 //
                 }
             )
-//            self.navigationController?.pushViewController(editLessonVC, animated: true)
         } else if msg != "" {
             delay(1.0, closure: { 
                  AlertController.alert("", message: msg)
@@ -376,7 +378,7 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
         ServiceHelper.sharedInstance.callAPIWithParameters(paramDict, method: .get, apiName: apiNameGetAvailableResources, hudType: .default) { (responseObject :AnyObject?, error:NSError?,data:Data?) in
             
             if error != nil {
-                AlertController.alert("",message: (error?.localizedDescription)!)
+                //AlertController.alert("",message: (error?.localizedDescription)!)
             } else {
                 if (responseObject != nil) {
                     kAppDelegate.isFirstLoad = true

@@ -14,7 +14,8 @@ public enum AlertStyle: Int {
 }
 
 // MARK: - Short Terms
-let kAppOrangeColor = RGBA(255, g: 85, b: 40, a: 1) //RGBA(64, g: 183, b: 255, a: 1) //RGBA(252, g: 173, b: 17, a: 1)
+let kAppOrangeColor = RGBA(255, g: 85, b: 40, a: 1)
+let kAppLightBlueColor = RGBA(0, g: 191, b: 255, a: 1)
 let KAppWhiteColor = UIColor.white
 let KAppPlaceholderColor = UIColor.lightGray
 let KAppTextColor = UIColor.darkGray
