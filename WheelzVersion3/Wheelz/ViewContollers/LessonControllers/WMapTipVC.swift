@@ -16,7 +16,7 @@ class WMapTipVC: UIViewController {
     @IBOutlet weak var requestLessonLabel: UILabel!
     @IBOutlet weak var requestLessonArrow: UIImageView!
     
-    var isDriver = false;
+    var isDriver = UserDefaults.standard.value(forKey: "wheelzIsDriver") as? Bool ?? false
     
     override func viewDidLoad() {
         super.viewDidLoad()

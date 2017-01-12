@@ -118,14 +118,16 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
         } else {
             requestLessionButton.isHidden = false
             let uilgr = UILongPressGestureRecognizer(target: self, action: #selector(WMapViewController.requestLessonAtLocation(sender:)))
-            uilgr.minimumPressDuration = 0.8
+            uilgr.minimumPressDuration = 0.2
             mapView.addGestureRecognizer(uilgr)
         }
     }
     
-    func requestLessonAtLocation(sender:UILongPressGestureRecognizer) {
+    func requestLessonAtLocation(sender: UILongPressGestureRecognizer) {
+        
         if sender.state == UIGestureRecognizerState.began {
             let touchPoint = sender.location(in: mapView)
+
             let coordinates = mapView.convert(touchPoint, toCoordinateFrom: mapView)
             
             let location = CLLocation(latitude: coordinates.latitude, longitude: coordinates.longitude)
@@ -144,15 +146,28 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
     }
     
     func rightBarButtonAction(_ button : UIButton) {
-        let mapTipVc = self.storyboard?.instantiateViewController(withIdentifier: "WMapTipVCID") as! WMapTipVC
-        mapTipVc.modalPresentationStyle = .overCurrentContext
+        let tipVc = self.storyboard?.instantiateViewController(withIdentifier: "WTipManagerVCID") as! WTipManagerVC
         
         if (UserDefaults.standard.value(forKey: "wheelzIsDriver") as? Bool) == true {
-            mapTipVc.isDriver = true
+            tipVc.orderedViewControllers = [newViewControllerFromMain(name: "WMapTipVCID"),
+                                            newViewControllerFromMain(name: "WDriverSignUpTip1VCID"),
+                                            newViewControllerFromMain(name: "WDriverSignUpTip2VCID"),
+                                            newViewControllerFromMain(name: "WDriverSignUpTip3VCID"),
+                                            newViewControllerFromMain(name: "WDriverLessonTip2VCID"),
+                                            newViewControllerFromMain(name: "WStartLessonTipVCID"),
+                                            newViewControllerFromMain(name: "WTrackingLessonTipVCID"),
+                                            newViewControllerFromMain(name: "WRateLessonTipVCID")]
         } else {
-            mapTipVc.isDriver = false
+            tipVc.orderedViewControllers = [newViewControllerFromMain(name: "WMapTipVCID"),
+                                            newViewControllerFromMain(name: "WStudentSignUpTip1VCID"),
+                                            newViewControllerFromMain(name: "WStudentSignUpTip2VCID"),
+                                            newViewControllerFromMain(name: "WStudentSignUpTip3VCID"),
+                                            newViewControllerFromMain(name: "WStartLessonTipVCID"),
+                                            newViewControllerFromMain(name: "WTrackingLessonTipVCID"),
+                                            newViewControllerFromMain(name: "WRateLessonTipVCID")]
         }
-        kAppDelegate.window?.rootViewController!.present(mapTipVc, animated: true, completion: nil)
+        
+        kAppDelegate.window?.rootViewController!.present(tipVc, animated: true, completion: nil)
     }
     
     func updateMapNotificationObserver()  {
@@ -279,7 +294,7 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
         })
         
         annotationView?.layer.anchorPoint = CGPoint(x: 0.5, y: 1.0)
-        
+        annotationView?.layer.bounds.offsetBy(dx: 16.0, dy: 16.0)
         return annotationView
     }
     
@@ -287,17 +302,18 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
         if view.annotation is MKUserLocation {
             return
         }
+        
         let customAnnotation = view.annotation as! WCustomAnnotation
         let tempLocArray = NSMutableArray()
-        print(customAnnotation.coordinate.latitude,"==",customAnnotation.coordinate.longitude)
-          for case let lessonObj as WLessonInfo in lessonArray {
+        
+        for case let lessonObj as WLessonInfo in lessonArray {
 
             if customAnnotation.coordinate.latitude  == lessonObj.locLat && customAnnotation.coordinate.longitude == lessonObj.locLon{
                 tempLocArray.add(lessonObj)
             }
         }
 
-        if  tempLocArray.count > 1{
+        if tempLocArray.count > 1 {
             let views = Bundle.main.loadNibNamed("WCustomAnnotationView", owner: nil, options: nil)
             calloutView = views?[0] as! WCustomAnnotationView
             calloutView.locationArray = tempLocArray

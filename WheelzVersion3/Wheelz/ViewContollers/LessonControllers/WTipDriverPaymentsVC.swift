@@ -3,7 +3,7 @@
 //  Wheelz
 //
 //  Created by Arseniy Nikulchenko on 2017-01-03.
-//  Copyright © 2017 Probir Chakraborty. All rights reserved.
+//  Copyright © 2017 Wheelz Technologies Inc. All rights reserved.
 //
 
 import UIKit
@@ -22,7 +22,9 @@ class WTipDriverPaymentsVC: UIViewController {
         let drawerController = kAppDelegate.navController!.topViewController as! KYDrawerController
         
         let paymentsVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WDriverPaymentsVCID") as! WDriverPaymentsVC
-            
+        
+        self.dismiss(animated: true, completion: nil)
+        
         drawerController.mainViewController = UINavigationController(rootViewController : paymentsVC)
         drawerController.setDrawerState(.closed, animated: true)
     }

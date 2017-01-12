@@ -126,7 +126,7 @@ class WHistoryVC: UIViewController,UITableViewDataSource,UITableViewDelegate,les
         cell.statusLabel.text = String(format:"%@", historyInfo.lessonStatus)
         cell.userNameLabel.text = (String(format: "%.@",historyInfo.lessonHolderName).isEmpty ? "No Driver Yet" : String(format: "%.@",historyInfo.lessonHolderName))
         cell.historyDateLabel.text = getDateFromTimeStamp(historyInfo.lessonTimestamp)
-         getRoundImage(cell.userImageView)
+        getRoundImage(cell.userImageView)
         
         cell.userImageView.setImageWithUrl(URL(string: historyInfo.lessonHolderPic)!, placeHolderImage: UIImage(named: "userPic"))
         
@@ -155,6 +155,12 @@ class WHistoryVC: UIViewController,UITableViewDataSource,UITableViewDelegate,les
     //MARK:- Lesson Detail Delegate Methods
     func removeViewWithLessonobj(_ lessonObj: WLessonInfo, isEdit : Bool,msg:String)  {
         lessonDetailView.removeFromSuperview()
+        lessonDetailView.updateTimer?.invalidate()
+        lessonDetailView.updateTimer = nil
+        lessonDetailView.lessonObj = WLessonInfo()
+        lessonDetailView.lessonID = nil
+        NotificationCenter.default.removeObserver(lessonDetailView)
+        
         if isEdit {
             let editLessonVC = self.storyboard?.instantiateViewController(withIdentifier: "WEditLessonVCID") as! WEditLessonVC
             editLessonVC.lessonObj = lessonObj
@@ -175,9 +181,7 @@ class WHistoryVC: UIViewController,UITableViewDataSource,UITableViewDelegate,les
     fileprivate func callApiGetLessonHistory() {
         
         let paramDict = NSMutableDictionary()
-        print(UserDefaults.standard.value(forKey: "wheelzUserID") as? String)
-        print(UserDefaults.standard.value(forKey: "wheelzIsDriver") as? Bool)
-        var apiNameGetHistoryLesson =  kAPINameGetHistoryInfo("",driverId: "")
+        var apiNameGetHistoryLesson: String
         
         if (UserDefaults.standard.value(forKey: "wheelzIsDriver") as? Bool) == true {
             paramDict[WStudentID] = ""
@@ -186,7 +190,7 @@ class WHistoryVC: UIViewController,UITableViewDataSource,UITableViewDelegate,les
         } else {
             paramDict[WStudentID] = UserDefaults.standard.value(forKey: "wheelzUserID") as? String
             paramDict[WDriverID] = ""
-           apiNameGetHistoryLesson =  kAPINameGetHistoryInfo((UserDefaults.standard.value(forKey: "wheelzUserID") as? String)!,driverId:"")
+           apiNameGetHistoryLesson = kAPINameGetHistoryInfo((UserDefaults.standard.value(forKey: "wheelzUserID") as? String)!,driverId:"")
         }
         
         ServiceHelper.sharedInstance.callAPIWithParameters(paramDict, method: .get, apiName: apiNameGetHistoryLesson, hudType: .default) { (responseObject :AnyObject?, error:NSError?,data:Data?) in
@@ -196,7 +200,7 @@ class WHistoryVC: UIViewController,UITableViewDataSource,UITableViewDelegate,les
             } else {
                 if (responseObject != nil) {
                    let tempArray = responseObject as? NSMutableArray
-                    if ((tempArray?.count)  < 1 || tempArray == nil)  {
+                    if (tempArray == nil || (tempArray?.count) < 1)  {
                         self.messageLabel.text = "Looks like you haven't had any lessons yet."
                         self.historyTableView.reloadData()
                         self.historyTableView.separatorColor = UIColor.white;

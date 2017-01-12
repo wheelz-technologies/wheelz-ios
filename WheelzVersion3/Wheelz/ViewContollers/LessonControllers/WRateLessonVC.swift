@@ -14,7 +14,6 @@ class WRateLessonVC: UIViewController {
     @IBOutlet weak var totalPriceLabel: UILabel!
     
     var lessonObj : WLessonInfo!
-    var totalPrice: Double = 0.0
     var rating = 3;
     var isDriver = UserDefaults.standard.value(forKey: "wheelzIsDriver") as! Bool
     
@@ -36,11 +35,10 @@ class WRateLessonVC: UIViewController {
     //MARK:- Helper Methods
     func customInit() -> Void {
         self.navigationItem.title = "Rate Lesson"
-        //self.navigationItem.leftBarButtonItem = self.backBarBackButton("backArrow")
+        callAPIForGetLessons(lessonObj.lessonID)
         
         self.navigationItem.leftBarButtonItem = nil
         self.navigationItem.setHidesBackButton(true, animated:true);
-        self.totalPriceLabel.text = "$\(self.totalPrice.roundTo(places: 2))"
     }
     
     //MARK:- UIButton Action Methods
@@ -109,8 +107,33 @@ class WRateLessonVC: UIViewController {
                     }
                 }
             }
-            
         }
     }
     
+    //MARK:- Web API Section
+    fileprivate func callAPIForGetLessons(_ lessonID : String) {
+        
+        let paramDict = NSMutableDictionary()
+        
+        let apiNameGetLesson = kAPINameGetLesson(lessonID)
+        paramDict[WLessonID] = lessonID
+        ServiceHelper.sharedInstance.callAPIWithParameters(paramDict, method: .get, apiName: apiNameGetLesson, hudType: .default) { (responseObject :AnyObject?, error:NSError?,data:Data?) in
+            
+            if error != nil {
+                AlertController.alert("",message: (error?.localizedDescription)!)
+            } else {
+                if (responseObject != nil) {
+                    let message = responseObject?.object(forKey: "Message") as? String ?? ""
+                    if message != "" {
+                        AlertController.alert("Whoops!",message: (error?.localizedDescription)!)
+                    } else {
+                        self.lessonObj = WLessonInfo.getLessonInfo(responseObject! as! NSMutableDictionary)
+                        
+                        self.totalPriceLabel.text = "$\(self.lessonObj.lessonAmount.roundTo(places: 2))"
+                    }
+                }
+            }
+            
+        }
+    }
 }

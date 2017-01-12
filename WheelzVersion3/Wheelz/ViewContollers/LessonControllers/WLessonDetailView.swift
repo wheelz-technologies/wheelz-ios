@@ -73,6 +73,8 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
     var userId = UserDefaults.standard.value(forKey: "wheelzUserID") as? String ?? ""
     var fromHistory = false;
     var driverSelected = false;
+    var isFirstLesson: Bool = false
+    
     var updateTimer: Timer?
     
     @IBOutlet weak var lessonView: UIView!
@@ -171,7 +173,7 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
             confirmLessonView.frame = (kAppDelegate.window?.bounds)!
             
             kAppDelegate.window?.rootViewController!.view.addSubview(confirmLessonView)
-        } else if (self.lessonObj.finished && (!self.isDriver && !self.lessonObj.studentRated || self.isDriver && !self.lessonObj.driverRated)) {
+        } else if (self.lessonObj.finished && self.lessonObj.paid && (!self.isDriver && !self.lessonObj.studentRated || self.isDriver && !self.lessonObj.driverRated)) {
             //redirect to Rate screen
             
             let rateLessonView = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WRateLessonVCID") as! WRateLessonVC
@@ -191,11 +193,16 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
             let forwardArrowGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(WLessonDetailView.switchUserInfo))
             backArrowBtn.addGestureRecognizer(backArrowGestureRecognizer)
             forwardArrowBtn.addGestureRecognizer(forwardArrowGestureRecognizer)
+            backArrowBtn.isHidden = false
+            forwardArrowBtn.isHidden = false
+            userTypeLabel.isHidden = false
         } else {
             backArrowBtn.isHidden = true
             forwardArrowBtn.isHidden = true
             userTypeLabel.isHidden = true
         }
+        
+        getLessonCount()
     }
     
     func checkLessonStatus() {
@@ -592,25 +599,33 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
                 if (responseObject != nil) {
                     let message = responseObject?.object(forKey: "message") as? String ?? ""
                     if message == "OK" {
-                         self.delegate?.removeViewWithLessonobj!(self.lessonObj, isEdit : false,msg:"")
+                        if(self.isFirstLesson)
+                        {
+                            let firstLessonTipVc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WTipManagerVCID") as! WTipManagerVC
+                            firstLessonTipVc.orderedViewControllers = [newViewControllerFromMain(name: "WDriverLessonTip1VCID"),
+                                                                       newViewControllerFromMain(name: "WDriverLessonTip2VCID"),
+                                                                       newViewControllerFromMain(name: "WStartLessonTipVCID"),
+                                                                       newViewControllerFromMain(name: "WTrackingLessonTipVCID"),
+                                                                       newViewControllerFromMain(name: "WRateLessonTipVCID")]
+                            
+                            self.delegate?.removeViewWithLessonobj!(self.lessonObj, isEdit : false,msg: "")
+                            kAppDelegate.window?.rootViewController!.present(firstLessonTipVc, animated: true, completion: nil)
+                        } else {
+                            let lessonTipVc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WLessonTipVCID") as! WLessonTipVC
+                            lessonTipVc.isDriver = true;
+                            
+                            self.delegate?.removeViewWithLessonobj!(self.lessonObj, isEdit : false,msg: "")
+                            kAppDelegate.window?.rootViewController!.present(lessonTipVc, animated: true, completion: nil)
+                        }
                     } else {
-                         let message = responseObject?.object(forKey: "Message") as? String ?? ""
-//                        AlertController.alert("", message: message,controller: (kAppDelegate.window?.rootViewController)!, buttons: ["OK"], tapBlock: { (alertAction, position) -> Void in
-//                            if position == 0 {
-                                self.delegate?.removeViewWithLessonobj!(self.lessonObj, isEdit : false,msg:message)
-                        
-                        let lessonTipVc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WLessonTipVCID") as! WLessonTipVC
-                        lessonTipVc.isDriver = true;
-                        
-                        kAppDelegate.window?.rootViewController!.present(lessonTipVc, animated: true, completion: nil)
+                        let message = responseObject?.object(forKey: "Message") as? String ?? ""
+                        self.delegate?.removeViewWithLessonobj!(self.lessonObj, isEdit : false,msg: message)
+                        return
                     }
-//                        })
                     }
                 }
             }
-            
         }
-//    }
     
     fileprivate func callAPIForDeleteLessons() {
         
@@ -630,11 +645,7 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
                         self.delegate?.removeViewWithLessonobj!(self.lessonObj, isEdit : false,msg:"")
                     } else {
                         let message = responseObject?.object(forKey: "Message") as? String ?? ""
-//                        AlertController.alert("", message: message,controller: (kAppDelegate.window?.rootViewController)!, buttons: ["OK"], tapBlock: { (alertAction, position) -> Void in
-//                            if position == 0 {
                         self.delegate?.removeViewWithLessonobj!(self.lessonObj, isEdit : false,msg:message)
-//                            }
-//                        })
                     }
                 }
             }
@@ -660,7 +671,7 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
                         self.delegate?.removeViewWithLessonobj!(self.lessonObj, isEdit : false,msg:"")
                     } else {
                           let message = responseObject?.object(forKey: "Message") as? String ?? ""
-                        self.delegate?.removeViewWithLessonobj!(self.lessonObj, isEdit : false,msg : message)
+                          self.delegate?.removeViewWithLessonobj!(self.lessonObj, isEdit : false,msg : message)
                     }
                 }
             }
@@ -823,5 +834,28 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
                     }
                 }
             }
+    }
+    
+    func getLessonCount() {
+        
+        let paramDict = NSMutableDictionary()
+        
+        paramDict[WStudentID] = ""
+        paramDict[WDriverID] = UserDefaults.standard.value(forKey: "wheelzUserID") as? String
+        var apiNameGetHistoryLesson = kAPINameGetHistoryInfo("",driverId:(UserDefaults.standard.value(forKey: "wheelzUserID") as? String)!)
+        
+        ServiceHelper.sharedInstance.callAPIWithParameters(paramDict, method: .get, apiName: apiNameGetHistoryLesson, hudType: .default) { (responseObject :AnyObject?, error:NSError?,data:Data?) in
+            
+            if error != nil {
+                AlertController.alert("",message: (error?.localizedDescription)!)
+            } else {
+                if (responseObject != nil) {
+                    let tempArray = responseObject as? NSMutableArray
+                    if (tempArray == nil || (tempArray?.count)! < 1)  {
+                        self.isFirstLesson = true
+                    }
+                }
+            }
+        }
     }
 }

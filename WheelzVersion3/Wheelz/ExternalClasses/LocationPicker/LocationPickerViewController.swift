@@ -101,6 +101,8 @@ open class LocationPickerViewController: UIViewController {
 		let searchBar = self.searchController.searchBar
 		searchBar.searchBarStyle = self.searchBarStyle
 		searchBar.placeholder = self.searchBarPlaceholder
+        var textFieldInsideSearchBar = searchBar.value(forKey: "searchField") as? UITextField
+        textFieldInsideSearchBar?.textColor = .white
 		return searchBar
 	}()
 	
@@ -114,6 +116,7 @@ open class LocationPickerViewController: UIViewController {
 	
 	open override func loadView() {
 		mapView = MKMapView(frame: UIScreen.main.bounds)
+        mapView.tintColor = kAppOrangeColor
 		mapView.mapType = mapType
 		view = mapView
 		
@@ -338,11 +341,13 @@ extension LocationPickerViewController: MKMapViewDelegate {
 	public func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
 		if annotation is MKUserLocation { return nil }
 		
-		let pin = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "annotation")
-		pin.pinColor = .green
+		let pin = MKAnnotationView(annotation: annotation, reuseIdentifier: "annotation")
+        
+        pin.image = resizeImage(imageName: "wheelzOrange", width: 50, height: 50)
+        pin.layer.anchorPoint = CGPoint(x: 0.5, y: 1.0)
+		//pin.pinColor = .green
 		// drop only on long press gesture
 		let fromLongPress = annotation is MKPointAnnotation
-		pin.animatesDrop = fromLongPress
 		pin.rightCalloutAccessoryView = selectLocationButton()
 		pin.canShowCallout = !fromLongPress
 		return pin
@@ -355,13 +360,12 @@ extension LocationPickerViewController: MKMapViewDelegate {
             let width = titleLabel.textRect(forBounds: CGRect(x: 0, y: 0, width: Int.max, height: 30), limitedToNumberOfLines: 1).width
             button.frame.size = CGSize(width: width, height: 30.0)
         }
-		button.setTitleColor(view.tintColor, for: UIControlState())
+		button.setTitleColor(kAppOrangeColor, for: UIControlState())
 		return button
 	}
 	
 	public func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
 		if let navigation = navigationController, navigation.viewControllers.count > 1 {
-            print(location?.placemark.country)
             completion?(location)
 			navigation.popViewController(animated: true)
 		} else {
@@ -371,7 +375,7 @@ extension LocationPickerViewController: MKMapViewDelegate {
 	
 	public func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
 		let pins = mapView.annotations.filter { $0 is MKPinAnnotationView }
-		assert(pins.count <= 1, "Only 1 pin annotation can be on map at a time.")
+		assert(pins.count <= 1, "Only 1 pin annotation can be on a map at a time.")
 	}
 }
 

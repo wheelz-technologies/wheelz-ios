@@ -118,6 +118,10 @@ func presentFancyAlert(_ titleStr : String?, msgStr : String?, type: AlertStyle,
     }
 }
 
+func newViewControllerFromMain(name: String) -> UIViewController {
+    return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: name)
+}
+
 // Helper function to convert from RGB to UIColor
 func UIColorFromRGB(_ rgbValue: UInt) -> UIColor {
     return UIColor(

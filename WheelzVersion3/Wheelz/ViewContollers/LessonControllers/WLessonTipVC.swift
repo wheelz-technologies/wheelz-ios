@@ -22,9 +22,6 @@ class WLessonTipVC: UIViewController {
             tipLabel.text = "You claimed a lesson."
             tipText.text = "We'll remind you to show up on time!"
         }
-        
-        let notificationSettings = UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: nil)
-        UIApplication.shared.registerUserNotificationSettings(notificationSettings)
     }
     
     override func didReceiveMemoryWarning() {

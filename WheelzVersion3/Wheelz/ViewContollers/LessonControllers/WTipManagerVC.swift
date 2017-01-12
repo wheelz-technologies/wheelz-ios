@@ -11,20 +11,7 @@ import UIKit
 class WTipManagerVC: UIPageViewController {
 
     weak var tipDelegate: TipPageViewControllerDelegate?
-    
-    private(set) lazy var orderedViewControllers: [UIViewController] = {
-        // The view controllers will be shown in this order
-        return UserDefaults.standard.value(forKey: "wheelzIsDriver") as! Bool ?
-                [self.newTipViewController(name: "WSignUpTipVCID"),
-                 self.newTipViewController(name: "WDriverSignUpTip1VCID"),
-                 self.newTipViewController(name: "WDriverSignUpTip2VCID"),
-                 self.newTipViewController(name: "WDriverSignUpTip3VCID")] :
-            
-                [self.newTipViewController(name: "WSignUpTipVCID"),
-                self.newTipViewController(name: "WStudentSignUpTip1VCID"),
-                self.newTipViewController(name: "WStudentSignUpTip2VCID"),
-                self.newTipViewController(name: "WStudentSignUpTip3VCID")]
-    }()
+    var orderedViewControllers: [UIViewController] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,10 +61,6 @@ class WTipManagerVC: UIPageViewController {
             let nextViewController = orderedViewControllers[newIndex]
             scrollToViewController(viewController: nextViewController, direction: direction)
         }
-    }
-    
-    private func newTipViewController(name: String) -> UIViewController {
-        return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: name)
     }
     
     /**

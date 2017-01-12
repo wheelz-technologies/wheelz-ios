@@ -22,9 +22,11 @@ class WLessonInfo: NSObject {
     var driverStarted : Bool = false
     var studentStarted : Bool = false
     var finished : Bool = false
+    var paid : Bool = false
     var lessonDateTime : Date = Date()
     var lessonDate : String = ""
     var lessonTimestamp : Double = 0.0
+    var lessonStartTimestamp : Double = 0.0
     var lessonDuration : Double = 0.0
     var isInstructorRequired : Bool = false
     var lessonAmount : Double = 0.0
@@ -91,7 +93,9 @@ class WLessonInfo: NSObject {
             lessonInfo.studentStarted = dict["studentStarted"] as! Bool
             lessonInfo.driverStarted = dict["driverStarted"] as! Bool
             lessonInfo.finished = dict["finished"] as! Bool
+            lessonInfo.paid = dict["paid"] as! Bool
             lessonInfo.lessonTimestamp = dict["utcDateTime"] as! Double
+            lessonInfo.lessonStartTimestamp = dict["startedAtUtc"] as? Double ?? 0.0
             lessonInfo.studentRated = dict["studentRated"] as! Bool
             lessonInfo.driverRated = dict["driverRated"] as! Bool
             

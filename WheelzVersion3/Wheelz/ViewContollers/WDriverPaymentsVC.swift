@@ -77,12 +77,12 @@ class WDriverPaymentsVC: UIViewController,UIGestureRecognizerDelegate {
                                 self.titleLabel.text = "Your payments are set up."
                                 self.detailsLabel.text = "We might ask for additional information later, but for now you're good to go!"
                                 self.setupButton.isHidden = true;
-                            } /*else if (self.statusDetailsObj.details == "additional information required") {
+                            } else if (self.statusDetailsObj.details == "additional information required") {
                                 self.titleLabel.text = "Your payments are not set up."
-                                self.detailsLabel.text = "We need some additional information. Our Customer Service representative will contact you."
+                                self.detailsLabel.text = "We need some additional information. Please, contact us for details."
                                 self.setupButton.isHidden = true;
                             }
-                            break */
+                            break
                         case "pending":
                             self.titleLabel.text = "We are reviewing your details."
                             self.detailsLabel.text = "You can start claiming lessons in the meantime. You'll receive payment as soon as we finish."
@@ -95,7 +95,7 @@ class WDriverPaymentsVC: UIViewController,UIGestureRecognizerDelegate {
                             break
                         default:
                             self.titleLabel.text = "Payment set up failed."
-                            self.detailsLabel.text = "We had an issue while reviewing your information. Please, check your alerts and email for details."
+                            self.detailsLabel.text = "We had an issue while reviewing your information. Please, contact us for details."
                             self.setupButton.setTitle("TRY AGAIN", for: UIControlState())
                             break
                         }

@@ -400,6 +400,10 @@ class WAddVehicleVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
                             DispatchQueue.main.async {
                                 self.navigationController?.pushViewController(kAppDelegate.addSidePanel(), animated: false)
                                 let tipVc = self.storyboard?.instantiateViewController(withIdentifier: "WTipManagerVCID") as! WTipManagerVC
+                                tipVc.orderedViewControllers = [newViewControllerFromMain(name: "WSignUpTipVCID"),
+                                                                newViewControllerFromMain(name: "WDriverSignUpTip1VCID"),
+                                                                newViewControllerFromMain(name: "WDriverSignUpTip2VCID"),
+                                                                newViewControllerFromMain(name: "WDriverSignUpTip3VCID")]
                                 
                                 kAppDelegate.window?.rootViewController!.present(tipVc, animated: true, completion: nil)
                             }

@@ -1,34 +1,29 @@
 //
-//  WTipStudentPaymentsVC.swift
+//  WRateLessonTipVC.swift
 //  Wheelz
 //
-//  Created by Arseniy Nikulchenko on 2017-01-03.
+//  Created by Arseniy Nikulchenko on 2017-01-06.
 //  Copyright © 2017 Wheelz Technologies Inc. All rights reserved.
 //
 
 import UIKit
 
-class WTipStudentPaymentsVC: UIViewController {
+class WRateLessonTipVC: UIViewController {
 
+    @IBOutlet weak var tipTextLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if (UserDefaults.standard.value(forKey: "wheelzIsDriver") as? Bool) == true {
+            tipTextLabel.text = "Make sure to rate your experience - it directly affects your student's profile. Good luck!"
+        }
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
-    @IBAction func addBtnAction(_ sender: Any) {
-        let drawerController = kAppDelegate.navController!.topViewController as! KYDrawerController
 
-        let paymentsVC = self.storyboard?.instantiateViewController(withIdentifier: "WPaymentsVCID") as! WPaymentsVC
-        
-        self.dismiss(animated: true, completion: nil)
-        
-        drawerController.mainViewController = UINavigationController(rootViewController : paymentsVC)
-        drawerController.setDrawerState(.closed, animated: true)
-    }
-    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let drawerController = kAppDelegate.navController!.topViewController as! KYDrawerController
         

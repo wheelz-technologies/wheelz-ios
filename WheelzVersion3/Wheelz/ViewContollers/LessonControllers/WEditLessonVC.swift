@@ -118,6 +118,25 @@ class WEditLessonVC: UIViewController, UIPickerViewDelegate {
             lessonObj.lessonDuration = (strDate as NSString).doubleValue
         }
         print(lessonObj.lessonDuration)
+        
+        /*if (arrStr.first! == "12" && arrStr.last! == "15")  {
+            presentFancyAlert("Lesson Duration", msgStr: "Lesson must be at least 30 minutes long.", type: AlertStyle.Info, controller: self)
+            self.durationTimePicker.setDate(dateFormatter.date(from: "00:30")!, animated: true)
+            lessonInfo.lessonDuration = ("00.50" as NSString).doubleValue
+            return
+        } else if (!(arrStr.first! == "12") && (strDate.replacingOccurrences(of: ":", with: ".") as NSString).doubleValue > 5) {
+            presentFancyAlert("Lesson Duration", msgStr: "Maximum lesson duration is 5 hours.", type: AlertStyle.Info, controller: self)
+            self.durationTimePicker.setDate(dateFormatter.date(from: "05:00")!, animated: true)
+            lessonInfo.lessonDuration = ("05.00" as NSString).doubleValue
+            return
+        } else {
+            strDate = strDate.replacingOccurrences(of: "12", with: "00")
+            strDate = strDate.replacingOccurrences(of: "15", with: "25")
+            strDate = strDate.replacingOccurrences(of: "30", with: "50")
+            strDate = strDate.replacingOccurrences(of: "45", with: "75")
+        }
+        
+        lessonObj.lessonDuration = (strDate as NSString).doubleValue*/
     }
 
     func  addToolBar(_ name:String, btnTag : NSInteger) -> UIToolbar {

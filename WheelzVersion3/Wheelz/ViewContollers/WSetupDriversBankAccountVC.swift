@@ -52,7 +52,16 @@ class WSetupDriversBankAccountVC: UIViewController, UITextFieldDelegate {
     // MARK: - UIViewController Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let tapRecognizer = UITapGestureRecognizer()
+        tapRecognizer.addTarget(self, action: #selector(WSetupDriversBankAccountVC.didTapView))
+        self.view.addGestureRecognizer(tapRecognizer)
+        
         self.customInit()
+    }
+    
+    func didTapView(){
+        self.view.endEditing(true)
     }
  
     // MARK: - Private Methods

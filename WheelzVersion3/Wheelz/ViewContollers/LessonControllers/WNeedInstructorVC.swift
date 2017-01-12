@@ -17,6 +17,7 @@ class WNeedInstructorVC: UIViewController {
     var regularDriverRate : Double = 0.0
     var instructorRate : Double = 0.0
     var shareRate : Double = 0.0
+    var isFirstLesson: Bool = false
     
     //MARK:- View Life Cycle
     override func viewDidLoad() {
@@ -39,6 +40,7 @@ class WNeedInstructorVC: UIViewController {
         self.navigationItem.leftBarButtonItem = self.backBarBackButton("backArrow")
         print(lessonObj.lessonDuration)
         callAPIForGetRates()
+        getLessonCount()
     }
     
     func setFareAmount() {
@@ -129,26 +131,54 @@ class WNeedInstructorVC: UIViewController {
                     if message == "Created" {
                         self.navigationController?.popToRootViewController(animated: true)
                         
-                        let lessonTipVc = self.storyboard?.instantiateViewController(withIdentifier: "WLessonTipVCID") as! WLessonTipVC
-                        lessonTipVc.modalPresentationStyle = .overCurrentContext
+                        if(self.isFirstLesson)
+                        {
+                            let firstLessonTipVc = self.storyboard?.instantiateViewController(withIdentifier: "WTipManagerVCID") as! WTipManagerVC
+                            firstLessonTipVc.orderedViewControllers = [newViewControllerFromMain(name: "WStudentLessonTip1VCID"),
+                                                                       newViewControllerFromMain(name: "WStartLessonTipVCID"),
+                                                                       newViewControllerFromMain(name: "WTrackingLessonTipVCID"),
+                                                                       newViewControllerFromMain(name: "WRateLessonTipVCID")]
+                            
+                            kAppDelegate.window?.rootViewController!.present(firstLessonTipVc, animated: true, completion: nil)
+                        } else {
+                            let lessonTipVc = self.storyboard?.instantiateViewController(withIdentifier: "WLessonTipVCID") as! WLessonTipVC
+                            lessonTipVc.modalPresentationStyle = .overCurrentContext
                         
-                         kAppDelegate.window?.rootViewController!.present(lessonTipVc, animated: true, completion: nil)
+                            kAppDelegate.window?.rootViewController!.present(lessonTipVc, animated: true, completion: nil)
+                        }
                     } else  {
                         AlertController.alert("", message: message,controller: self, buttons: ["OK"], tapBlock: { (alertAction, position) -> Void in
                             if position == 0 {
                                 // do nothing
                             }
                         })
-
-                        
-                        //                        dispatch_async(dispatch_get_main_queue()) {
-                        //                            self.navigationController?.pushViewController(kAppDelegate.addSidePanel(), animated: false)
-                        //                        }
                     }
                 }
             }
             
         }
     }
-
+    
+    func getLessonCount() {
+        
+        let paramDict = NSMutableDictionary()
+        
+        paramDict[WStudentID] = UserDefaults.standard.value(forKey: "wheelzUserID") as? String
+        paramDict[WDriverID] = ""
+        var apiNameGetHistoryLesson = kAPINameGetHistoryInfo((UserDefaults.standard.value(forKey: "wheelzUserID") as? String)!,driverId:"")
+        
+        ServiceHelper.sharedInstance.callAPIWithParameters(paramDict, method: .get, apiName: apiNameGetHistoryLesson, hudType: .default) { (responseObject :AnyObject?, error:NSError?,data:Data?) in
+            
+            if error != nil {
+                AlertController.alert("",message: (error?.localizedDescription)!)
+            } else {
+                if (responseObject != nil) {
+                    let tempArray = responseObject as? NSMutableArray
+                    if (tempArray == nil || (tempArray?.count)! < 1)  {
+                        self.isFirstLesson = true
+                    }
+                }
+            }
+        }
+    }
 }

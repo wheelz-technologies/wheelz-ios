@@ -122,7 +122,7 @@ class WLessonTrackingVC: UIViewController, MKMapViewDelegate, CLLocationManagerD
         
         let calendar = NSCalendar.current as NSCalendar
         
-        let lessonStartTime = Date(timeIntervalSince1970: lessonObj.lessonTimestamp)
+        let lessonStartTime = Date(timeIntervalSince1970: lessonObj.lessonStartTimestamp)
         
         let flags = NSCalendar.Unit.second
         let components = calendar.components(flags, from: lessonStartTime, to: Date(), options: [])
