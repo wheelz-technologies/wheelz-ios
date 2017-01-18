@@ -166,14 +166,14 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
             drawerController.setDrawerState(.closed, animated: true)
             
             delegate?.removeViewWithLessonobj!(lessonObj, isEdit : false,msg:"")
-        } else if ((self.isDriver && self.lessonObj.studentStarted && !self.lessonObj.driverStarted) || (!self.isDriver && !self.lessonObj.studentStarted && self.lessonObj.driverStarted)) {
+        } /*else if ((self.isDriver && self.lessonObj.studentStarted && !self.lessonObj.driverStarted) || (!self.isDriver && !self.lessonObj.studentStarted && self.lessonObj.driverStarted)) {
             let confirmLessonView = Bundle.main.loadNibNamed("WLessonStartConfirmationVC", owner: nil, options: nil)?[0] as! WLessonStartConfirmationVC
             confirmLessonView.lessonObj = self.lessonObj
             confirmLessonView.customInit()
             confirmLessonView.frame = (kAppDelegate.window?.bounds)!
             
             kAppDelegate.window?.rootViewController!.view.addSubview(confirmLessonView)
-        } else if (self.lessonObj.finished && self.lessonObj.paid && (!self.isDriver && !self.lessonObj.studentRated || self.isDriver && !self.lessonObj.driverRated)) {
+        }*/ else if (self.lessonObj.finished && self.lessonObj.paid && (!self.isDriver && !self.lessonObj.studentRated || self.isDriver && !self.lessonObj.driverRated)) {
             //redirect to Rate screen
             
             let rateLessonView = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WRateLessonVCID") as! WRateLessonVC

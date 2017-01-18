@@ -168,6 +168,8 @@
 		D6F95C5F1E200CF30082686A /* WStartLessonTipVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F95C5E1E200CF30082686A /* WStartLessonTipVC.swift */; };
 		D6F95C661E202AF60082686A /* WRateLessonTipVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F95C651E202AF60082686A /* WRateLessonTipVC.swift */; };
 		D6F95C681E2030600082686A /* driverLessonTip4.png in Resources */ = {isa = PBXBuildFile; fileRef = D6F95C671E2030600082686A /* driverLessonTip4.png */; };
+		D6F9B16D1E2F0EC0000A7E47 /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F9B16C1E2F0EC0000A7E47 /* KeychainWrapper.swift */; };
+		D6F9B1741E2F0EE9000A7E47 /* KeychainItemAccessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F9B1731E2F0EE9000A7E47 /* KeychainItemAccessibility.swift */; };
 		D6FA60E01E1EB19700C2316C /* driverLessonTip1.PNG in Resources */ = {isa = PBXBuildFile; fileRef = D6FA60DF1E1EB19700C2316C /* driverLessonTip1.PNG */; };
 		D6FA60E71E1EB19D00C2316C /* studentLessonTip1.PNG in Resources */ = {isa = PBXBuildFile; fileRef = D6FA60E61E1EB19D00C2316C /* studentLessonTip1.PNG */; };
 		D6FCE7E41DB0FF9A0073B17F /* WUserIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FCE7E31DB0FF9A0073B17F /* WUserIdentity.swift */; };
@@ -469,6 +471,8 @@
 		D6F95C5E1E200CF30082686A /* WStartLessonTipVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WStartLessonTipVC.swift; sourceTree = "<group>"; };
 		D6F95C651E202AF60082686A /* WRateLessonTipVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WRateLessonTipVC.swift; sourceTree = "<group>"; };
 		D6F95C671E2030600082686A /* driverLessonTip4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = driverLessonTip4.png; sourceTree = "<group>"; };
+		D6F9B16C1E2F0EC0000A7E47 /* KeychainWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainWrapper.swift; sourceTree = "<group>"; };
+		D6F9B1731E2F0EE9000A7E47 /* KeychainItemAccessibility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainItemAccessibility.swift; sourceTree = "<group>"; };
 		D6FA60DF1E1EB19700C2316C /* driverLessonTip1.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = driverLessonTip1.PNG; sourceTree = "<group>"; };
 		D6FA60E61E1EB19D00C2316C /* studentLessonTip1.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = studentLessonTip1.PNG; sourceTree = "<group>"; };
 		D6FCE7E31DB0FF9A0073B17F /* WUserIdentity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WUserIdentity.swift; sourceTree = "<group>"; };
@@ -702,6 +706,8 @@
 				42B8F2651D34AEEE003882A0 /* WAppUtils.swift */,
 				42B8F2691D34B91B003882A0 /* AlertController.swift */,
 				D61AEBC61DEE879D00436192 /* SignalRManager.swift */,
+				D6F9B16C1E2F0EC0000A7E47 /* KeychainWrapper.swift */,
+				D6F9B1731E2F0EE9000A7E47 /* KeychainItemAccessibility.swift */,
 				42B8F27B1D34BB64003882A0 /* Resources */,
 			);
 			path = AppUtils;
@@ -1078,6 +1084,7 @@
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = 2S2SE3P6D2;
 						LastSwiftMigration = 0810;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Push = {
 								enabled = 1;
@@ -1377,6 +1384,7 @@
 				D625E52A1D5CE08F00863E0B /* WAddVehicleVC.swift in Sources */,
 				42EF428A1D38C002005D30F3 /* FrameView.swift in Sources */,
 				42B8F2661D34AEEE003882A0 /* WAppUtils.swift in Sources */,
+				D6F9B1741E2F0EE9000A7E47 /* KeychainItemAccessibility.swift in Sources */,
 				42EF428F1D38C002005D30F3 /* PKHUDImageView.swift in Sources */,
 				D6D33B6F1E1C11BB0042E6B7 /* WTipManagerVC.swift in Sources */,
 				42B8F26A1D34B91B003882A0 /* AlertController.swift in Sources */,
@@ -1384,6 +1392,7 @@
 				42A33E2B1D33BADD001FD6E3 /* WSignUpStepOneVC.swift in Sources */,
 				5D4DC54A1D71AAA3008DB39A /* UIImageView+AFNetworking.swift in Sources */,
 				D625E5301D5CE29C00863E0B /* WPaymentTVCell.swift in Sources */,
+				D6F9B16D1E2F0EC0000A7E47 /* KeychainWrapper.swift in Sources */,
 				5D5689761D742E93005EC8D8 /* BWSwipeCell.swift in Sources */,
 				5D5689771D742E93005EC8D8 /* BWSwipeRevealCell.swift in Sources */,
 				D6FCE7E61DB103830073B17F /* WPaymentSetupDetails.swift in Sources */,
@@ -1591,6 +1600,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.learnwheelz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Wheelz/ExternalClasses/TPKeyBoard/Wheelz-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
@@ -1616,6 +1626,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.learnwheelz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Wheelz/ExternalClasses/TPKeyBoard/Wheelz-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};

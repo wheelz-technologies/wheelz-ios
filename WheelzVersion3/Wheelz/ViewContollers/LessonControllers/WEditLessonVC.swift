@@ -58,6 +58,10 @@ class WEditLessonVC: UIViewController, UIPickerViewDelegate {
             scrollView.isScrollEnabled = false
         }
         
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd/MM/YYYY, HH:mm"
+        dateFormatter.dateFormat =  "HH:mm"
+        
         priceLabel.text = String(format:"$%.0f", self.lessonObj.lessonAmount)
         dateTextField.text = self.getDateFromTimeStamp(lessonObj.lessonTimestamp)
         //        locationtextField.text = lessonObj!.lesso
@@ -71,11 +75,18 @@ class WEditLessonVC: UIViewController, UIPickerViewDelegate {
         dateTextField.inputAccessoryView = addToolBar("Next", btnTag: 500)
         durationTimePicker.minuteInterval = 15
         durationTimePicker.addTarget(self, action: #selector(WEditLessonVC.durationPickerMethod(_:)), for: .valueChanged)
+        
         durationTextField.inputView = durationTimePicker
         durationTextField.inputAccessoryView = addToolBar("Done", btnTag: 502)
         let locationCoordinate = CLLocation(latitude: lessonObj.locLat, longitude: lessonObj.locLon)
         self.getAddressFromLocation((locationCoordinate), completion: { (address:String?) in
             self.locationtextField.text = address
+        })
+        
+        let date = dateFormatter.date(from: "00:30")
+        
+        DispatchQueue.main.async(execute: {
+            self.durationTimePicker.setDate(date!, animated: true)
         })
     }
     
@@ -103,40 +114,27 @@ class WEditLessonVC: UIViewController, UIPickerViewDelegate {
         let arrStr = strDate.components(separatedBy: ":")
         
         if (arrStr.first! == "12" && arrStr.last! == "15")  {
-            AlertController.alert("", message: "Lesson must be at least 30 minutes long.")
-        } else if ((strDate.replacingOccurrences(of: ":", with: ".") as NSString).doubleValue > 5 && arrStr.first! != "12") {
-            AlertController.alert("", message: "Maximum lesson duration is 5 hours.")
-        } else {
-            strDate = strDate.replacingOccurrences(of: "12", with: "00")
-            durationTextField.text = strDate
-
-            strDate = strDate.replacingOccurrences(of: "15", with: "25")
-            strDate = strDate.replacingOccurrences(of: "30", with: "50")
-            strDate = strDate.replacingOccurrences(of: "45", with: "75")
-            strDate = (strDate.replacingOccurrences(of: ":", with: ".") as NSString) as String
-            print(durationTextField.text )
-            lessonObj.lessonDuration = (strDate as NSString).doubleValue
-        }
-        print(lessonObj.lessonDuration)
-        
-        /*if (arrStr.first! == "12" && arrStr.last! == "15")  {
             presentFancyAlert("Lesson Duration", msgStr: "Lesson must be at least 30 minutes long.", type: AlertStyle.Info, controller: self)
             self.durationTimePicker.setDate(dateFormatter.date(from: "00:30")!, animated: true)
-            lessonInfo.lessonDuration = ("00.50" as NSString).doubleValue
-            return
+            strDate = "00.30"
         } else if (!(arrStr.first! == "12") && (strDate.replacingOccurrences(of: ":", with: ".") as NSString).doubleValue > 5) {
             presentFancyAlert("Lesson Duration", msgStr: "Maximum lesson duration is 5 hours.", type: AlertStyle.Info, controller: self)
             self.durationTimePicker.setDate(dateFormatter.date(from: "05:00")!, animated: true)
-            lessonInfo.lessonDuration = ("05.00" as NSString).doubleValue
-            return
-        } else {
-            strDate = strDate.replacingOccurrences(of: "12", with: "00")
-            strDate = strDate.replacingOccurrences(of: "15", with: "25")
-            strDate = strDate.replacingOccurrences(of: "30", with: "50")
-            strDate = strDate.replacingOccurrences(of: "45", with: "75")
+            strDate = "05.00"
         }
         
-        lessonObj.lessonDuration = (strDate as NSString).doubleValue*/
+        DispatchQueue.main.async(execute: {
+            self.durationTextField.text = strDate
+        })
+        
+        strDate = strDate.replacingOccurrences(of: "12", with: "00")
+        strDate = strDate.replacingOccurrences(of: "15", with: "25")
+        strDate = strDate.replacingOccurrences(of: "30", with: "50")
+        strDate = strDate.replacingOccurrences(of: "45", with: "75")
+        strDate = (strDate.replacingOccurrences(of: ":", with: ".") as NSString) as String
+        
+        lessonObj.lessonDuration = (strDate as NSString).doubleValue
+        print(lessonObj.lessonDuration)
     }
 
     func  addToolBar(_ name:String, btnTag : NSInteger) -> UIToolbar {

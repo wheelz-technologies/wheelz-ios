@@ -129,7 +129,7 @@ class WRateLessonVC: UIViewController {
                     } else {
                         self.lessonObj = WLessonInfo.getLessonInfo(responseObject! as! NSMutableDictionary)
                         
-                        self.totalPriceLabel.text = "$\(self.lessonObj.lessonAmount.roundTo(places: 2))"
+                        self.totalPriceLabel.text = String(format: "$%.2f", self.lessonObj.lessonAmount)
                     }
                 }
             }

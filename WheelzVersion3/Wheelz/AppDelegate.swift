@@ -15,6 +15,13 @@ import AirshipKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
+    
+    enum environmentType {
+        case development, production
+    }
+    
+    let environment:environmentType = .development
+    
     var window: UIWindow?
     var navController: UINavigationController?
     var locationManager: CLLocationManager!
@@ -27,7 +34,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         //Reachability.sharedManager!.startMonitoring()
         self.setUpDefaults()
-        STPPaymentConfiguration.shared().publishableKey = "pk_test_ARXZIzNBH3Q7rMoLTIpGlyzo"
+        
+        switch environment {
+        case .development:
+            // set web service URL to development
+            apiUrl = "https://soireedev.azurewebsites.net"
+            // set API keys to development
+            STPPaymentConfiguration.shared().publishableKey = "pk_test_ARXZIzNBH3Q7rMoLTIpGlyzo"
+            print("Development mode enabled.")
+        case .production:
+            // set web service URL to production
+            apiUrl = "https://soireeprod.azurewebsites.net"
+            // set API keys to production
+            STPPaymentConfiguration.shared().publishableKey = "pk_live_JPABMHarWq47QctYseeITJnT"
+            print("Production mode enabled.")
+        }
         STPTheme.default().accentColor = UIColor(red: CGFloat(255.0/255.0), green: CGFloat(85.0/255.0), blue: CGFloat(40.0/255.0), alpha: CGFloat(100.0))
         STPTheme.default().primaryBackgroundColor = UIColor(red: CGFloat(255.0/255.0), green: CGFloat(250.0/255.0), blue: CGFloat(250.0/255.0), alpha: CGFloat(100.0))
         //STPPaymentConfiguration.sharedConfiguration().appleMerchantIdentifier = "apple merchant identifier" //to use Apple Pay
@@ -62,7 +83,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-        SignalRManager.sharedInstance.manageConnection()
+        //SignalRManager.sharedInstance.manageConnection()
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -71,7 +92,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        SignalRManager.sharedInstance.manageConnection()
+        //SignalRManager.sharedInstance.manageConnection()
     }
     
     func applicationWillTerminate(_ application: UIApplication) {

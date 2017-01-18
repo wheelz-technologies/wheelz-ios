@@ -135,9 +135,10 @@ class WLessonTrackingVC: UIViewController, MKMapViewDelegate, CLLocationManagerD
         
         //figure out if we need instructor or regular rates
         if(lessonObj.isInstructorRequired) {
+            lessonTimeLabel.text = String(format: "$%.2f", hoursDiff * instructorRate)
             lessonTimeLabel.text = "$\((hoursDiff * instructorRate).roundTo(places: 2))"
         } else {
-            lessonTimeLabel.text = "$\((hoursDiff * regularDriverRate).roundTo(places: 2))"
+            lessonTimeLabel.text = String(format: "$%.2f", hoursDiff * regularDriverRate)
         }
     }
     

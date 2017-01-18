@@ -87,21 +87,17 @@ class WLessonStartConfirmationVC: UIView {
                         let drawerController = kAppDelegate.navController!.topViewController as! KYDrawerController
                         let lessonTrackingView = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WLessonTrackingVCID") as! WLessonTrackingVC
                         lessonTrackingView.lessonObj = self.lessonObj
-                        
+                            
                         drawerController.mainViewController = UINavigationController(rootViewController : lessonTrackingView)
                         drawerController.setDrawerState(.closed, animated: true)
-                            
-                        //remove self and lesson detail view
-                        for view in (kAppDelegate.window?.rootViewController!.view.subviews)! {
-                            view.removeFromSuperview()
-                        }
+                        self.removeFromSuperview()
                         })
                         
                         return
                     } else {
-                        //let message = responseObject?.object(forKey: "Message") as? String ?? ""
-                        //self.delegate?.removeViewWithLessonobj!(self.lessonObj, isEdit : false,msg : message)
-                        //show error message?
+                        let message = responseObject?.object(forKey: "Message") as? String ?? ""
+                        AlertController.alert("Uh-oh.", message: message)
+                        self.removeFromSuperview()
                     }
                 }
             }

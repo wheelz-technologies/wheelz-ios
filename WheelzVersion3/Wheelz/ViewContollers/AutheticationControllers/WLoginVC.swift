@@ -236,7 +236,7 @@ class WLoginVC: UIViewController,UITextFieldDelegate,UIGestureRecognizerDelegate
                         
                         UserDefaults.standard.synchronize()
                         WAppData.appInfoSharedInstance.appUserInfo = WUserInfo.getUserInfo(responseObject!)
-                        SignalRManager.sharedInstance.manageConnection()
+                        //SignalRManager.sharedInstance.manageConnection()
                         
                         DispatchQueue.main.async {
                             self.navigationController?.pushViewController(kAppDelegate.addSidePanel(), animated: false)

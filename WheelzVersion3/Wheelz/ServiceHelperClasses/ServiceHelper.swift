@@ -67,6 +67,22 @@ class ServiceHelper: NSObject {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("soireedev\\$soireedev", forHTTPHeaderField: "username")
         request.setValue("zbDqSDPClYq6oHenJDF2nzb1AJczD9M6fhvko5BZumHMSv1BtzidK642GYbC", forHTTPHeaderField: "password")
+        
+        //>>>>>>>>>>>>> set authentication credentials
+        
+        /*var appKey: String = KeychainWrapper.standard.string(forKey: "wheelzKey") ?? ""
+        
+        if (appKey.isEmpty) {
+            let saveSuccessful: Bool = KeychainWrapper.standard.set("Some String", forKey: "myKey")
+            appKey = ""
+        }*/
+        
+        let loginString = String(format: "%@:%@", "B4753F3653FBF518A491A7D90551C2940D57E908C44B73D7762178769A92A874", "XlM6IQbalPp66llx9LnLtRoWGr5rvvL3Wg6o6ZJcbK7Ggdqhynarb3fRBQP3ZEE")
+        let loginData = loginString.data(using: String.Encoding.utf8)!
+        let base64LoginString = loginData.base64EncodedString()
+        
+        request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
+        
 //        if isAuthTokenRequired(apiName) {
 //            if let authTokenValue = NSUserDefaults.standardUserDefaults().valueForKey("auth_token") as? String {
 //                

@@ -122,7 +122,7 @@ class WHistoryVC: UIViewController,UITableViewDataSource,UITableViewDelegate,les
             cell.statusLabel.text = historyInfo.lessonStatus
         }
         
-        cell.amountLabel.text = (historyInfo.lessonAmount < 0 ? "$0" : String(format: "$%.1f", historyInfo.lessonAmount))
+        cell.amountLabel.text = (historyInfo.lessonAmount < 0 ? "$0" : String(format: "$%.2f", historyInfo.lessonAmount))
         cell.statusLabel.text = String(format:"%@", historyInfo.lessonStatus)
         cell.userNameLabel.text = (String(format: "%.@",historyInfo.lessonHolderName).isEmpty ? "No Driver Yet" : String(format: "%.@",historyInfo.lessonHolderName))
         cell.historyDateLabel.text = getDateFromTimeStamp(historyInfo.lessonTimestamp)

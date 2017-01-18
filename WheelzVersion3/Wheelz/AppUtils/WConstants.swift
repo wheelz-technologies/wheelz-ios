@@ -9,7 +9,7 @@
 import UIKit
 
 //API Endpoint
-let apiUrl: String = "https://soireedev.azurewebsites.net"
+var apiUrl: String = ""
 
 //API Names
 let kAPINameSignUp = "/api/Users/CreateNewUser"
