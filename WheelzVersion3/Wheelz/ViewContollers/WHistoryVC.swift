@@ -162,12 +162,11 @@ class WHistoryVC: UIViewController,UITableViewDataSource,UITableViewDelegate,les
         NotificationCenter.default.removeObserver(lessonDetailView)
         
         if isEdit {
-            let editLessonVC = self.storyboard?.instantiateViewController(withIdentifier: "WEditLessonVCID") as! WEditLessonVC
-            editLessonVC.lessonObj = lessonObj
-            self.present(UINavigationController(rootViewController : editLessonVC) , animated: true, completion: {
-                //
-                }
-            )
+            let editLessonVC = self.storyboard?.instantiateViewController(withIdentifier: "WSelectDateVCID")as! WSelectDateVC
+            editLessonVC.lessonInfo = lessonObj
+            editLessonVC.isEdit = true
+            
+            self.navigationController?.pushViewController(editLessonVC, animated: true)
         } else if msg != "" {
             delay(1.0, closure: {
                 AlertController.alert("", message: msg)

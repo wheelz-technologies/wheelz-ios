@@ -13,11 +13,13 @@ class WNeedInstructorVC: UIViewController {
     @IBOutlet weak var yesButton: UIButton!
     @IBOutlet weak var noButton: UIButton!
     @IBOutlet weak var fareLabel: UILabel!
+    @IBOutlet weak var requestLessonBtn: WCustomButton!
     var lessonObj : WLessonInfo!
     var regularDriverRate : Double = 0.0
     var instructorRate : Double = 0.0
     var shareRate : Double = 0.0
     var isFirstLesson: Bool = false
+    var isEdit = false
     
     //MARK:- View Life Cycle
     override func viewDidLoad() {
@@ -38,7 +40,12 @@ class WNeedInstructorVC: UIViewController {
     func customInit() -> Void {
         self.navigationItem.title = "Certified Instructor"
         self.navigationItem.leftBarButtonItem = self.backBarBackButton("backArrow")
-        print(lessonObj.lessonDuration)
+        
+        if(self.isEdit) {
+            requestLessonBtn.setTitle("UPDATE LESSON", for: UIControlState.normal)
+            lessonObj.isInstructorRequired ? yesButtonAction(yesButton) : noButtonAction(noButton)
+        }
+        
         callAPIForGetRates()
         getLessonCount()
     }
@@ -73,7 +80,11 @@ class WNeedInstructorVC: UIViewController {
     }
     
     @IBAction func requestLessonButtonAction(_ sender: UIButton) {
-        callAPIForCreateNewLesson()
+        if(isEdit) {
+            callAPIForUpdateLessons()
+        } else {
+            callAPIForCreateNewLesson()
+        }
     }
     
     //MARK:- Web API Section
@@ -149,7 +160,7 @@ class WNeedInstructorVC: UIViewController {
                     } else  {
                         AlertController.alert("", message: message,controller: self, buttons: ["OK"], tapBlock: { (alertAction, position) -> Void in
                             if position == 0 {
-                                // do nothing
+                                self.navigationController?.popToRootViewController(animated: true)
                             }
                         })
                     }
@@ -157,6 +168,43 @@ class WNeedInstructorVC: UIViewController {
             }
             
         }
+    }
+    
+    fileprivate func callAPIForUpdateLessons() {
+        
+        let paramDict = NSMutableDictionary()
+        paramDict[WLessonID] = lessonObj.lessonID
+        paramDict[WDateTime] = String(format: "%@", Date(timeIntervalSince1970: lessonObj.lessonTimestamp) as CVarArg)
+        paramDict[WLongitude] = lessonObj.locLon
+        paramDict[WLatitude] = lessonObj.locLat
+        paramDict[WDuration] = lessonObj.lessonDuration
+        paramDict[WInstructorRequired] = lessonObj.isInstructorRequired
+        paramDict[WUTCDateTime] = lessonObj.lessonTimestamp
+        paramDict[WAmount] = lessonObj.lessonAmount
+        let apiNameUpdateLesson = kAPINameUpdateLesson()
+        
+        ServiceHelper.sharedInstance.callAPIWithParameters(paramDict, method: .put, apiName: apiNameUpdateLesson, hudType: .default) { (responseObject :AnyObject?, error:NSError?,data:Data?) in
+            
+            if error != nil {
+                AlertController.alert("", message: (error?.localizedDescription)!)
+            } else {
+                if (responseObject != nil ) {
+                    let message = responseObject?.object(forKey: "Message") as? String ?? ""
+                    if message != "" {
+                        AlertController.alert("", message: message,controller: self, buttons: ["OK"], tapBlock: { (alertAction, position) -> Void in
+                            if position == 0 {
+                                self.navigationController?.popToRootViewController(animated: true)
+                            }
+                        })
+                    } else {
+                        //
+                    }
+                } else {
+                    //
+                }
+            }
+        }
+                    self.navigationController?.popToRootViewController(animated: true)
     }
     
     func getLessonCount() {

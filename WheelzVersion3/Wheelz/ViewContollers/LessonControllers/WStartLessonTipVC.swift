@@ -21,8 +21,8 @@ class WStartLessonTipVC: UIViewController {
         
         let settings = UIApplication.shared.currentUserNotificationSettings
         
-        //if settings are not initialized or Badge notification type is not permitted, ask for PN permissions
-        if (settings == nil || !settings!.types.contains(.badge))
+        //if settings are not initialized or Alert notification type is not permitted, ask for PN permissions
+        if (settings == nil || !settings!.types.contains(.alert))
         {
             let notificationSettings = UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: nil)
             UIApplication.shared.registerUserNotificationSettings(notificationSettings)

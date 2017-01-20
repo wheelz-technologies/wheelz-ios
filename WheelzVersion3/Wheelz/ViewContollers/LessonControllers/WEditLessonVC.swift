@@ -63,9 +63,9 @@ class WEditLessonVC: UIViewController, UIPickerViewDelegate {
         dateFormatter.dateFormat =  "HH:mm"
         
         priceLabel.text = String(format:"$%.0f", self.lessonObj.lessonAmount)
-        dateTextField.text = self.getDateFromTimeStamp(lessonObj.lessonTimestamp)
-        //        locationtextField.text = lessonObj!.lesso
-        durationTextField.text =  self.getExactTime( String(format: "0%.2f",lessonObj.lessonDuration))
+        dateTextField.text = getDateFromTimeStamp(lessonObj.lessonTimestamp)
+        
+        durationTextField.text =  getExactTime( String(format: "0%.2f",lessonObj.lessonDuration))
         
         datePicker.minimumDate = Date()
         datePicker.maximumDate = Date().addingTimeInterval(86400*30)
@@ -86,7 +86,8 @@ class WEditLessonVC: UIViewController, UIPickerViewDelegate {
         let date = dateFormatter.date(from: "00:30")
         
         DispatchQueue.main.async(execute: {
-            self.durationTimePicker.setDate(date!, animated: true)
+            self.durationTimePicker.setDate(date!, animated: true) //countDownTimer trigger is buggy in Swift and does not
+            self.durationTimePicker.setDate(date!, animated: true) //trigger event on 1-2 invocation. Waiting for the fix
         })
     }
     
@@ -164,22 +165,6 @@ class WEditLessonVC: UIViewController, UIPickerViewDelegate {
        
     }
 
-    func getDateFromTimeStamp(_ timeStamp : Double) -> String {
-        let date = Date(timeIntervalSince1970: timeStamp)
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd/MM/YYYY, HH:mm"
-        return dateFormatter.string(from: date)
-    }
-    
-    func getExactTime(_ value : String) -> String {
-        var strDate =  value.replacingOccurrences(of: ".", with: ":")
-        strDate = strDate.replacingOccurrences(of: "25", with: "15")
-        strDate = strDate.replacingOccurrences(of: "50", with: "30")
-        strDate = strDate.replacingOccurrences(of: "75", with: "45")
-
-        return strDate
-    }
-
     fileprivate func VerifyInput() ->Bool {
         
         var isVerified: Bool = false
@@ -238,15 +223,9 @@ class WEditLessonVC: UIViewController, UIPickerViewDelegate {
     
     func setFareAmount() {
         if lessonObj.isInstructorRequired {
-            print(lessonObj.lessonDuration)
-            print(instructorRate)
-            print(regularDriverRate)
             priceLabel.text = String(format:"$%.0f",lessonObj.lessonDuration *  instructorRate)
             lessonObj.lessonAmount = lessonObj.lessonDuration * instructorRate
         } else {
-            print(lessonObj.lessonDuration)
-            print(instructorRate)
-            print(regularDriverRate)
             print(String(format:"$%.0f",lessonObj.lessonDuration *  regularDriverRate))
             priceLabel.text = String(format:"$%.0f",lessonObj.lessonDuration *  regularDriverRate)
             lessonObj.lessonAmount = lessonObj.lessonDuration * regularDriverRate

@@ -172,6 +172,7 @@
 		D6F9B1741E2F0EE9000A7E47 /* KeychainItemAccessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F9B1731E2F0EE9000A7E47 /* KeychainItemAccessibility.swift */; };
 		D6FA60E01E1EB19700C2316C /* driverLessonTip1.PNG in Resources */ = {isa = PBXBuildFile; fileRef = D6FA60DF1E1EB19700C2316C /* driverLessonTip1.PNG */; };
 		D6FA60E71E1EB19D00C2316C /* studentLessonTip1.PNG in Resources */ = {isa = PBXBuildFile; fileRef = D6FA60E61E1EB19D00C2316C /* studentLessonTip1.PNG */; };
+		D6FA9C261E3195E200B8F3FC /* checkMarkCircle.png in Resources */ = {isa = PBXBuildFile; fileRef = D6FA9C251E3195E200B8F3FC /* checkMarkCircle.png */; };
 		D6FCE7E41DB0FF9A0073B17F /* WUserIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FCE7E31DB0FF9A0073B17F /* WUserIdentity.swift */; };
 		D6FCE7E61DB103830073B17F /* WPaymentSetupDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FCE7E51DB103830073B17F /* WPaymentSetupDetails.swift */; };
 		D6FD4AD61DBD32DD005585BB /* WSetupDriversBankAccountVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FD4AD51DBD32DD005585BB /* WSetupDriversBankAccountVC.swift */; };
@@ -475,6 +476,7 @@
 		D6F9B1731E2F0EE9000A7E47 /* KeychainItemAccessibility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainItemAccessibility.swift; sourceTree = "<group>"; };
 		D6FA60DF1E1EB19700C2316C /* driverLessonTip1.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = driverLessonTip1.PNG; sourceTree = "<group>"; };
 		D6FA60E61E1EB19D00C2316C /* studentLessonTip1.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = studentLessonTip1.PNG; sourceTree = "<group>"; };
+		D6FA9C251E3195E200B8F3FC /* checkMarkCircle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkMarkCircle.png; sourceTree = "<group>"; };
 		D6FCE7E31DB0FF9A0073B17F /* WUserIdentity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WUserIdentity.swift; sourceTree = "<group>"; };
 		D6FCE7E51DB103830073B17F /* WPaymentSetupDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WPaymentSetupDetails.swift; sourceTree = "<group>"; };
 		D6FD4AD51DBD32DD005585BB /* WSetupDriversBankAccountVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WSetupDriversBankAccountVC.swift; sourceTree = "<group>"; };
@@ -766,6 +768,7 @@
 				D6FA60E61E1EB19D00C2316C /* studentLessonTip1.PNG */,
 				D6293EEE1E231BEC00044F0C /* studentLessonTip2.png */,
 				D68F48721D49A39E00F39F0A /* star.png */,
+				D6FA9C251E3195E200B8F3FC /* checkMarkCircle.png */,
 				D6293EE81E231AB800044F0C /* driverInfo1.png */,
 				D6FE07061D4C54DB00F1B1D2 /* greyBg.png */,
 				D6FE070A1D4C5CDD00F1B1D2 /* welcomeBackground.png */,
@@ -1201,6 +1204,7 @@
 				D6D33B781E1C2C480042E6B7 /* nextArrows.png in Resources */,
 				D6FA60E71E1EB19D00C2316C /* studentLessonTip1.PNG in Resources */,
 				D68D91581E1F50870041C991 /* driverLessonTip2.png in Resources */,
+				D6FA9C261E3195E200B8F3FC /* checkMarkCircle.png in Resources */,
 				D62799871DE3FA74000F27C9 /* AirshipConfig.plist in Resources */,
 				D62799701DE3F985000F27C9 /* Airship in Resources */,
 				42A33DF81D336AE2001FD6E3 /* Main.storyboard in Resources */,

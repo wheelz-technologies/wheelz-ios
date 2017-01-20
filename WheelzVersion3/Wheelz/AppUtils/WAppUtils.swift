@@ -79,13 +79,15 @@ func presentAlert(_ titleStr : String?,msgStr : String?,controller : AnyObject?)
 func presentFancyAlert(_ titleStr : String?, msgStr : String?, type: AlertStyle, controller: AnyObject?){
     DispatchQueue.main.async {
         let alert = SCLAlertView()
+        alert.modalPresentationStyle = .overCurrentContext
+        alert.view.layer.zPosition = 1
         
         switch type {
         case AlertStyle.Notice:
             alert.showTitle(
                 titleStr ?? "",
                 subTitle: msgStr ?? "",
-                duration: 0.0,
+                duration: 5.0,
                 completeText: "OK",
                 style: SCLAlertViewStyle.notice,
                 colorStyle: 0x40434A,
@@ -96,7 +98,7 @@ func presentFancyAlert(_ titleStr : String?, msgStr : String?, type: AlertStyle,
             alert.showTitle(
                 titleStr ?? "",
                 subTitle: msgStr ?? "",
-                duration: 0.0,
+                duration: 5.0,
                 completeText: "OK",
                 style: SCLAlertViewStyle.error,
                 colorStyle: 0xd63131,
@@ -107,7 +109,7 @@ func presentFancyAlert(_ titleStr : String?, msgStr : String?, type: AlertStyle,
             alert.showTitle(
                 titleStr ?? "", // Title
                 subTitle: msgStr ?? "", // Message
-                duration: 0.0, // Duration to show before closing automatically, default: 0.0
+                duration: 5.0, // Duration to show before closing automatically, default: 0.0
                 completeText: "OK", // Optional button value, default: ""
                 style: SCLAlertViewStyle.info,
                 colorStyle: 0xff5528,
@@ -160,6 +162,22 @@ func resizeImage(imageName: String, width: Double, height: Double) -> UIImage? {
     UIGraphicsEndImageContext()
     
     return resizedImage
+}
+
+func getDateFromTimeStamp(_ timeStamp : Double) -> String {
+    let date = Date(timeIntervalSince1970: timeStamp)
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "dd/MM/YYYY, HH:mm"
+    return dateFormatter.string(from: date)
+}
+
+func getExactTime(_ value : String) -> String {
+    var strDate =  value.replacingOccurrences(of: ".", with: ":")
+    strDate = strDate.replacingOccurrences(of: "25", with: "15")
+    strDate = strDate.replacingOccurrences(of: "50", with: "30")
+    strDate = strDate.replacingOccurrences(of: "75", with: "45")
+    
+    return strDate
 }
 
 func delay(_ delay:Double, closure:@escaping ()->()) {

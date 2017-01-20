@@ -115,7 +115,7 @@ class WSetupDriverPaymentsVC: UIViewController, UITextFieldDelegate {
                                         return types.contains("administrative_area_level_1") } else { return false } }
                                     
                                     let filteredCities = addressComponents.filter{ if let types = $0["types"] as? [String] {
-                                        return types.contains("neighborhood") } else { return false } }
+                                        return types.contains("neighborhood") || types.contains("locality") } else { return false } }
                                     
                                     if !filteredStates.isEmpty && !filteredCities.isEmpty {
                                         self.userIdentityObj.city = filteredCities[0]["long_name"] as! String

@@ -3,7 +3,7 @@
 //  LocationPicker
 //
 //  Created by Almas Sapargali on 7/29/15.
-//  Copyright (c) 2015 almassapargali. All rights reserved.
+//  Copyright (c) Wheelz Technologies Inc. All rights reserved.
 //
 
 import UIKit
@@ -121,12 +121,10 @@ open class LocationPickerViewController: UIViewController {
 		view = mapView
 		
 		if showCurrentLocationButton {
-			let button = UIButton(frame: CGRect(x: 0, y: 0, width: 32, height: 32))
-			button.backgroundColor = currentLocationButtonBackground
-			button.layer.masksToBounds = true
+			let button = UIButton(frame: CGRect(x: -20, y: -20, width: 40, height: 40))
 			button.layer.cornerRadius = 16
 			let bundle = Bundle(for: LocationPickerViewController.self)
-			button.setImage(UIImage(named: "geolocation", in: bundle, compatibleWith: nil), for: UIControlState())
+			button.setImage(UIImage(named: "userLocationButton", in: bundle, compatibleWith: nil), for: UIControlState())
 			button.addTarget(self, action: #selector(LocationPickerViewController.currentLocationPressed),
 			                 for: .touchUpInside)
 			view.addSubview(button)
@@ -170,7 +168,7 @@ open class LocationPickerViewController: UIViewController {
 		if let button = locationButton {
 			button.frame.origin = CGPoint(
 				x: view.frame.width - button.frame.width - 16,
-				y: view.frame.height - button.frame.height - 20
+				y: view.frame.height - button.frame.height - 30
 			)
 		}
 		

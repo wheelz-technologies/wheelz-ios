@@ -22,6 +22,17 @@ class WLessonTipVC: UIViewController {
             tipLabel.text = "You claimed a lesson."
             tipText.text = "We'll remind you to show up on time!"
         }
+        
+        let settings = UIApplication.shared.currentUserNotificationSettings
+        
+        //if settings are not initialized or Alert notification type is not permitted, ask for PN permissions
+        if (settings == nil)
+        {
+            let notificationSettings = UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: nil)
+            UIApplication.shared.registerUserNotificationSettings(notificationSettings)
+        } else if(!settings!.types.contains(.alert)) {
+            presentFancyAlert("Notifications", msgStr: "Consider enabling Notifications in Device Settings, so we can send you updates about your lessons.", type: AlertStyle.Info, controller: self)
+        }
     }
     
     override func didReceiveMemoryWarning() {

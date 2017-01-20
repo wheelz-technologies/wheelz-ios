@@ -43,7 +43,8 @@ class WSelectDateVC: UIViewController {
     @IBOutlet var durationTimePicker: UIDatePicker!
     @IBOutlet var placeTextField: UITextField!
     
-    let lessonInfo = WLessonInfo()
+    var lessonInfo = WLessonInfo()
+    var isEdit = false
     
     var location: Location? {
         didSet {
@@ -66,28 +67,38 @@ class WSelectDateVC: UIViewController {
     func customInit() -> Void {
         dateTimePicker.minimumDate = Date()
         dateTimePicker.maximumDate = Date().addingTimeInterval(86400*30)
-        lessonInfo.lessonDuration = 0.50
-        lessonInfo.lessonTimestamp = Date().timeIntervalSince1970
-        //durationLabel.text = "Select Lesson Interval : 00hour : 30mins"
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd/MM/YYYY, HH:mm"
-        //        let strDate = dateFormatter.stringFromDate(NSDate())
-        //dateTimeLabel.text = "Select Date and Time : " + strDate
         dateFormatter.dateFormat =  "HH:mm"
-        
         let calendar = NSCalendar.current
-        let twoHoursFromNow = calendar.date(byAdding: Calendar.Component.hour, value: 2, to: Date())
-        dateTimePicker.setDate(twoHoursFromNow!, animated: true)
-        lessonInfo.lessonDateTime = twoHoursFromNow!
-        lessonInfo.lessonTimestamp = (twoHoursFromNow!).timeIntervalSince1970
-        
         let date = dateFormatter.date(from: "00:30")
         
-        durationTimePicker.setDate(date!, animated: true)
-        //        self.setNavigationBarTitleText((self.navigationController?.navigationBar)!)
         self.navigationItem.title = "Date and Location"
         self.navigationItem.leftBarButtonItem = self.backBarBackButton("backArrow")
+        
+        if(isEdit) {
+            let lessonDate = Date(timeIntervalSince1970: lessonInfo.lessonTimestamp)
+            let dateString = getExactTime( String(format: "0%.2f",lessonInfo.lessonDuration))
+            dateTimePicker.setDate(lessonDate, animated: true)
+            durationTimePicker.setDate(dateFormatter.date(from: dateString)!, animated: true)
+            
+            let coordinates = CLLocationCoordinate2D(latitude: kAppDelegate.location.coordinate.latitude, longitude: kAppDelegate.location.coordinate.longitude)
+            
+            let lessonLoc = CLLocation(latitude: lessonInfo.locLat, longitude: lessonInfo.locLon)
+            self.location = Location(name: "", location: lessonLoc,
+                                          placemark: MKPlacemark(coordinate: coordinates, addressDictionary: [:]))
+        } else {
+            lessonInfo.lessonDuration = 0.50
+            lessonInfo.lessonTimestamp = Date().timeIntervalSince1970
+            
+            let twoHoursFromNow = calendar.date(byAdding: Calendar.Component.hour, value: 2, to: Date())
+            dateTimePicker.setDate(twoHoursFromNow!, animated: true)
+            lessonInfo.lessonDateTime = twoHoursFromNow!
+            lessonInfo.lessonTimestamp = (twoHoursFromNow!).timeIntervalSince1970
+        
+            durationTimePicker.setDate(date!, animated: true)
+        }
         
         if(location != nil) {
             self.getAddressFromLocation((location?.location)!, completion: { (address:String?) in
@@ -142,6 +153,7 @@ class WSelectDateVC: UIViewController {
         if  ((self.placeTextField.text?.length) > 0) {
             let instructorVC = self.storyboard?.instantiateViewController(withIdentifier: "WNeedInstructorVCID")as! WNeedInstructorVC
             instructorVC.lessonObj = lessonInfo
+            instructorVC.isEdit = self.isEdit
             self.navigationController?.pushViewController(instructorVC, animated: true)
         } else {
             //AlertController.alert("",message: "Please select pickup location.")

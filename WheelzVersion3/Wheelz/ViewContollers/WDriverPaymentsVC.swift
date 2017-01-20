@@ -13,6 +13,7 @@ class WDriverPaymentsVC: UIViewController,UIGestureRecognizerDelegate {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var detailsLabel: UILabel!
     @IBOutlet weak var setupButton: WCustomButton!
+    @IBOutlet weak var image: UIImageView!
     var statusDetailsObj = WPaymentSetupDetails()
     
     // MARK: - UIViewController Life Cycle
@@ -76,6 +77,7 @@ class WDriverPaymentsVC: UIViewController,UIGestureRecognizerDelegate {
                             if(self.statusDetailsObj.details == "identity document required") {
                                 self.titleLabel.text = "Your payments are set up."
                                 self.detailsLabel.text = "We might ask for additional information later, but for now you're good to go!"
+                                self.image.image = UIImage(named: "checkMarkCircle.png");
                                 self.setupButton.isHidden = true;
                             } else if (self.statusDetailsObj.details == "additional information required") {
                                 self.titleLabel.text = "Your payments are not set up."
@@ -86,11 +88,13 @@ class WDriverPaymentsVC: UIViewController,UIGestureRecognizerDelegate {
                         case "pending":
                             self.titleLabel.text = "We are reviewing your details."
                             self.detailsLabel.text = "You can start claiming lessons in the meantime. You'll receive payment as soon as we finish."
+                            self.image.image = UIImage(named: "checkMarkCircle.png");
                             self.setupButton.isHidden = true;
                             break
                         case "verified":
                             self.titleLabel.text = "Your payments are set up."
                             self.detailsLabel.text = "We have confirmed your information and will deposit payments directly into your account."
+                            self.image.image = UIImage(named: "checkMarkCircle.png");
                             self.setupButton.isHidden = true;
                             break
                         default:

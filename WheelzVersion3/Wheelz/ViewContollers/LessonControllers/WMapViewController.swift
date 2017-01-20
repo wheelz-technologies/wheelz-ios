@@ -61,10 +61,16 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
     }
 
     override func viewWillAppear(_ animated: Bool) {
-         super.viewWillAppear(animated)
+        super.viewWillAppear(animated)
+        
         if kAppDelegate.isFirstLoad {
              callAPIForGetAvailableLessons()
         }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        userLocationResetAction(UIButton())
     }
     
     // MARK: - Memory Management Methods
@@ -90,7 +96,7 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
         if CLLocationManager.locationServicesEnabled() {
             switch(CLLocationManager.authorizationStatus()) {
             case .notDetermined, .restricted, .denied:
-                AlertController.alert("",message: "Please turn ON location in your Device Settings.")
+                presentFancyAlert("Location Services", msgStr: "Wheelz doesn't know where you are :( Please turn ON location in your Device Settings.", type: AlertStyle.Info, controller: self)
                 break
             case .authorizedAlways, .authorizedWhenInUse:
                 break
@@ -98,19 +104,21 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
         } else {
             print("Location services are not enabled")
         }
+        
         NotificationCenter.default.addObserver(
             forName: NSNotification.Name(rawValue: "updateMap"),
             object: nil, queue: nil,
             using:{
                 [weak self] note in
                 self?.updateMapNotificationObserver()
+                self?.userLocationResetAction(UIButton())
             })
         if (UserDefaults.standard.value(forKey: "wheelzIsDriver") as? Bool) == true {
             requestLessionButton.isHidden = true
             
             for constraint in self.view.constraints as [NSLayoutConstraint] {
                 if constraint.identifier == "mapViewBottomLayoutConstraint" {
-                    constraint.constant = 0
+                    constraint.constant = 20
                     self.view.layoutIfNeeded()
                     break
                     }
@@ -192,19 +200,22 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
         })
     }
     
-    func setUpOnLoad()  {
-        let span:MKCoordinateSpan = MKCoordinateSpanMake(latDelta, longDelta)
-        let region:MKCoordinateRegion = MKCoordinateRegionMake(kAppDelegate.location.coordinate, span)
-//        mapView.regionThatFits(region)
-        mapView.setRegion(region, animated: true)
+    @IBAction func userLocationResetAction(_ sender: Any) {
         let newCamera = MKMapCamera()
         newCamera.centerCoordinate = self.mapView.camera.centerCoordinate;
         newCamera.heading = self.mapView.camera.heading;
         newCamera.altitude = self.mapView.camera.altitude;
+        self.mapView.setCamera(newCamera, animated: true)
+        
+        let span:MKCoordinateSpan = MKCoordinateSpanMake(latDelta, longDelta)
+        let region:MKCoordinateRegion = MKCoordinateRegionMake(kAppDelegate.location.coordinate, span)
+        mapView.setRegion(region, animated: true)
+    }
+    
+    func setUpOnLoad()  {
         let annotationsToRemove = mapView.annotations.filter { $0 !== mapView.userLocation }
         mapView.removeAnnotations( annotationsToRemove)
         mapView.showsUserLocation = true
-//        self.mapView.setCamera(newCamera, animated: true)
         
         for case let lessonObj as WLessonInfo in lessonArray {
             let loc = CLLocation(latitude: lessonObj.locLat, longitude: lessonObj.locLon)
@@ -348,14 +359,14 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
         NotificationCenter.default.removeObserver(lessonDetailView)
         
         if isEdit {
-            let editLessonVC = self.storyboard?.instantiateViewController(withIdentifier: "WEditLessonVCID") as! WEditLessonVC
-            editLessonVC.lessonObj = lessonObj
-            self.present(UINavigationController(rootViewController : editLessonVC) , animated: true, completion: {
-                //
-                }
-            )
+            self.calloutView.removeFromSuperview()
+            let editLessonVC = self.storyboard?.instantiateViewController(withIdentifier: "WSelectDateVCID")as! WSelectDateVC
+            editLessonVC.lessonInfo = lessonObj
+            editLessonVC.isEdit = true
+            
+            self.navigationController?.pushViewController(editLessonVC, animated: true)
         } else if msg != "" {
-            delay(1.0, closure: { 
+            delay(1.0, closure: {
                  AlertController.alert("", message: msg)
             })
         } else {

@@ -54,7 +54,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         //STPPaymentConfiguration.sharedConfiguration().appleMerchantIdentifier = "apple merchant identifier" //to use Apple Pay
         
         UAirship.takeOff()
-        UAirship.push().userPushNotificationsEnabled = true
+        UAirship.push().notificationOptions = [.alert, .badge, .sound]
+        //UAirship.push().userPushNotificationsEnabled = true
         
         /*if #available(iOS 10.0, *) {
             UNUserNotificationCenter.current().requestAuthorization(options: [.alert,.sound]) {(accepted, error) in
@@ -160,7 +161,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         } else if !self.isFirstLoad {
               NotificationCenter.default.post(name: Notification.Name(rawValue: "updateMap"), object: nil)
         }
-        
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error){

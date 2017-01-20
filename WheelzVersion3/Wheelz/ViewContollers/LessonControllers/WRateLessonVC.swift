@@ -12,6 +12,11 @@ class WRateLessonVC: UIViewController {
     
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var totalPriceLabel: UILabel!
+    @IBOutlet weak var yourPayLabel: UILabel!
+    
+    var regularDriverRate : Double = 0.0
+    var instructorRate : Double = 0.0
+    var share : Double = 0.0
     
     var lessonObj : WLessonInfo!
     var rating = 3;
@@ -35,6 +40,7 @@ class WRateLessonVC: UIViewController {
     //MARK:- Helper Methods
     func customInit() -> Void {
         self.navigationItem.title = "Rate Lesson"
+        callAPIForGetRates()
         callAPIForGetLessons(lessonObj.lessonID)
         
         self.navigationItem.leftBarButtonItem = nil
@@ -130,6 +136,42 @@ class WRateLessonVC: UIViewController {
                         self.lessonObj = WLessonInfo.getLessonInfo(responseObject! as! NSMutableDictionary)
                         
                         self.totalPriceLabel.text = String(format: "$%.2f", self.lessonObj.lessonAmount)
+                        
+                        if(self.isDriver) {
+                            //calculate the pay
+                            var wheelzShare : Double = self.lessonObj.lessonAmount * self.share / 100
+                            self.yourPayLabel.text = String(format: "your pay: $%.2f", self.lessonObj.lessonAmount - wheelzShare)
+                            self.yourPayLabel.isHidden = false
+                        }
+                    }
+                }
+            }
+            
+        }
+    }
+    
+    fileprivate func callAPIForGetRates() {
+        
+        let paramDict = NSMutableDictionary()
+        let apiNameGetRates = kAPINameGetRates()
+        
+        ServiceHelper.sharedInstance.callAPIWithParameters(paramDict, method: .get, apiName: apiNameGetRates, hudType: .default) { (responseObject :AnyObject?, error:NSError?,data:Data?) in
+            
+            if error != nil {
+                AlertController.alert("",message: (error?.localizedDescription)!)
+            } else {
+                if (responseObject != nil) {
+                    let message = responseObject?.object(forKey: "Message") as? String ?? ""
+                    if message == "" {
+                        self.regularDriverRate = responseObject?.object(forKey: "regularDriver") as? Double ?? 0.0
+                        self.instructorRate =  responseObject?.object(forKey: "instructor") as? Double ?? 0.0
+                        self.share = responseObject?.object(forKey: "share") as? Double ?? 0.0
+                    } else  {
+                        AlertController.alert("", message: message,controller: self, buttons: ["OK"], tapBlock: { (alertAction, position) -> Void in
+                            if position == 0 {
+                                // do nothing
+                            }
+                        })
                     }
                 }
             }
