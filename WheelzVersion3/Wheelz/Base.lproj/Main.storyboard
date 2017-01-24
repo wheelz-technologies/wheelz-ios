@@ -1006,8 +1006,8 @@
                                                     </variation>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="**** **** **** 1234" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SNM-kg-CKI">
-                                                    <rect key="frame" x="198" y="23" width="162" height="23"/>
-                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                                                    <rect key="frame" x="198" y="23" width="162" height="24"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                                     <color key="textColor" red="0.25098039220000001" green="0.26274509800000001" blue="0.2901960784" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -1016,7 +1016,7 @@
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="124" id="hs3-bA-oDe"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue-BoldItalic" family="Helvetica Neue" pointSize="17"/>
                                                     <color key="textColor" red="0.25098039220000001" green="0.26274509800000001" blue="0.2901960784" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -2008,6 +2008,117 @@
             </objects>
             <point key="canvasLocation" x="-2242" y="5679"/>
         </scene>
+        <!--Payment Setup TipVC-->
+        <scene sceneID="Zwk-tP-SuX">
+            <objects>
+                <viewController storyboardIdentifier="WPaymentSetupTipVCID" useStoryboardIdentifierAsRestorationIdentifier="YES" id="IUY-2m-Dzs" customClass="WPaymentSetupTipVC" customModule="Wheelz" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="VfS-5c-HuG"/>
+                        <viewControllerLayoutGuide type="bottom" id="6WO-rY-4bL"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Pny-Od-tEJ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chequeFinished.png" translatesAutoresizingMaskIntoConstraints="NO" id="inG-8G-bai">
+                                <rect key="frame" x="26" y="141" width="323" height="312"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap to dismiss this tip" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nHU-GX-VXb">
+                                <rect key="frame" x="36" y="599" width="303" height="27"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="27" id="GdC-zg-C3v"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="19"/>
+                                <color key="textColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transit (MICR) Number." textAlignment="center" lineBreakMode="clip" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="15" translatesAutoresizingMaskIntoConstraints="NO" id="heJ-dU-sF9">
+                                <rect key="frame" x="46" y="42" width="283" height="45"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="P9p-io-jIA"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="38"/>
+                                <color key="textColor" red="1" green="0.33333333329999998" blue="0.15686274510000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Appears on the bottom of your cheques identifying the financial institution." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="D4e-lY-M0i">
+                                <rect key="frame" x="46" y="86" width="283" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="ycO-aC-JzL"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="17"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="clip" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="PXf-9n-EBn" userLabel="Wheelz drive anytime!">
+                                <rect key="frame" x="36" y="479" width="303" height="105"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="105" id="KSA-Tq-06x"/>
+                                </constraints>
+                                <attributedString key="attributedText">
+                                    <fragment content="Type &quot;Transit No + dash + Institution No&quot; or ">
+                                        <attributes>
+                                            <color key="NSBackgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="NSColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <font key="NSFont" size="24" name="HelveticaNeue-Medium"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="&quot;00502-010&quot;">
+                                        <attributes>
+                                            <color key="NSBackgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="NSColor" red="1" green="0.26975845917225943" blue="0.15686274509803921" alpha="1" colorSpace="calibratedRGB"/>
+                                            <font key="NSFont" size="24" name="HelveticaNeue-Medium"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content=" ">
+                                        <attributes>
+                                            <color key="NSBackgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="NSColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <font key="NSFont" size="24" name="HelveticaNeue-Medium"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="per above example.">
+                                        <attributes>
+                                            <color key="NSBackgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="NSColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <font key="NSFont" size="24" name="HelveticaNeue-Medium"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.33333334329999997" green="0.33333334329999997" blue="0.33333334329999997" alpha="0.90037657370000002" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="tintColor" red="1" green="0.33333333329999998" blue="0.15686274510000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="inG-8G-bai" firstAttribute="leading" secondItem="Pny-Od-tEJ" secondAttribute="leadingMargin" constant="10" id="3aj-Kg-0sh"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="heJ-dU-sF9" secondAttribute="trailing" constant="30" id="644-7L-eyq"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="inG-8G-bai" secondAttribute="trailing" constant="10" id="7wL-PK-3sT"/>
+                            <constraint firstItem="D4e-lY-M0i" firstAttribute="trailing" secondItem="heJ-dU-sF9" secondAttribute="trailing" id="8wA-fK-RYZ"/>
+                            <constraint firstItem="inG-8G-bai" firstAttribute="top" secondItem="D4e-lY-M0i" secondAttribute="bottom" constant="5" id="D9r-B7-bsn"/>
+                            <constraint firstItem="PXf-9n-EBn" firstAttribute="top" secondItem="inG-8G-bai" secondAttribute="bottom" constant="26" id="FQy-dW-PBs"/>
+                            <constraint firstItem="nHU-GX-VXb" firstAttribute="leading" secondItem="Pny-Od-tEJ" secondAttribute="leadingMargin" constant="20" id="Iuk-cf-MHt"/>
+                            <constraint firstItem="inG-8G-bai" firstAttribute="centerX" secondItem="Pny-Od-tEJ" secondAttribute="centerX" id="J3e-ZT-2Vq"/>
+                            <constraint firstItem="D4e-lY-M0i" firstAttribute="top" secondItem="heJ-dU-sF9" secondAttribute="bottom" constant="-1" id="aRz-dg-Mpf"/>
+                            <constraint firstItem="6WO-rY-4bL" firstAttribute="top" secondItem="nHU-GX-VXb" secondAttribute="bottom" constant="41" id="emV-4N-as6"/>
+                            <constraint firstItem="heJ-dU-sF9" firstAttribute="leading" secondItem="Pny-Od-tEJ" secondAttribute="leadingMargin" constant="30" id="hht-V8-YvI"/>
+                            <constraint firstItem="PXf-9n-EBn" firstAttribute="leading" secondItem="nHU-GX-VXb" secondAttribute="leading" id="jB3-Qy-bLO"/>
+                            <constraint firstItem="nHU-GX-VXb" firstAttribute="top" secondItem="PXf-9n-EBn" secondAttribute="bottom" constant="15" id="oax-zs-uFd"/>
+                            <constraint firstItem="PXf-9n-EBn" firstAttribute="trailing" secondItem="nHU-GX-VXb" secondAttribute="trailing" id="sVC-CH-RLT"/>
+                            <constraint firstItem="D4e-lY-M0i" firstAttribute="leading" secondItem="heJ-dU-sF9" secondAttribute="leading" id="wd6-F2-i03"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="nHU-GX-VXb" secondAttribute="trailing" constant="20" id="wlt-gx-raf"/>
+                            <constraint firstItem="heJ-dU-sF9" firstAttribute="top" secondItem="VfS-5c-HuG" secondAttribute="bottom" constant="22" id="yYv-7H-dTg"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tFu-OM-rLs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1503.2" y="5678.4107946026988"/>
+        </scene>
         <!--Start Lesson TipVC-->
         <scene sceneID="NAp-Da-4og">
             <objects>
@@ -2862,7 +2973,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tk6-zb-GVu">
                                         <rect key="frame" x="0.0" y="0.0" width="383" height="667"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We'll use this information to setup your payment profile with us." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="Ktq-b6-euE">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="We'll use this information to setup your payment profile with us." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="Ktq-b6-euE">
                                                 <rect key="frame" x="30" y="90" width="323" height="31"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="45" id="fHX-Od-i21"/>
@@ -2875,7 +2986,7 @@
                                                     </mask>
                                                 </variation>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tell us about yourself." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="16" translatesAutoresizingMaskIntoConstraints="NO" id="sf6-nE-eSh">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Birth date and location." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="16" translatesAutoresizingMaskIntoConstraints="NO" id="sf6-nE-eSh">
                                                 <rect key="frame" x="30" y="50" width="323" height="32"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="32" id="jaj-24-Xlg"/>
@@ -2964,7 +3075,7 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="323" height="90"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
-                                                                <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="KkJ-U9-aBq">
+                                                                <datePicker contentMode="scaleToFill" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="KkJ-U9-aBq">
                                                                     <rect key="frame" x="0.0" y="0.0" width="323" height="90"/>
                                                                     <date key="date" timeIntervalSinceReferenceDate="492066380.807886">
                                                                         <!--2016-08-05 05:06:20 +0000-->
@@ -3045,6 +3156,7 @@
                                             <constraint firstItem="oiw-1i-gGQ" firstAttribute="leading" secondItem="Tk6-zb-GVu" secondAttribute="leading" constant="40" id="iMz-mn-Q26"/>
                                             <constraint firstItem="Ktq-b6-euE" firstAttribute="leading" secondItem="Tk6-zb-GVu" secondAttribute="leading" constant="30" id="qOr-MR-RUn"/>
                                             <constraint firstAttribute="trailing" secondItem="Hg1-1K-M7n" secondAttribute="trailing" constant="40" id="s5O-cI-jZd"/>
+                                            <constraint firstItem="qlE-w0-tKc" firstAttribute="top" relation="greaterThanOrEqual" secondItem="PLo-sX-bJx" secondAttribute="bottom" constant="10" id="sax-L1-xyv"/>
                                             <constraint firstAttribute="trailing" secondItem="sf6-nE-eSh" secondAttribute="trailing" constant="30" id="unR-LE-baW"/>
                                             <constraint firstAttribute="trailing" secondItem="qlE-w0-tKc" secondAttribute="trailing" constant="40" id="zby-l8-FXy"/>
                                         </constraints>
@@ -3213,7 +3325,7 @@
                                     <action selector="accountNumberEndedEditing:" destination="t8w-GS-qEs" eventType="editingDidEnd" id="km6-hR-XwJ"/>
                                 </connections>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" tag="500" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Routing number" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hqf-yT-FKO" customClass="WCustomTextField" customModule="Wheelz" customModuleProvider="target">
+                            <textField opaque="NO" clipsSubviews="YES" tag="500" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Transit number" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hqf-yT-FKO" customClass="WCustomTextField" customModule="Wheelz" customModuleProvider="target">
                                 <rect key="frame" x="36" y="262" width="303" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="XhM-MD-UQc"/>
@@ -4109,7 +4221,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fqZ-bP-YIm">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="656"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Setup your username and password." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="16" translatesAutoresizingMaskIntoConstraints="NO" id="XgK-z3-wHs">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Setup your username and password." textAlignment="center" lineBreakMode="clip" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="16" translatesAutoresizingMaskIntoConstraints="NO" id="XgK-z3-wHs">
                                                 <rect key="frame" x="30" y="50" width="315" height="57.5"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="32" id="4yz-dF-32J"/>
@@ -4250,19 +4362,19 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bqx-iu-knP">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="577"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="628"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tell us about your driving experience." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="16" translatesAutoresizingMaskIntoConstraints="NO" id="o0H-VL-RTR">
-                                                <rect key="frame" x="30" y="50" width="315" height="32"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tell us about your driving experience." textAlignment="center" lineBreakMode="clip" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="16" translatesAutoresizingMaskIntoConstraints="NO" id="o0H-VL-RTR">
+                                                <rect key="frame" x="30" y="50" width="315" height="57.5"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="32" id="UjN-b4-7Qr"/>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="32" id="UjN-b4-7Qr"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
                                                 <color key="textColor" red="1" green="0.33481882219999998" blue="0.15788724500000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This will allow us to determine your current level." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="Q3Y-AY-yNt">
-                                                <rect key="frame" x="30" y="90" width="315" height="45"/>
+                                                <rect key="frame" x="30" y="115.5" width="315" height="45"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="45" id="SRd-wx-GLc"/>
                                                 </constraints>
@@ -4280,7 +4392,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" alpha="0.80000000000000004" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="peA-NV-wTG">
-                                                <rect key="frame" x="40" y="302" width="295" height="29"/>
+                                                <rect key="frame" x="40" y="327.5" width="295" height="29"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="gHt-eq-Dfu"/>
                                                 </constraints>
@@ -4296,7 +4408,7 @@
                                                 </connections>
                                             </button>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="License number" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="i6w-uZ-tv7" customClass="WCustomTextField" customModule="Wheelz" customModuleProvider="target">
-                                                <rect key="frame" x="40" y="236" width="295" height="45"/>
+                                                <rect key="frame" x="40" y="261.5" width="295" height="45"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="45" id="U83-xq-hr8"/>
                                                 </constraints>
@@ -4308,7 +4420,7 @@
                                                 </connections>
                                             </textField>
                                             <segmentedControl opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="Kte-Dl-K3w">
-                                                <rect key="frame" x="40" y="180" width="295" height="36"/>
+                                                <rect key="frame" x="40" y="205.5" width="295" height="36"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="35" id="aP0-GQ-ccd"/>
                                                 </constraints>
@@ -5221,7 +5333,7 @@
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="26"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="22D3D5ED-C94D-4ADC-AAC9-8E21292EEE6F" translatesAutoresizingMaskIntoConstraints="NO" id="Mfe-aN-eeC">
+                            <imageView userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="C5F904A1-3031-4B6F-BF7F-CE62BCC81B32" translatesAutoresizingMaskIntoConstraints="NO" id="Mfe-aN-eeC">
                                 <rect key="frame" x="64.5" y="446" width="36" height="33"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="33" id="8zN-7S-aJ3"/>
@@ -6174,7 +6286,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="22D3D5ED-C94D-4ADC-AAC9-8E21292EEE6F" width="58" height="58">
+        <image name="C5F904A1-3031-4B6F-BF7F-CE62BCC81B32" width="58" height="58">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOjtYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
 GxwgISgrLjQ3VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA
@@ -6380,6 +6492,7 @@ wy3ILdAt0y3YLeAt4y31Lfgt/QAAAAAAAAIBAAAAAAAAAD4AAAAAAAAAAAAAAAAAAC3/A
         <image name="blankCheckMark" width="29" height="29"/>
         <image name="card" width="43" height="43"/>
         <image name="checkMark" width="29" height="29"/>
+        <image name="chequeFinished.png" width="1000" height="831"/>
         <image name="creditCard" width="80" height="80"/>
         <image name="default.png" width="1000" height="1000"/>
         <image name="dollarSign.png" width="2000" height="2000"/>

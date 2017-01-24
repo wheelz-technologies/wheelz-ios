@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         case development, production
     }
     
-    let environment:environmentType = .development
+    let environment:environmentType = .production
     
     var window: UIWindow?
     var navController: UINavigationController?
@@ -39,12 +39,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         case .development:
             // set web service URL to development
             apiUrl = "https://soireedev.azurewebsites.net"
+            ftpName = "soireedev\\$soireedev"
+            ftpPass = "zbDqSDPClYq6oHenJDF2nzb1AJczD9M6fhvko5BZumHMSv1BtzidK642GYbC"
             // set API keys to development
             STPPaymentConfiguration.shared().publishableKey = "pk_test_ARXZIzNBH3Q7rMoLTIpGlyzo"
             print("Development mode enabled.")
         case .production:
             // set web service URL to production
             apiUrl = "https://soireeprod.azurewebsites.net"
+            ftpName = "soireeprod\\$soireeprod"
+            ftpPass = "MHf2kEqq5K5ie2XTcZlc3jGxSqaWHulzkGjjAyRyfWSsnYZTrl5XthGoXjeH"
             // set API keys to production
             STPPaymentConfiguration.shared().publishableKey = "pk_live_JPABMHarWq47QctYseeITJnT"
             print("Production mode enabled.")

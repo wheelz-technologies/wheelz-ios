@@ -42,7 +42,7 @@ class WLessonInfo: NSObject {
             historyLessonInfo.lessonID = (tempDict["lessonId"] as! String)
             historyLessonInfo.lessonHolderName = tempDict["firstName"] as? String ?? ""
             historyLessonInfo.pic = tempDict["pic"] as? String ?? ""
-            historyLessonInfo.lessonHolderPic =  String(format: "https://soireedev.azurewebsites.net/images/%@", tempDict["pic"] as? String ?? "")
+            historyLessonInfo.lessonHolderPic =  String(format: "\(apiUrl)/images/%@", tempDict["pic"] as? String ?? "")
             historyLessonInfo.lessonStatus = tempDict["status"] as? String ?? ""
             historyLessonInfo.lessonDate = tempDict["dateTime"] as? String ?? ""
 //            historyLessonInfo.locLat = tempDict["locLatitude"] as! Double
@@ -80,7 +80,7 @@ class WLessonInfo: NSObject {
             
             lessonInfo.lessonID = dict["lessonId"] as! String
         lessonInfo.lessonHolderName = dict["firstName"] as! String
-        lessonInfo.lessonHolderPic = String(format: "https://soireedev.azurewebsites.net/images/%@", dict["pic"] as? String ?? "")
+        lessonInfo.lessonHolderPic = String(format: "\(apiUrl)/images/%@", dict["pic"] as? String ?? "")
         lessonInfo.pic = dict["pic"] as? String ?? ""
             lessonInfo.studentID = dict["studentId"] as! String
             lessonInfo.driverID = dict["driverId"] as? String ?? ""

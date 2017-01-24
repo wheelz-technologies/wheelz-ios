@@ -2,12 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Wheelz would like to access your photos.</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Wheelz would like to access your camera.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
+	<key>CFBundleDocumentTypes</key>
+	<array/>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -44,10 +42,14 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Wheelz would like to access your camera.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Wheelz needs your location to display lessons around you and track lesson progress.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Wheelz needs your location to display lessons around you and track lesson progress.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Wheelz would like to access your photos.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>

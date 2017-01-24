@@ -31,17 +31,17 @@ class WSignUpStepFourVC: UIViewController,UIGestureRecognizerDelegate,UITextFiel
         self.navigationItem.title = "Sign Up"
         self.navigationItem.leftBarButtonItem = self.backBarBackButton("backArrow")
         licenseNoTextField.text = stepFourObj.userLicenseNumber
-        self.initializeSegmentController(stepFourObj.userType as NSString)
+        self.initializeSegmentController()
         progressStepFourView.setProgress(0.8, animated: true)
     }
 
-    fileprivate func initializeSegmentController(_ userType : NSString) {
+    fileprivate func initializeSegmentController() {
         
         licenseLevelSegmetController.subviews[0].tintColor = kAppOrangeColor
         licenseLevelSegmetController.subviews[1].tintColor = kAppOrangeColor
         licenseLevelSegmetController.subviews[2].tintColor = kAppOrangeColor
         
-        if userType.isEqual(to: "Student") {
+        if !stepFourObj.isDriver {
             licenseLevelSegmetController.selectedSegmentIndex = 0
 //            licenseLevelSegmetController.setEnabled(false , forSegmentAtIndex: 2)
             licenseNoTextField.placeholder = "License Number"

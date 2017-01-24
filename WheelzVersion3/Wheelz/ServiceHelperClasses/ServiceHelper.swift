@@ -65,8 +65,8 @@ class ServiceHelper: NSObject {
         request.timeoutInterval = timeoutInterval
         
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("soireedev\\$soireedev", forHTTPHeaderField: "username")
-        request.setValue("zbDqSDPClYq6oHenJDF2nzb1AJczD9M6fhvko5BZumHMSv1BtzidK642GYbC", forHTTPHeaderField: "password")
+        request.setValue(ftpName, forHTTPHeaderField: "username")
+        request.setValue(ftpPass, forHTTPHeaderField: "password")
         
         //>>>>>>>>>>>>> set authentication credentials
         

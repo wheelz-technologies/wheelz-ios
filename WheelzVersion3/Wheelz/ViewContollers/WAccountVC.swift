@@ -104,7 +104,7 @@ class WAccountVC: UIViewController {
                         UserDefaults.standard.setValue(((responseObject!.object(forKey: "password") as! String)), forKey: "wheelzUserPassword")
                         UserDefaults.standard.set(responseObject?.object(forKey: "isInstructor") as? Bool ?? false, forKey: "wheelzIsInstructor")
                         if responseObject?.object(forKey: "pic") as? String != nil  {
-                            UserDefaults.standard.setValue(String(format: "https://soireedev.azurewebsites.net/images/%@", (responseObject?.object(forKey: "pic") as? String)!), forKey: "wheelzUserPic")
+                            UserDefaults.standard.setValue(String(format: "\(apiUrl)/images/%@", (responseObject?.object(forKey: "pic") as? String)!), forKey: "wheelzUserPic")
                         } else {
                             UserDefaults.standard.setValue("", forKey: "wheelzUserPic")
                         }

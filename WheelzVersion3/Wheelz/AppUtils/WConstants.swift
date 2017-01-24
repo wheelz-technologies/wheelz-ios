@@ -8,8 +8,10 @@
 
 import UIKit
 
-//API Endpoint
+//API Endpoint and FTP credentials
 var apiUrl: String = ""
+var ftpName: String = ""
+var ftpPass: String = ""
 
 //API Names
 let kAPINameSignUp = "/api/Users/CreateNewUser"

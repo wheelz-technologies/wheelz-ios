@@ -29,6 +29,7 @@ class WSignUpStepOneVC: UIViewController,UIGestureRecognizerDelegate,UITextField
         self.navigationItem.leftBarButtonItem = self.backBarBackButton("backArrow")
         stepOneObj = WUserInfo()
         stepOneObj.userType = "Student"
+        stepOneObj.isDriver = false
         progressStepOneView.setProgress(0.2, animated: true)
         isDriving = false
     }
@@ -53,6 +54,7 @@ class WSignUpStepOneVC: UIViewController,UIGestureRecognizerDelegate,UITextField
         self.driverButton.isSelected = false
         self.stepOneObj = WUserInfo()
         self.stepOneObj.userType = "Student"
+        stepOneObj.isDriver = false
         
         animateImageBounce(imageView: sender.imageView!)
     }
@@ -63,6 +65,7 @@ class WSignUpStepOneVC: UIViewController,UIGestureRecognizerDelegate,UITextField
         studentButton.isSelected = false
         stepOneObj = WUserInfo()
         stepOneObj.userType = "Driver"
+        stepOneObj.isDriver = true
         
         animateImageBounce(imageView: sender.imageView!)
     }

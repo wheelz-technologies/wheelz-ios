@@ -68,6 +68,7 @@ class WSetupDriversBankAccountVC: UIViewController, UITextFieldDelegate {
     fileprivate func customInit() {
         self.navigationItem.title = "Setup Payments"
         self.navigationItem.leftBarButtonItem = self.backBarBackButton("backArrow")
+        self.navigationItem.rightBarButtonItem = WAppUtils.rightBarButton("infoIcon",controller : self)
         routingNumberTextField.delegate = self
         accountNumberTextField.delegate = self
         
@@ -79,6 +80,13 @@ class WSetupDriversBankAccountVC: UIViewController, UITextFieldDelegate {
         attributedText.addAttribute(NSLinkAttributeName, value: "http://www.learnwheelz.com/terms-of-use", range: (attributedText.string as NSString).range(of: "Service Agreement"))
         attributedText.addAttribute(NSLinkAttributeName, value: "https://stripe.com/ca/connect-account/legal", range: (attributedText.string as NSString).range(of: "Stripe Connected Account Agreement"))
         tappableLabel.attributedText = attributedText
+    }
+    
+    func rightBarButtonAction(_ button : UIButton) {
+        let paymentsTipVc = self.storyboard?.instantiateViewController(withIdentifier: "WPaymentSetupTipVCID") as! WPaymentSetupTipVC
+        paymentsTipVc.modalPresentationStyle = .overCurrentContext
+        
+        kAppDelegate.window?.rootViewController!.present(paymentsTipVc, animated: true, completion: nil)
     }
     
     func generateBankToken() {
@@ -138,9 +146,9 @@ class WSetupDriversBankAccountVC: UIViewController, UITextFieldDelegate {
     
     func verifyInput() {
         if (self.routingNumber.length == 0) {
-            AlertController.alert("",message: "Please enter your Routing Number.")
+            presentFancyAlert("Whoops!", msgStr: "Please enter your Routing Number.", type: AlertStyle.Info, controller: self)
         } else if (self.accountNumber.length == 0) {
-            AlertController.alert("",message: "Please enter your Account Number.")
+            presentFancyAlert("Whoops!", msgStr: "Please enter your Account Number.", type: AlertStyle.Info, controller: self)
         } else {
             generateBankToken()
         }

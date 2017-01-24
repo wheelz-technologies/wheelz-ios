@@ -789,7 +789,6 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
                     if message == "OK" {
                         self.customInit()
                     } else {
-                        let message = responseObject?.object(forKey: "Message") as? String ?? ""
                         self.delegate?.removeViewWithLessonobj!(self.lessonObj, isEdit : false,msg : message)
                     }
                 }

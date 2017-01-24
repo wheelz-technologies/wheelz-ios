@@ -172,7 +172,7 @@ class WSignUpStepFiveVC: UIViewController,UIImagePickerControllerDelegate,UINavi
         paramDict[WUserCountry] = stepFiveObj.userCountry
         paramDict[WUserLicenseLevel] = stepFiveObj.userLicenseLevel
         paramDict[WUserLicenseNumber] = stepFiveObj.userLicenseNumber
-        paramDict[WUserDriver] = stepFiveObj.userType == "Driver" ? true : false
+        paramDict[WUserDriver] = stepFiveObj.isDriver
         paramDict[WUserInstructor] = stepFiveObj.isRegisteredDriver
         paramDict[WUserPhoneNumber] = ""
         paramDict[WDeviceToken] = UserDefaults.standard.value(forKey: "deviceToken") as? String ?? ""
@@ -205,7 +205,7 @@ class WSignUpStepFiveVC: UIViewController,UIImagePickerControllerDelegate,UINavi
                         //SignalRManager.sharedInstance.manageConnection()
                         
                         DispatchQueue.main.async {
-                            if(self.stepFiveObj.userType == "Driver") {
+                            if(self.stepFiveObj.isDriver) {
                                 let addVehicleVC = self.storyboard?.instantiateViewController(withIdentifier: "WAddVehicleVCID") as! WAddVehicleVC
                                 addVehicleVC.isUpdateVehicle = false
                                 addVehicleVC.isMainVehicleExists = false

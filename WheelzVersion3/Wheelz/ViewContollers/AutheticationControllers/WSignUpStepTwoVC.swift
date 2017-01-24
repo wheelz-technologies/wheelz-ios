@@ -51,7 +51,7 @@ class WSignUpStepTwoVC: UIViewController,UIGestureRecognizerDelegate,UITextField
             //presentAlert("", msgStr: "Please enter valid first name.", controller: self)
             presentFancyAlert("Whoops!", msgStr: "Please enter a valid first name.", type: AlertStyle.Info, controller: self)
         }
-        else if ((stepTwoObj.userType as NSString).isEqual(to: "Driver") && stepTwoObj.userLName.trimWhiteSpace().length == 0) {
+        else if (stepTwoObj.isDriver && stepTwoObj.userLName.trimWhiteSpace().length == 0) {
             //presentAlert("", msgStr: "Please, enter your last name.", controller: self)
             presentFancyAlert("Whoops!", msgStr: "Please, enter your last name.", type: AlertStyle.Info, controller: self)
         }

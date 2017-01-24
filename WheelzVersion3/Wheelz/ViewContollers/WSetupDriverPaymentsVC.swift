@@ -151,18 +151,18 @@ class WSetupDriverPaymentsVC: UIViewController, UITextFieldDelegate {
     
     func verifyInput() {
         if (!self.birthDateSelected) {
-            AlertController.alert("",message: "Please select your date of birth.")
+            presentFancyAlert("Whoops!", msgStr: "Please select your date of birth.", type: AlertStyle.Info, controller: self)
         } else if (self.userIdentityObj.personalIdNumber.length == 0) {
-            AlertController.alert("",message: "Please enter your Social Insurance Number.")
+            presentFancyAlert("Whoops!", msgStr: "Please enter your Social Insurance Number.", type: AlertStyle.Info, controller: self)
         } else if (self.userIdentityObj.zipCode.length == 0) {
-            AlertController.alert("",message: "Please enter your zip code.")
+            presentFancyAlert("Whoops!", msgStr: "Please enter your zip code.", type: AlertStyle.Info, controller: self)
         } else if (self.userIdentityObj.addressLine1.length == 0) {
-            AlertController.alert("",message: "Please enter your address.")
+            presentFancyAlert("Whoops!", msgStr: "Please enter your address.", type: AlertStyle.Info, controller: self)
         } else {
             self.userIdentityObj.ip = getWiFiAddress()
             
             if (self.userIdentityObj.ip.length == 0) {
-                AlertController.alert("",message: "Please make sure you are connected to the Internet.")
+                presentFancyAlert("Whoops!", msgStr: "Please make sure you are connected to the Internet.", type: AlertStyle.Info, controller: self)
             }
             else {
                 addCard()

@@ -157,6 +157,8 @@
 		D66FA7BC1E1C7F8E0058BF68 /* WTipStudentPaymentsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66FA7BB1E1C7F8E0058BF68 /* WTipStudentPaymentsVC.swift */; };
 		D66FA7C31E1C7FA30058BF68 /* WTipDriverPaymentsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66FA7C21E1C7FA30058BF68 /* WTipDriverPaymentsVC.swift */; };
 		D67384FF1D9ACD52002A6364 /* WCardInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67384FE1D9ACD52002A6364 /* WCardInfo.swift */; };
+		D6746B2D1E35BEBB00B71903 /* WPaymentSetupTipVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6746B2C1E35BEBB00B71903 /* WPaymentSetupTipVC.swift */; };
+		D6746B361E35C0B300B71903 /* chequeFinished.png in Resources */ = {isa = PBXBuildFile; fileRef = D6746B351E35C0B300B71903 /* chequeFinished.png */; };
 		D68124F51D4EEE18005B2A21 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D68124F41D4EEE18005B2A21 /* LaunchScreen.storyboard */; };
 		D68124F71D4EEE3F005B2A21 /* wheelOnly.png in Resources */ = {isa = PBXBuildFile; fileRef = D68124F61D4EEE3F005B2A21 /* wheelOnly.png */; };
 		D68D91581E1F50870041C991 /* driverLessonTip2.png in Resources */ = {isa = PBXBuildFile; fileRef = D68D91571E1F50870041C991 /* driverLessonTip2.png */; };
@@ -460,6 +462,8 @@
 		D66FA7BB1E1C7F8E0058BF68 /* WTipStudentPaymentsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WTipStudentPaymentsVC.swift; sourceTree = "<group>"; };
 		D66FA7C21E1C7FA30058BF68 /* WTipDriverPaymentsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WTipDriverPaymentsVC.swift; sourceTree = "<group>"; };
 		D67384FE1D9ACD52002A6364 /* WCardInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WCardInfo.swift; sourceTree = "<group>"; };
+		D6746B2C1E35BEBB00B71903 /* WPaymentSetupTipVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WPaymentSetupTipVC.swift; sourceTree = "<group>"; };
+		D6746B351E35C0B300B71903 /* chequeFinished.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chequeFinished.png; sourceTree = "<group>"; };
 		D68124F41D4EEE18005B2A21 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D68124F61D4EEE3F005B2A21 /* wheelOnly.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wheelOnly.png; sourceTree = "<group>"; };
 		D68D91571E1F50870041C991 /* driverLessonTip2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = driverLessonTip2.png; sourceTree = "<group>"; };
@@ -778,6 +782,7 @@
 				D61F7D551E249CF300159268 /* swipe.png */,
 				D6D33B771E1C2C480042E6B7 /* nextArrows.png */,
 				D6D33B751E1C286F0042E6B7 /* whiteRightArrowIcon.png */,
+				D6746B351E35C0B300B71903 /* chequeFinished.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -840,6 +845,7 @@
 				D66FA7C21E1C7FA30058BF68 /* WTipDriverPaymentsVC.swift */,
 				D6F95C5E1E200CF30082686A /* WStartLessonTipVC.swift */,
 				D6F95C651E202AF60082686A /* WRateLessonTipVC.swift */,
+				D6746B2C1E35BEBB00B71903 /* WPaymentSetupTipVC.swift */,
 			);
 			path = LessonControllers;
 			sourceTree = "<group>";
@@ -1213,6 +1219,7 @@
 				D6293EED1E231B2C00044F0C /* studentInfo3.png in Resources */,
 				D68D915A1E1F50930041C991 /* driverLessonTip3.png in Resources */,
 				D6FE07071D4C54DB00F1B1D2 /* greyBg.png in Resources */,
+				D6746B361E35C0B300B71903 /* chequeFinished.png in Resources */,
 				D62799711DE3F985000F27C9 /* AirshipKit in Resources */,
 				D6293EE91E231AB800044F0C /* driverInfo1.png in Resources */,
 				5D1E10CB1D812DC0003C213F /* WLessonDetailView.xib in Resources */,
@@ -1409,6 +1416,7 @@
 				5D1E10D51D816BFF003C213F /* WCustomAnnotation.swift in Sources */,
 				D61C45581D8DE45E00B2B95A /* SDWebImageCompat.m in Sources */,
 				42EF42921D38C002005D30F3 /* PKHUDStatusView.swift in Sources */,
+				D6746B2D1E35BEBB00B71903 /* WPaymentSetupTipVC.swift in Sources */,
 				6844BCB91D5078FE00D34CCD /* GeneralExtensions.swift in Sources */,
 				5D03D2671D7AD8C600B455B5 /* WPaymentInfo.swift in Sources */,
 				42B8F27A1D34BABA003882A0 /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */,

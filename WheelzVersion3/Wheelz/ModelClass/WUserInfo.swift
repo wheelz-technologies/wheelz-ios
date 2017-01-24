@@ -42,7 +42,7 @@ class WUserInfo: NSObject {
          userInfo.userFName = tempDict["firstName"] as! String
          userInfo.userLName = tempDict["lastName"] as? String ?? ""
         userInfo.userPassword = tempDict["password"] as! String
-        userInfo.userImage = String(format: "https://soireedev.azurewebsites.net/images/%@", tempDict["pic"] as? String ?? "")
+        userInfo.userImage = String(format: "\(apiUrl)/images/%@", tempDict["pic"] as? String ?? "")
         userInfo.userImageFileName = tempDict["pic"] as? String ?? ""
         userInfo.userEmail = tempDict["userName"] as! String
         userInfo.userCity = tempDict["city"] as? String ?? ""

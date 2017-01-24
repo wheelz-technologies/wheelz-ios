@@ -247,7 +247,6 @@ class WAddVehicleVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
           self.view .endEditing(true)
         if VerifyInput() {
             if isUpdateVehicle {
-                print(vehicleObj.vehicleId)
                 callAPIForUpdateVehicle(vehicleObj.vehicleId)
             } else {
                 callAPIForCreateNewVehicle()
@@ -274,10 +273,9 @@ class WAddVehicleVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
 
         if pickerOption == 0 {
-            return  makeArr.count
+            return makeArr.count
         } else if pickerOption == 1 {
-            print(modelArr.count)
-            return  modelArr.count
+            return modelArr.count
         } else {
             return dateArr.count
         }
@@ -324,7 +322,6 @@ class WAddVehicleVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
             self.yearTextField.inputAccessoryView = self.addToolBar("Next", btnTag: 502)
             yearTextField.text = ""
         } else {
-            print(dateArr.count)
              let dateInfo = dateArr.object(at: row) as! WVehiclesInfo
             yearTextField.text = dateInfo.year
             yearTextField.text = dateInfo.year

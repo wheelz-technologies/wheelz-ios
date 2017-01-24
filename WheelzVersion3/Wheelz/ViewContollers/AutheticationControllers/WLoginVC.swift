@@ -198,7 +198,7 @@ class WLoginVC: UIViewController,UITextFieldDelegate,UIGestureRecognizerDelegate
                           UserDefaults.standard.set(responseObject?.object(forKey: "isDriver") as? Bool ?? false, forKey: "wheelzIsDriver")
                          UserDefaults.standard.set(responseObject?.object(forKey: "isInstructor") as? Bool ?? false, forKey: "wheelzIsInstructor")
                         if responseObject?.object(forKey: "pic") as? String != nil  {
-                              UserDefaults.standard.setValue(String(format: "https://soireedev.azurewebsites.net/images/%@", (responseObject?.object(forKey: "pic") as? String)!), forKey: "wheelzUserPic")
+                              UserDefaults.standard.setValue(String(format: "\(apiUrl)/images/%@", (responseObject?.object(forKey: "pic") as? String)!), forKey: "wheelzUserPic")
                         } else {
                               UserDefaults.standard.setValue("", forKey: "wheelzUserPic")
                         }
