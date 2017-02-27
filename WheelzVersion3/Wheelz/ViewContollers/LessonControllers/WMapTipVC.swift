@@ -24,10 +24,6 @@ class WMapTipVC: UIViewController {
         if(isDriver) {
             requestLessonLabel.isHidden = true
             requestLessonArrow.isHidden = true
-        } else {
-            blueIconLabel.text = "Lessons, already claimed by a driver."
-            greenIconLabel.isHidden = true
-            greenIcon.isHidden = true
         }
     }
 

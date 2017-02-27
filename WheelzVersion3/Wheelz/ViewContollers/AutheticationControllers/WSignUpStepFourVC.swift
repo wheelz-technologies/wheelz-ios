@@ -43,14 +43,13 @@ class WSignUpStepFourVC: UIViewController,UIGestureRecognizerDelegate,UITextFiel
         
         if !stepFourObj.isDriver {
             licenseLevelSegmetController.selectedSegmentIndex = 0
-//            licenseLevelSegmetController.setEnabled(false , forSegmentAtIndex: 2)
             licenseNoTextField.placeholder = "License Number"
             stepFourObj.isRegisteredDriver = false
          
             stepFourObj.userLicenseLevel = "G1"
             certifiedDriverButton.isHidden = true
         } else {
-            certifiedDriverButton.isHidden = false
+            //certifiedDriverButton.isHidden = false
             licenseLevelSegmetController.selectedSegmentIndex = 2
             licenseLevelSegmetController.setEnabled(false , forSegmentAt: 0)
             licenseLevelSegmetController.setEnabled(false , forSegmentAt: 1)
@@ -70,10 +69,10 @@ class WSignUpStepFourVC: UIViewController,UIGestureRecognizerDelegate,UITextFiel
         
         var isVerified: Bool = false
         
-        if (stepFourObj.userLicenseNumber.trimWhiteSpace().length == 0) {
+        if (stepFourObj.userLicenseNumber.length == 0) {
             //presentAlert("", msgStr: "Please enter your license number.", controller: self)
             presentFancyAlert("Whoops!", msgStr: "Please enter your license number.", type: AlertStyle.Info, controller: self)
-        } else if ((!stepFourObj.userLicenseNumber.containsAlphaNumericOnly() || stepFourObj.userLicenseNumber.trimWhiteSpace().length != 15) && stepFourObj.userLicenseNumber.length > 0) {
+        } else if ((!stepFourObj.userLicenseNumber.containsAlphaNumericOnly() || stepFourObj.userLicenseNumber.length != 15) && stepFourObj.userLicenseNumber.length > 0) {
             //presentAlert("", msgStr: "Please enter a valid license number.", controller: self)
             presentFancyAlert("Whoops!", msgStr: "Please enter a valid license number.", type: AlertStyle.Info, controller: self)
         } else {
@@ -85,7 +84,7 @@ class WSignUpStepFourVC: UIViewController,UIGestureRecognizerDelegate,UITextFiel
 
     // MARK: TextField Delegate Methods
     func textFieldDidEndEditing(_ textField: UITextField) {
-        stepFourObj.userLicenseNumber = textField.text!
+        stepFourObj.userLicenseNumber = textField.text!.trimWhiteSpace()
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -119,7 +118,6 @@ class WSignUpStepFourVC: UIViewController,UIGestureRecognizerDelegate,UITextFiel
     @IBAction func certifiedDriverButton(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
         stepFourObj.isRegisteredDriver = !stepFourObj.isRegisteredDriver
-        print(stepFourObj.isRegisteredDriver)
        
         if(sender.isSelected) {
             animateImageBounce(imageView: sender.imageView!)
@@ -132,7 +130,6 @@ class WSignUpStepFourVC: UIViewController,UIGestureRecognizerDelegate,UITextFiel
             stepFourObj.userLicenseLevel = "G1"
         } else if sender.selectedSegmentIndex == 1 {
             stepFourObj.userLicenseLevel = "G2"
-            print(stepFourObj.userLicenseLevel)
         } else {
             stepFourObj.userLicenseLevel = "G"
         }

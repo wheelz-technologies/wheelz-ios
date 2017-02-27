@@ -87,7 +87,7 @@ class WVehiclesVC: UIViewController,UITableViewDataSource,UITableViewDelegate,BW
         let vehiclesInfo =  vehiclesArray.object(at: indexPath.row) as? WVehiclesInfo
         cell.modelYearLabel.text = vehiclesInfo!.year + " " + vehiclesInfo!.make + " " + vehiclesInfo!.model
         cell.vinLabel.text = String(vehiclesInfo!.vin.characters.suffix(4))
-        if vehiclesInfo?.isMain == true{
+        if vehiclesInfo?.isMain == true {
             cell.modelYearLabel.font = UIFont(name:"Futura", size:16)!
             cell.vinLabel.font = UIFont(name:"Futura", size:16)!
         } else {
@@ -111,7 +111,7 @@ class WVehiclesVC: UIViewController,UITableViewDataSource,UITableViewDelegate,BW
         addVehicleVC.isUpdateVehicle = true
         let vehicleInfo = vehiclesArray.object(at: indexPath.row) as? WVehiclesInfo
         addVehicleVC.vehicleObj = vehicleInfo
-        print((vehicleInfo?.isMain)!)
+        
         for case let item as WVehiclesInfo in vehiclesArray {
             if item.isMain == true {
                 addVehicleVC.isMainVehicleExists = vehiclesArray.count > 1 ?  false : true
@@ -150,7 +150,6 @@ class WVehiclesVC: UIViewController,UITableViewDataSource,UITableViewDelegate,BW
             if position == 1 {
                 let indexPath: IndexPath = self.vehiclesTableView.indexPath(for: cell)!
                 let vehicleObj = self.vehiclesArray.object(at: indexPath.row) as! WVehiclesInfo
-                print(vehicleObj.vehicleId)
                 self.callAPIForDeleteVehicle(vehicleObj.vehicleId)
             }
          })

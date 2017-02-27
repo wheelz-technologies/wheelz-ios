@@ -52,7 +52,6 @@ class WAddVehicleVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
             scrollView.isScrollEnabled = false
         }
 
-        makeTextField.isUserInteractionEnabled =  false
         modelTextField.isUserInteractionEnabled =  false
         yearTextField.isUserInteractionEnabled =  false
         if isUpdateVehicle == true {
@@ -62,11 +61,11 @@ class WAddVehicleVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
             vinTextField.text = vehicleObj!.vin
             radioButton.isSelected = vehicleObj.isMain
             radioButton.isUserInteractionEnabled = isMainVehicleExists == true ? false : true
-            vehicleAddUpdateButton.setTitle("UPDATE VEHICLE", for: UIControlState())
+            //vehicleAddUpdateButton.setTitle("UPDATE VEHICLE", for: UIControlState())
             self.navigationItem.title = "Edit Vehicle"
         } else {
             deleteButton.isHidden =  true
-            vehicleAddUpdateButton.setTitle("ADD VEHICLE", for: UIControlState())
+            //vehicleAddUpdateButton.setTitle("ADD VEHICLE", for: UIControlState())
             self.navigationItem.title = "Add Vehicle"
             vehicleObj = WVehiclesInfo()
             if isMainVehicleExists == false {
@@ -136,11 +135,11 @@ class WAddVehicleVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
     //MARK:- Selector Methods
     @objc func nextBarButtonAction(_ button : UIButton) {
         let kTextField = getViewWithTag(button.tag+1, view: self.view) as? UITextField
-        if button.tag == 500  && modelArr.count > 0 {
+        if button.tag == 500 && modelArr.count > 0 {
             pickerOption = 1
             optionPicker.reloadAllComponents()
             kTextField?.becomeFirstResponder()
-        } else if button.tag == 501   && dateArr.count > 0{
+        } else if button.tag == 501 && dateArr.count > 0 {
             pickerOption = 2
             optionPicker.reloadAllComponents()
             kTextField?.becomeFirstResponder()
@@ -155,12 +154,12 @@ class WAddVehicleVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
     fileprivate func VerifyInput() ->Bool {
         
         var isVerified: Bool = false
-        if (self.makeTextField.text!.trimWhiteSpace().length == 0) {
-            presentAlert("", msgStr: "Please select a maker.", controller: self)
-        } else if (self.modelTextField.text!.trimWhiteSpace().length == 0) {
-            presentAlert("", msgStr: "Please select a model.", controller: self)
-        }  else if (self.yearTextField.text!.trimWhiteSpace().length == 0) {
-            presentAlert("", msgStr: "Please select a year.", controller: self)
+        if (self.makeTextField.text!.length == 0) {
+            presentFancyAlert("Whoops!", msgStr: "Please select a make.", type: AlertStyle.Info, controller: self)
+        } else if (self.modelTextField.text!.length == 0) {
+            presentFancyAlert("Whoops!", msgStr: "Please select a model.", type: AlertStyle.Info, controller: self)
+        }  else if (self.yearTextField.text!.length == 0) {
+            presentFancyAlert("Whoops!", msgStr: "Please select a year.", type: AlertStyle.Info, controller: self)
         } else {
             isVerified = true
         }
@@ -196,16 +195,16 @@ class WAddVehicleVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
     func textFieldDidEndEditing(_ textField: UITextField) {
         switch (textField.tag) {
         case 500:
-            vehicleObj!.make = textField.text!
+            vehicleObj!.make = textField.text!.trimWhiteSpace()
             break
         case 501:
-            vehicleObj!.model = textField.text!
+            vehicleObj!.model = textField.text!.trimWhiteSpace()
             break
         case 502:
-            vehicleObj!.year = textField.text!
+            vehicleObj!.year = textField.text!.trimWhiteSpace()
             break
         default:
-            vehicleObj!.vin = textField.text!
+            vehicleObj!.vin = textField.text!.trimWhiteSpace()
             break
         }
     }
@@ -214,7 +213,7 @@ class WAddVehicleVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
         var str:NSString = textField.text! as NSString
         str = str.replacingCharacters(in: range, with: string) as NSString
         if textField.tag == 503 {
-            if (str.length>17) {
+            if (str.length > 17) {
                 return false
             }
         }
@@ -235,7 +234,6 @@ class WAddVehicleVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
     
         //MARK:- UIButton Action Methods
     @IBAction func deleteButtonAction(_ sender: UIButton) {
-        print(vehicleObj.vehicleId)
         AlertController.alert("", message: "Delete this vehicle?",controller: self, buttons: ["No","Yes"], tapBlock: { (alertAction, position) -> Void in
             if position == 1 {
                 self.callAPIForDeleteVehicle(self.vehicleObj.vehicleId)
@@ -244,13 +242,20 @@ class WAddVehicleVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
     }
 
     @IBAction func addVehicleButtonAction(_ sender: UIButton) {
-          self.view .endEditing(true)
+        //self.view.endEditing(true)
         if VerifyInput() {
-            if isUpdateVehicle {
-                callAPIForUpdateVehicle(vehicleObj.vehicleId)
-            } else {
-                callAPIForCreateNewVehicle()
-            }
+            let vehicleDetailsVC = self.storyboard?.instantiateViewController(withIdentifier: "WAddVehicleDetailsVCID") as! WAddVehicleDetailsVC
+            vehicleDetailsVC.vehicleObj = vehicleObj
+            vehicleDetailsVC.isUpdateVehicle = isUpdateVehicle
+            vehicleDetailsVC.isFirstTime = isFirstTime
+            
+            self.navigationController?.pushViewController(vehicleDetailsVC, animated: true)
+            
+            //if isUpdateVehicle {
+            //    callAPIForUpdateVehicle(vehicleObj.vehicleId)
+            //} else {
+            //    callAPIForCreateNewVehicle()
+            //}
         }
     }
     
@@ -354,111 +359,10 @@ class WAddVehicleVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
                         self.makeTextField.inputView = self.optionPicker
                         self.makeTextField.inputAccessoryView = self.addToolBar("Next", btnTag: 500)
                         self.optionPicker.delegate = self
-                       
-                         if self.isUpdateVehicle == true {
-                            self.makeTextField.isUserInteractionEnabled =  true
-                         } else {
-                            self.makeTextField.isUserInteractionEnabled =  true
-                            self.modelTextField.isUserInteractionEnabled =  true
-                            self.yearTextField.isUserInteractionEnabled =  true
-                        }
                         
                         let recognizer = UITapGestureRecognizer(target: self, action:#selector(WAddVehicleVC.pickerTapped(_:)))
                         recognizer.delegate = self
                         self.optionPicker.addGestureRecognizer(recognizer)
-                    }
-                }
-            }
-        }
-    }
-    
-    fileprivate func callAPIForCreateNewVehicle() {
-        
-        let paramDict = NSMutableDictionary()
-        
-        paramDict[WDriverID] = UserDefaults.standard.value(forKey: "wheelzUserID") as? String
-        paramDict[WMake] = vehicleObj!.make
-        paramDict[WModel] = vehicleObj!.model
-        paramDict[WYear] = vehicleObj!.year
-        paramDict[WVin] = vehicleObj!.vin
-        paramDict[WAvailableForTest ] = vehicleObj!.isAvailableForTest
-        paramDict[WIsMain] = vehicleObj!.isMain
-        
-        let apiNameCreateNewVehicle = kAPINameCreateNewVehicle()
-        ServiceHelper.sharedInstance.callAPIWithParameters(paramDict, method: .post, apiName: apiNameCreateNewVehicle, hudType: .default) { (responseObject :AnyObject?, error:NSError?,data:Data?) in
-            
-            if error != nil {
-                AlertController.alert("",message: (error?.localizedDescription)!)
-            } else {
-                if (responseObject != nil) {
-                    let message = responseObject?.object(forKey: "message") as? String ?? ""
-                    if message != "" {
-                        if(self.isFirstTime) {
-                            DispatchQueue.main.async {
-                                self.navigationController?.pushViewController(kAppDelegate.addSidePanel(), animated: false)
-                                let tipVc = self.storyboard?.instantiateViewController(withIdentifier: "WTipManagerVCID") as! WTipManagerVC
-                                tipVc.orderedViewControllers = [newViewControllerFromMain(name: "WSignUpTipVCID"),
-                                                                newViewControllerFromMain(name: "WDriverSignUpTip1VCID"),
-                                                                newViewControllerFromMain(name: "WDriverSignUpTip2VCID"),
-                                                                newViewControllerFromMain(name: "WDriverSignUpTip3VCID")]
-                                
-                                kAppDelegate.window?.rootViewController!.present(tipVc, animated: true, completion: nil)
-                            }
-                        }
-                        else{
-                            self.navigationController?.popViewController(animated: true)
-                        }
-                    } else {
-//                        NSUserDefaults.standardUserDefaults().setValue(responseObject?.objectForKey("userId") as? String ?? "", forKey: "wheelzUserID")
-//                        NSUserDefaults.standardUserDefaults().setValue(((responseObject!.objectForKey("firstName") as! String) + " " + (responseObject!.objectForKey("lastName") as! String) ), forKey: "wheelzUserName")
-//                        NSUserDefaults.standardUserDefaults().synchronize()
-//                        WAppData.appInfoSharedInstance.appUserInfo = WUserInfo.getUserInfo(responseObject!)
-                        AlertController.alert("", message: message,controller: self, buttons: ["OK"], tapBlock: { (alertAction, position) -> Void in
-                            if position == 0 {
-                                if(self.isFirstTime) {
-                                    DispatchQueue.main.async {
-                                        self.navigationController?.pushViewController(kAppDelegate.addSidePanel(), animated: false)
-                                    }
-                                }
-                                else{
-                                    self.navigationController?.popViewController(animated: true)
-                                }
-                            }
-                        })
-                    }
-                }
-            }
-    }
-    }
-    
-    func callAPIForUpdateVehicle(_ vehicleID: String) {
-        
-        let paramDict = NSMutableDictionary()
-        
-        paramDict[WVehicleID] = vehicleID
-        paramDict[WMake] = vehicleObj!.make
-        paramDict[WModel] = vehicleObj!.model
-        paramDict[WYear] = vehicleObj!.year
-        paramDict[WVin] = vehicleObj!.vin
-        paramDict[WAvailableForTest ] = vehicleObj!.isAvailableForTest
-        paramDict[WIsMain] = vehicleObj!.isMain
-        let apiNameUpdateVehicle = kAPINameUpdateVehicle()
-        
-        ServiceHelper.sharedInstance.callAPIWithParameters(paramDict, method: .put, apiName: apiNameUpdateVehicle, hudType: .default) { (responseObject :AnyObject?, error:NSError?,data:Data?) in
-            
-            if error != nil {
-                AlertController.alert("",message: (error?.localizedDescription)!)
-            } else {
-                if (responseObject != nil) {
-                    let message = responseObject?.object(forKey: "message") as? String ?? ""
-                    if message != "" {
-                        self.navigationController?.popViewController(animated: true)
-                    } else {
-                            AlertController.alert("", message: message,controller: self, buttons: ["OK"], tapBlock: { (alertAction, position) -> Void in
-                            if position == 0 {
-                                self.navigationController?.popViewController(animated: true)
-                            }
-                        })
                     }
                 }
             }

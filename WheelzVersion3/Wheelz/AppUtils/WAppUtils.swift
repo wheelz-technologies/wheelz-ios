@@ -164,6 +164,54 @@ func resizeImage(imageName: String, width: Double, height: Double) -> UIImage? {
     return resizedImage
 }
 
+func determineMapMarkerType(marker: WCustomAnnotation) -> UIImage
+{
+    var imageName = "marker"
+    
+    switch marker.type
+    {
+    case 1:
+        imageName.append("Parking") // Parking
+        break
+    case 2:
+        imageName.append("TestPrep") // Test Prep
+        break
+    case 3:
+        imageName.append("Turns") // Turns
+        break
+    case 4:
+        imageName.append("Manual") // Manual
+        break
+    case 5:
+        imageName.append("Highway") // Highways
+        break
+    case 6:
+        imageName.append("Performance") // Performance
+        break
+    default:
+        return UIImage(imageLiteralResourceName: "wheelzOrange")
+    }
+    
+    if(marker.driverID.isEmpty)
+    {
+        imageName.append("Orange") // New Unclaimed Lesson
+    }
+    else if (!marker.driverID.isEmpty && !marker.isConfirmed)
+    {
+        imageName.append("Blue") // Claimed Lesson
+    }
+    else if(!marker.driverID.isEmpty && marker.isConfirmed)
+    {
+        imageName.append("Green") // Confirmed Lesson
+    }
+    else
+    {
+        imageName.append("Gray") // otherwise Status is either unknown, or it's another user's lesson
+    }
+    
+    return UIImage(imageLiteralResourceName: imageName)
+}
+
 func getDateFromTimeStamp(_ timeStamp : Double) -> String {
     let date = Date(timeIntervalSince1970: timeStamp)
     let dateFormatter = DateFormatter()

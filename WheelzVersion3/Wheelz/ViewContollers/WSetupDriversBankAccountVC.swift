@@ -95,8 +95,8 @@ class WSetupDriversBankAccountVC: UIViewController, UITextFieldDelegate {
         account.accountHolderType = STPBankAccountHolderType.individual
         account.country = "CA"
         account.currency = "CAD"
-        account.routingNumber = routingNumberTextField.text!
-        account.accountNumber = accountNumberTextField.text!
+        account.routingNumber = routingNumberTextField.text!.trimWhiteSpace()
+        account.accountNumber = accountNumberTextField.text!.trimWhiteSpace()
         
         let theCompletionHandler: STPTokenCompletionBlock = {token, error in
             if error != nil {
@@ -145,9 +145,9 @@ class WSetupDriversBankAccountVC: UIViewController, UITextFieldDelegate {
     }
     
     func verifyInput() {
-        if (self.routingNumber.length == 0) {
+        if (self.routingNumber.trimWhiteSpace().length == 0) {
             presentFancyAlert("Whoops!", msgStr: "Please enter your Routing Number.", type: AlertStyle.Info, controller: self)
-        } else if (self.accountNumber.length == 0) {
+        } else if (self.accountNumber.trimWhiteSpace().length == 0) {
             presentFancyAlert("Whoops!", msgStr: "Please enter your Account Number.", type: AlertStyle.Info, controller: self)
         } else {
             generateBankToken()

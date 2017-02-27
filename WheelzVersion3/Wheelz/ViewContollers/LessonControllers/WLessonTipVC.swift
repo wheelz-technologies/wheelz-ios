@@ -20,7 +20,7 @@ class WLessonTipVC: UIViewController {
         
         if(isDriver) {
             tipLabel.text = "You claimed a lesson."
-            tipText.text = "We'll remind you to show up on time!"
+            tipText.text = "We'll let you know when a student confirms!"
         }
         
         let settings = UIApplication.shared.currentUserNotificationSettings
@@ -30,6 +30,7 @@ class WLessonTipVC: UIViewController {
         {
             let notificationSettings = UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: nil)
             UIApplication.shared.registerUserNotificationSettings(notificationSettings)
+            UIApplication.shared.registerForRemoteNotifications()
         } else if(!settings!.types.contains(.alert)) {
             presentFancyAlert("Notifications", msgStr: "Consider enabling Notifications in Device Settings, so we can send you updates about your lessons.", type: AlertStyle.Info, controller: self)
         }

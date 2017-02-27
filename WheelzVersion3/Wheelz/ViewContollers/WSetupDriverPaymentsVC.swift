@@ -31,13 +31,13 @@ class WSetupDriverPaymentsVC: UIViewController, UITextFieldDelegate {
     
     // MARK: - UI Events
     @IBAction func addressEndedEditing(_ sender: AnyObject) {
-        self.userIdentityObj.addressLine1 = addressTextField.text!
+        self.userIdentityObj.addressLine1 = addressTextField.text!.trimWhiteSpace()
     }
     
     @IBAction func postalCodeEndedEditing(_ sender: AnyObject) {
         let zipCode = postalCodeTextField.text!.replacingOccurrences(of: " ", with: "")
         if zipCode != "" {
-            getCityAndState(zipCode)
+            getCityAndState(zipCode.trimWhiteSpace())
         }
     }
     

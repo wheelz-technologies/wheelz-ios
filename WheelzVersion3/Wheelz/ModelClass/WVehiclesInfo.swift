@@ -21,6 +21,9 @@ class WVehiclesInfo: NSObject {
     var isMain : Bool = false
     var modelArray:NSMutableArray = []
     var yearArray:NSMutableArray = []
+    var transType: String = ""
+    var carImage : String = ""
+    var carImageFileName : String = ""
     
     class func getVehiclesInfo(_ arr : NSMutableArray) -> NSMutableArray {
         let tempArray = NSMutableArray()
@@ -30,9 +33,12 @@ class WVehiclesInfo: NSObject {
             vehiclesInfo.make = tempDict["make"] as! String
             vehiclesInfo.model = tempDict["model"] as! String
             vehiclesInfo.year = String(format: "%d", tempDict["year"] as? NSInteger ?? 0)
+            vehiclesInfo.transType = tempDict["transmissionType"] as! String
             vehiclesInfo.vin = tempDict["vin"] as? String ?? ""
             vehiclesInfo.isMain = tempDict["isMain"] as! Bool
             vehiclesInfo.isAvailableForTest = tempDict["availableForTest"] as! Bool
+            vehiclesInfo.carImage = String(format: "\(apiUrl)/images/%@", tempDict["pic"] as? String ?? "")
+            vehiclesInfo.carImageFileName = tempDict["pic"] as? String ?? ""
             tempArray.add(vehiclesInfo)
         }
         return tempArray

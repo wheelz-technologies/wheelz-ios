@@ -33,6 +33,9 @@ class WLessonInfo: NSObject {
     var lessonTag : NSInteger = 0
     var studentRated : Bool = false
     var driverRated : Bool = false
+    var lessonType : NSInteger = 0
+    var isConfirmed : Bool = false
+    var lessonHolderLicenseLevel : String = ""
     
     class func getLessonHistoryInfo(_ arr : NSMutableArray) -> NSMutableArray {
         let tempArray = NSMutableArray()
@@ -51,6 +54,8 @@ class WLessonInfo: NSObject {
 //            historyLessonInfo.lessonDuration = tempDict["duration"] as! Double
 //            historyLessonInfo.isInstructorRequired = tempDict["instructorRequired"] as! Bool
             historyLessonInfo.lessonTimestamp = tempDict["utcDateTime"] as! Double
+            historyLessonInfo.isConfirmed = tempDict["confirmed"] as! Bool
+            historyLessonInfo.lessonType = tempDict["type"] as! NSInteger
             
             tempArray.add(historyLessonInfo)
         }
@@ -64,11 +69,14 @@ class WLessonInfo: NSObject {
             let availableLessonInfo = WLessonInfo()
             
             availableLessonInfo.lessonID = (tempDict["lessonId"] as! String)
+            availableLessonInfo.studentID = (tempDict["studentId"] as! String)
             availableLessonInfo.driverID = (tempDict["driverId"] as? String ?? "")
             availableLessonInfo.locLat = tempDict["locLatitude"] as! Double
             availableLessonInfo.locLon = tempDict["locLongitude"] as! Double
             availableLessonInfo.isInstructorRequired = tempDict["instructorRequired"] as! Bool
+            availableLessonInfo.isConfirmed = tempDict["confirmed"] as! Bool
             availableLessonInfo.lessonTimestamp = tempDict["utcDateTime"] as! Double
+            availableLessonInfo.lessonType = tempDict["type"] as! NSInteger
             availableLessonInfo.lessonTag += 1
             tempArray.add(availableLessonInfo)
         }
@@ -79,9 +87,9 @@ class WLessonInfo: NSObject {
             let lessonInfo = WLessonInfo()
             
             lessonInfo.lessonID = dict["lessonId"] as! String
-        lessonInfo.lessonHolderName = dict["firstName"] as! String
-        lessonInfo.lessonHolderPic = String(format: "\(apiUrl)/images/%@", dict["pic"] as? String ?? "")
-        lessonInfo.pic = dict["pic"] as? String ?? ""
+            lessonInfo.lessonHolderName = dict["firstName"] as! String
+            lessonInfo.lessonHolderPic = String(format: "\(apiUrl)/images/%@", dict["pic"] as? String ?? "")
+            lessonInfo.pic = dict["pic"] as? String ?? ""
             lessonInfo.studentID = dict["studentId"] as! String
             lessonInfo.driverID = dict["driverId"] as? String ?? ""
             lessonInfo.lessonDate = dict["dateTime"] as! String
@@ -98,7 +106,10 @@ class WLessonInfo: NSObject {
             lessonInfo.lessonStartTimestamp = dict["startedAtUtc"] as? Double ?? 0.0
             lessonInfo.studentRated = dict["studentRated"] as! Bool
             lessonInfo.driverRated = dict["driverRated"] as! Bool
-            
+            lessonInfo.lessonType = dict["type"] as! NSInteger
+            lessonInfo.isConfirmed = dict["confirmed"] as! Bool
+            lessonInfo.lessonHolderLicenseLevel = dict["licenseLevel"] as! String
+        
         return lessonInfo
     }
 

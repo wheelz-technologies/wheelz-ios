@@ -119,10 +119,10 @@ class WEditProfileVC: UIViewController ,UITableViewDelegate,UITableViewDataSourc
         if (userObj.userFName.length == 0) {
             //AlertController.alert("",message: "Please enter first name.")
             presentFancyAlert("Whoops!", msgStr: "Please enter first name.", type: AlertStyle.Info, controller: self)
-        } else if (userObj.userPassword.trimWhiteSpace().length == 0) {
+        } else if (userObj.userPassword.length == 0) {
             //AlertController.alert("",message: "Please enter a password.")
             presentFancyAlert("Whoops!", msgStr: "Please enter a password.", type: AlertStyle.Info, controller: self)
-        } else if (userObj.userPassword.trimWhiteSpace().length < 8 || !userObj.userPassword.containsAlphaNumericOnly()) {
+        } else if (userObj.userPassword.length < 8 || !userObj.userPassword.containsAlphaNumericOnly()) {
             //AlertController.alert("",message: "Password must be at least 8 characters long.")
             presentFancyAlert("Whoops!", msgStr: "Password must be at least 8 characters long.", type: AlertStyle.Info, controller: self)
         } else if (!userObj.userFName.containsAlphabetsOnly()) {
@@ -136,7 +136,7 @@ class WEditProfileVC: UIViewController ,UITableViewDelegate,UITableViewDataSourc
             presentFancyAlert("Whoops!", msgStr: "Please enter a valid contact number.", type: AlertStyle.Info, controller: self)
         } else if (userObj.userLicenseLevel.length == 0){
             //AlertController.alert("",message: "Please select your license level.")
-            presentFancyAlert("Whoops!", msgStr: "Please select your license level.", type: AlertStyle.Info, controller: self)
+            presentFancyAlert("Whoops!", msgStr: "Please select your experience level.", type: AlertStyle.Info, controller: self)
         } else if (userObj.userLicenseNumber.length == 0){
             //AlertController.alert("",message: "Please enter a license number.")
             presentFancyAlert("Whoops!", msgStr: "Please enter your license number.", type: AlertStyle.Info, controller: self)
@@ -172,14 +172,13 @@ class WEditProfileVC: UIViewController ,UITableViewDelegate,UITableViewDataSourc
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        let arr = ["G","G1","G2"]
+        let arr = ["G1","G2","G"]
         userObj.userLicenseLevel = arr[row]
-        print(userObj.userLicenseLevel)
         editAccountTableView.reloadData()
     }
    
      func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        let arr = ["G","G1","G2"]
+        let arr = ["1-2 years","2-5 years","5+ years"]
         return arr[row]
     }
     //MARK:- UITableView Delegate Methods
@@ -245,9 +244,24 @@ class WEditProfileVC: UIViewController ,UITableViewDelegate,UITableViewDataSourc
             break
             
         case 6:
-            cell.commonTextField.placeholder = "License Level"
-            print(userObj.userLicenseLevel)
-            cell.commonTextField.text = userObj.userLicenseLevel
+            cell.commonTextField.placeholder = "Experience"
+            
+            switch(userObj.userLicenseLevel)
+            {
+            case "G1":
+                cell.commonTextField.text = "0-2 years"
+                break
+            case "G2":
+                cell.commonTextField.text = "2-5 years"
+                break
+            case "G":
+                cell.commonTextField.text = "5+ years"
+                break
+            default:
+                cell.commonTextField.text = "N/A"
+                break
+            }
+            
             cell.commonTextField.inputView = optionPicker
             cell.commonTextField.inputAccessoryView = addToolBar("one", btnTag: cell.commonTextField.tag)
 
@@ -270,26 +284,26 @@ class WEditProfileVC: UIViewController ,UITableViewDelegate,UITableViewDataSourc
     func textFieldDidEndEditing(_ textField: UITextField) {
         switch (textField.tag) {
         case 551:
-            userObj.userPassword = textField.text!
+            userObj.userPassword = textField.text!.trimWhiteSpace()
             self.passwordEdited = true;
             break
         case 552:
-            userObj.userFName = textField.text!
+            userObj.userFName = textField.text!.trimWhiteSpace()
             break
         case 553:
-            userObj.userLName = textField.text!
+            userObj.userLName = textField.text!.trimWhiteSpace()
             break
         case 554:
-            userObj.userPhone = textField.text!
+            userObj.userPhone = textField.text!.trimWhiteSpace()
             break
         case 555:
-            userObj.userLocation = textField.text!
+            userObj.userLocation = textField.text!.trimWhiteSpace()
             break
         case 556:
 //            userObj.userLicenseLevel = textField.text!
             break
         default:
-            userObj.userLicenseNumber = textField.text!
+            userObj.userLicenseNumber = textField.text!.trimWhiteSpace()
             break
         }
     }
@@ -471,7 +485,7 @@ class WEditProfileVC: UIViewController ,UITableViewDelegate,UITableViewDataSourc
     fileprivate func callAPIForUpdateUserProfile() {
         
         if(passwordEdited) {
-            userObj.userPasswordHash = userObj.userPassword.md5()
+            userObj.userPasswordHash = userObj.userPassword.trimWhiteSpace().md5()
         }
         else {
             userObj.userPasswordHash = UserDefaults.standard.value(forKey: "wheelzUserPassword") as! String

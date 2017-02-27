@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         case development, production
     }
     
-    let environment:environmentType = .production
+    let environment:environmentType = .development
     
     var window: UIWindow?
     var navController: UINavigationController?
@@ -59,7 +59,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         UAirship.takeOff()
         UAirship.push().notificationOptions = [.alert, .badge, .sound]
-        //UAirship.push().userPushNotificationsEnabled = true
+        
+        let settings = UIApplication.shared.currentUserNotificationSettings
+        
+        if(settings!.types.contains(.alert)) {
+            UAirship.push().userPushNotificationsEnabled = true
+        }
         
         /*if #available(iOS 10.0, *) {
             UNUserNotificationCenter.current().requestAuthorization(options: [.alert,.sound]) {(accepted, error) in
@@ -145,7 +150,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.distanceFilter = 100
-        locationManager.requestAlwaysAuthorization()
+        locationManager.requestWhenInUseAuthorization()
+        //locationManager.requestAlwaysAuthorization()
         locationManager.startUpdatingLocation()
     }
     
@@ -224,6 +230,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         let tokenChars = (deviceToken as NSData).bytes.bindMemory(to: CChar.self, capacity: deviceToken.count)
+        UAirship.push().userPushNotificationsEnabled = true
         let userId = UserDefaults.standard.value(forKey: "wheelzUserID") as? String ?? ""
         var tokenString = ""
         
@@ -232,38 +239,40 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
         
         print("Device Token:", tokenString)
-        //print("Another Device Token:", UIDevice.current.identifierForVendor!.uuidString)
         
-        if(!userId.isEmpty) {
-            let paramDict = NSMutableDictionary()
-            paramDict[WDeviceToken] = tokenString
-            paramDict[WUserID] = userId
+        if(!tokenString.isEmpty)
+        {
+            if(!userId.isEmpty) {
+                let paramDict = NSMutableDictionary()
+                paramDict[WDeviceToken] = tokenString
+                paramDict[WUserID] = userId
             
-            let apiNameSaveDeviceToken = kAPINameSaveDeviceToken(userId, deviceToken: tokenString)
+                let apiNameSaveDeviceToken = kAPINameSaveDeviceToken(userId, deviceToken: tokenString)
             
-            ServiceHelper.sharedInstance.callAPIWithParameters(paramDict, method: .post, apiName: apiNameSaveDeviceToken, hudType: .default) { (responseObject :AnyObject?, error:NSError?,data:Data?) in
+                ServiceHelper.sharedInstance.callAPIWithParameters(paramDict, method: .post, apiName: apiNameSaveDeviceToken, hudType: .default) { (responseObject :AnyObject?, error:NSError?,data:Data?) in
                 
-                if error != nil {
-                    AlertController.alert("",message: (error?.localizedDescription)!)
-                } else {
-                    if (responseObject != nil) {
-                        let message = responseObject?.object(forKey: "Message") as? String ?? ""
-                        if message != "" {
-                            AlertController.alert("", message: message,controller: self, buttons: ["OK"], tapBlock: { (alertAction, position) -> Void in
-                                if position == 0 {
-                                    // do nothing
-                                }
-                            })
-                        } else {
-                            //nothing, really
-                        }
-                        
+                    if error != nil {
+                        AlertController.alert("",message: (error?.localizedDescription)!)
                     } else {
-                        //uhhh
+                        if (responseObject != nil) {
+                            let message = responseObject?.object(forKey: "Message") as? String ?? ""
+                            if message != "" {
+                                AlertController.alert("", message: message,controller: self, buttons: ["OK"], tapBlock: { (alertAction, position) -> Void in
+                                    if position == 0 {
+                                    // do nothing
+                                    }
+                                })
+                            } else {
+                            //nothing, really
+                            }
+                        
+                        } else {
+                            //uhhh
+                        }
                     }
                 }
             }
-        } else {
+        
             UserDefaults.standard.setValue(tokenString, forKey: "deviceToken")
         }
     }

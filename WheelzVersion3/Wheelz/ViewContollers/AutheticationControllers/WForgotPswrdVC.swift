@@ -67,7 +67,7 @@ class WForgotPswrdVC: UIViewController {
         
         self.view.endEditing(true)
         
-        if ((emailTextField.text?.isEmail()) == true) {
+        if ((emailTextField.text?.trimWhiteSpace().isEmail()) == true) {
             callAPIToSendPassword()
         } else if emailTextField.text?.trimWhiteSpace().length == 0 {
             //alertLabel.text = "Please enter username"
@@ -91,10 +91,10 @@ class WForgotPswrdVC: UIViewController {
         count = 0;
         
         let paramDict = NSMutableDictionary()
-        paramDict[WUserName] = emailTextField.text
+        paramDict[WUserName] = emailTextField.text!.trimWhiteSpace()
         paramDict[WtempPassword] = tempPasswordString
         
-        let apiNameResetPassword = kAPINameGenerateAccessCode(emailTextField.text!)
+        let apiNameResetPassword = kAPINameGenerateAccessCode(emailTextField.text!.trimWhiteSpace())
         
         ServiceHelper.sharedInstance.callAPIWithParameters(paramDict, method:.post, apiName: apiNameResetPassword, hudType: .default) { (result :AnyObject?, error:NSError?,data:Data?) in
             

@@ -17,7 +17,10 @@ class WCustomAnnotation: NSObject,MKAnnotation {
     var subtitle: String?
     var lessonID: String?
     var driverID: String = ""
+    var studentID: String = ""
+    var isConfirmed = false
     var isInstructorRequired = false
+    var type = 0
     
     init(coordinate: CLLocationCoordinate2D) {
         self.coordinate = coordinate

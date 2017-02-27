@@ -194,12 +194,11 @@ class ServiceHelper: NSObject {
                 return getURL(apiName, parameterDict: parameterDict)
             }
         case .put:
-            if apiName == kAPINameUpdateUser()  || apiName == kAPINameUpdateLesson()  || apiName == kAPINameUpdateVehicle(){
+            if apiName == kAPINameUpdateUser()  || apiName == kAPINameUpdateLesson()  || apiName == kAPINameUpdateVehicle() || apiName == kAPINameRateLesson() {
                 return URL(string: urlString)!
             } else {
                 return getURL(apiName, parameterDict: parameterDict)
             }
-//                return getURL(apiName, parameterDict: parameterDict)
         case .delete:
             return getURL(apiName, parameterDict: parameterDict)
             

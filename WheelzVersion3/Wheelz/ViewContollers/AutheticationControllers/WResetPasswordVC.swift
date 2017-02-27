@@ -38,16 +38,16 @@ class WResetPasswordVC: UIViewController {
         
         var isVerified: Bool = false
         
-        if (accessCodeTextField.text!.trimWhiteSpace().length == 0) {
+        if (accessCodeTextField.text!.length == 0) {
             //alertLabel.text = "*Please enter your Access Code"
             presentAlert("", msgStr: "Please enter your access code.", controller: self)
-        }else if (newPasswordTextField.text!.trimWhiteSpace().length == 0) {
+        }else if (newPasswordTextField.text!.length == 0) {
             //alertLabel.text = "*Please enter new password"
             presentAlert("", msgStr: "Please enter your new password.", controller: self)
-        } else if (newPasswordTextField.text!.trimWhiteSpace().length < 8) {
+        } else if (newPasswordTextField.text!.length < 8) {
             //alertLabel.text = "*Password must be of minimum 8 characters"
             presentAlert("", msgStr: "Password must be at least 8 characters long.", controller: self)
-        } else if (confirmPasswordTextField.text!.trimWhiteSpace().length == 0) {
+        } else if (confirmPasswordTextField.text!.length == 0) {
             //alertLabel.text = "*Please enter a confirmation password"
             presentAlert("", msgStr: "Please enter a confirmation password.", controller: self)
         } else if (!(confirmPasswordTextField.text! == newPasswordTextField.text!) ) {
@@ -104,9 +104,9 @@ class WResetPasswordVC: UIViewController {
         count = 0;
         
         let paramDict = NSMutableDictionary()
-        paramDict[WUserName] = userEmail
-        paramDict[WUserPassword] = newPasswordTextField.text!.md5()
-        paramDict[WAccessCode] = accessCodeTextField.text!
+        paramDict[WUserName] = userEmail.trimWhiteSpace()
+        paramDict[WUserPassword] = newPasswordTextField.text!.trimWhiteSpace().md5()
+        paramDict[WAccessCode] = accessCodeTextField.text!.trimWhiteSpace()
         
         let apiNameResetPassword = kAPINameResetPassword(userEmail, password: newPasswordTextField.text!.md5(), accessCode: accessCodeTextField.text!)
         

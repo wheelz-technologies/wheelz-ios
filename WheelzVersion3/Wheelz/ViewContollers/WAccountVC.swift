@@ -32,11 +32,11 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 }
 
 
-class WAccountVC: UIViewController {
+class WAccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     var userInfo = WUserInfo()
+    var reviewsArray = NSMutableArray()
     
-    @IBOutlet weak var licenseLevelLabel: UILabel!
     @IBOutlet weak var userEmailLabel: UILabel!
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var contactLabel: UILabel!
@@ -46,6 +46,8 @@ class WAccountVC: UIViewController {
     @IBOutlet weak var staticLessonLabel: UILabel!
     @IBOutlet weak var ratingImage: UIImageView!
     @IBOutlet weak var hatImage: UIImageView!
+    @IBOutlet weak var reviewsTableView: UITableView!
+    @IBOutlet weak var noReviewsLabel: UILabel!
     
     //MARK:- View Life Cycle
     override func viewDidLoad() {
@@ -57,9 +59,11 @@ class WAccountVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         callAPIForUserProfile()
+        callAPIForGetReviews()
     }
     
     fileprivate func customInit() {
+        self.reviewsTableView.rowHeight = 60
         self.navigationItem.title = "Account"
         self.navigationItem.leftBarButtonItem = WAppUtils.leftBarButton("menuBar", controller: self)
         self.navigationItem.rightBarButtonItem = WAppUtils.rightBarButton("edit_w", controller: self)
@@ -75,8 +79,92 @@ class WAccountVC: UIViewController {
         editProfileVC.userObj = userInfo
         self.navigationController?.pushViewController(editProfileVC, animated: true)
     }
+    
+    //MARK:- Tableview Datasource And Delegate Methods
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return reviewsArray.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "WReviewTVCellID", for: indexPath) as! WReviewTVCell
+        cell.contentView.backgroundColor = RGBA(255, g: 250, b: 250, a: 1)
+        
+        let userReview = reviewsArray.object(at: indexPath.row) as? WUserReview
+         cell.textView.text = (userReview?.text)!
+        
+        switch userReview?.rating
+        {
+        case let x where x == 5:
+            cell.ratingImageView.image = UIImage(named:"star5")!
+            break
+        case let x where x == 4:
+            cell.ratingImageView.image = UIImage(named:"star4")!
+            break
+        case let x where x == 3:
+            cell.ratingImageView.image = UIImage(named:"star3")!
+            break
+        case let x where x == 2:
+            cell.ratingImageView.image = UIImage(named:"star2")!
+            break
+        case let x where x == 1:
+            cell.ratingImageView.image = UIImage(named:"star1")!
+            break
+        default:
+            cell.ratingImageView.image = UIImage(named:"star0")!
+            break
+        }
+        
+        //cell.delegate = self
+        //cell.type = .slidingDoor
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
 
     //MARK:- Web API Section
+    fileprivate func callAPIForGetReviews() {
+        
+        let paramDict = NSMutableDictionary()
+        
+        paramDict[WUserID] = UserDefaults.standard.value(forKey: "wheelzUserID") as? String
+        
+        let apiNameGetReviews = kAPINameGetUserReviews(paramDict.value(forKey: WUserID) as! String)
+        
+        ServiceHelper.sharedInstance.callAPIWithParameters(paramDict, method: .get, apiName: apiNameGetReviews, hudType: .default) { (responseObject :AnyObject?, error:NSError?,data:Data?) in
+            
+            if error != nil {
+                AlertController.alert("",message: (error?.localizedDescription)!)
+            } else {
+                if (responseObject != nil) {
+                    let tempArray = responseObject as? NSMutableArray
+                    if ((tempArray?.count)  < 1 || tempArray == nil)  {
+                        self.noReviewsLabel.isHidden = false
+                        
+                        for constraint in self.view.constraints as [NSLayoutConstraint] {
+                            if constraint.identifier == "viewBottomConstraint" {
+                                constraint.constant = 0
+                                self.view.layoutIfNeeded()
+                                break
+                            }
+                        }
+                        self.reviewsTableView.separatorStyle = UITableViewCellSeparatorStyle.none
+                    } else {
+                        self.noReviewsLabel.isHidden = true
+                        self.reviewsTableView.separatorStyle = UITableViewCellSeparatorStyle.singleLine
+                    }
+                    self.reviewsArray = WUserReview.getUserReviews(responseObject! as! NSMutableArray)
+                    
+                    self.reviewsTableView.reloadData()
+                    
+                }
+            }
+            
+        }
+    }
+    
     fileprivate func callAPIForUserProfile() {
         
         let paramDict = NSMutableDictionary()
@@ -118,24 +206,33 @@ class WAccountVC: UIViewController {
                         if self.userInfo.userPhone == "" {
                             self.contactLabel.text = "Not available"
                         }
-                        self.licenseLevelLabel.text = self.userInfo.userLicenseLevel
+                        
+                        switch(self.userInfo.userLicenseLevel)
+                        {
+                            case "G1":
+                                self.hatImage.image = UIImage(imageLiteralResourceName: "expLevelNovice")
+                                break
+                            case "G2":
+                                self.hatImage.image = UIImage(imageLiteralResourceName: "expLevelExperienced")
+                                break
+                            case "G":
+                                self.hatImage.image = UIImage(imageLiteralResourceName: "expLevelMaster")
+                                break
+                            default:
+                                self.hatImage.isHidden = true
+                                break
+                        }
+                        
                         self.licenseNumberLabel.text = self.userInfo.userLicenseNumber
                         self.lessonCountLabel.text = self.userInfo.lessonCount
                         getRoundImage(self.profileImgView)
                         self.staticLessonLabel.text = (self.userInfo.lessonCount as NSString).integerValue == 1 ? "LESSON" : "LESSONS"
                         if (self.userInfo.userImage != "") {
-                            //self.profileImgView.layer.borderColor = UIColor.gray.cgColor
-                            //self.profileImgView.layer.borderWidth = 2.0
                             (self.profileImgView as! CustomImageView).customInit(self.userInfo.userImage)
                         } else {
                             self.profileImgView.layer.borderColor = UIColor.clear.cgColor
                         }
-                        
-                        if(self.userInfo.isDriver && self.userInfo.isRegisteredDriver)
-                        {
-                            self.hatImage.isHidden = false
-                        }
-                        
+
                         switch self.userInfo.userRating
                         {
                         case let x where x >= 4.8:

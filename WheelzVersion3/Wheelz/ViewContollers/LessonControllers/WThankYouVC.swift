@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Social
 
 class WThankYouVC: UIViewController {
 
@@ -14,7 +15,6 @@ class WThankYouVC: UIViewController {
         super.viewDidLoad()
 
         self.navigationItem.title = "Wheelz"
-        //self.navigationItem.leftBarButtonItem = self.backBarBackButton("backArrow")
         
         self.navigationItem.leftBarButtonItem = nil
         self.navigationItem.setHidesBackButton(true, animated:true);
@@ -22,8 +22,35 @@ class WThankYouVC: UIViewController {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
+    
+    @IBAction func twitterBtnAction(_ sender: Any) {
+        
+        if SLComposeViewController.isAvailable(forServiceType: SLServiceTypeTwitter) {
+            
+            let tweetShare: SLComposeViewController = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
+            tweetShare.setInitialText("I've aced my driving lesson with Wheelz! #LearnWheelz with me: https://appstore.re/ca/NKHBhb.i")
+            
+            self.present(tweetShare, animated: true, completion: nil)
+            
+        } else {
+           presentFancyAlert("Tweet", msgStr: "Please login to your Twitter account to tweet.", type: AlertStyle.Info, controller: self)
+        }
+    }
+    
+    @IBAction func facebookBtnAction(_ sender: Any) {
+        
+        if SLComposeViewController.isAvailable(forServiceType: SLServiceTypeFacebook) {
+            let fbShare: SLComposeViewController = SLComposeViewController(forServiceType: SLServiceTypeFacebook)
+            fbShare.setInitialText("I've aced my driving lesson with Wheelz! #LearnWheelz with me: https://appstore.re/ca/NKHBhb.i")
+            
+            self.present(fbShare, animated: true, completion: nil)
+            
+        } else {
+            presentFancyAlert("Share", msgStr: "Please login to your Facebook account to share.", type: AlertStyle.Info, controller: self)
+        }
+    }
+    
     
     @IBAction func backToMapButtonAction(_ sender: Any) {
         let drawerController = kAppDelegate.navController!.topViewController as! KYDrawerController
@@ -36,15 +63,4 @@ class WThankYouVC: UIViewController {
         drawerController.mainViewController = UINavigationController(rootViewController : mapVC)
         drawerController.setDrawerState(.closed, animated: true)
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

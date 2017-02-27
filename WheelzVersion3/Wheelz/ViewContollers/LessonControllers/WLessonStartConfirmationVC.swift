@@ -11,13 +11,18 @@ import UIKit
 class WLessonStartConfirmationVC: UIView {
 
     @IBOutlet weak var headerLabel: UILabel!
+    @IBOutlet weak var userImageView: CustomImageView!
+    @IBOutlet weak var ratingImageView: UIImageView!
+    @IBOutlet weak var lessonCountLabel: UILabel!
+    @IBOutlet weak var experienceLvlLabel: UIImageView!
+    @IBOutlet weak var userNameLabel: UILabel!
+    @IBOutlet weak var staticLessonLabel: UILabel!
     
     var lessonObj = WLessonInfo()
-    var isDriver = UserDefaults.standard.value(forKey: "wheelzIsDriver") as! Bool
+    var userInfo = WUserInfo()
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        //addSubviewWithBounce(lessonView)
     }
     
     //MARK:- Helper Methods
@@ -39,69 +44,142 @@ class WLessonStartConfirmationVC: UIView {
         theView.layer.transform = CATransform3DIdentity;
     }
     
-    func customInit () {
-        if (self.isDriver) {
-            self.headerLabel.text = "Your student wants to start the lesson."
-        } else {
-            self.headerLabel.text = "Your driver wants to start the lesson."
-        }
+    func customInit() {
+        callAPIForUserProfile()
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(WLessonStartConfirmationVC.imageTapped))
+        userImageView.addGestureRecognizer(tapGestureRecognizer)
     }
     
     @IBAction func confirmBtnAction(_ sender: Any) {
-        callAPIToStartLesson()
+        callAPIToConfirmRejectLesson(confirmed: true)
     }
 
     @IBAction func startLaterBtnAction(_ sender: Any) {
-        //send .PUT to set other party's claim to false
-        self.removeFromSuperview()
+        AlertController.alert("Reject claim", message: "Rejecting this driver's claim will remove him or her from this lesson. Are you sure?",controller: (kAppDelegate.window?.rootViewController)!, buttons: ["Cancel","Yes, reject"], tapBlock: { (alertAction, position) -> Void in
+            if position == 1 {
+                self.callAPIToConfirmRejectLesson(confirmed: false)
+            }
+        })
     }
     
+    func imageTapped()
+    {
+    let drawerController = kAppDelegate.navController!.topViewController as! KYDrawerController
+    let userProfileView = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WProfileVCID") as! WProfileVC
+    userProfileView.lessonId = lessonObj.lessonID
 
-    // MARK - Web API methods
+    //driver account should be opened
+    userProfileView.userId = lessonObj.driverID
+    (drawerController.mainViewController as! UINavigationController).pushViewController(userProfileView, animated: true)
+    self.removeFromSuperview()
+    }
     
-    func callAPIToStartLesson() {
+    // MARK - Web API methods
+    fileprivate func callAPIForUserProfile() {
+        
+        let paramDict = NSMutableDictionary()
+        
+        paramDict[WUserID] = self.lessonObj.driverID
+        
+        let apiNameGetUser = kAPINameGetUser(self.lessonObj.driverID)
+        
+        ServiceHelper.sharedInstance.callAPIWithParameters(paramDict, method: .get, apiName: apiNameGetUser, hudType: .default) { (responseObject :AnyObject?, error:NSError?,data:Data?) in
+            
+            if error != nil {
+                AlertController.alert("",message: (error?.localizedDescription)!)
+            } else {
+                if (responseObject != nil) {
+                    let message = responseObject?.object(forKey: "Message") as? String ?? ""
+                    if message != "" {
+                        AlertController.alert("", message: message,controller: self, buttons: ["OK"], tapBlock: { (alertAction, position) -> Void in
+                            if position == 0 {
+                                // do nothing
+                            }
+                        })
+                    } else {
+                        WAppData.appInfoSharedInstance.appUserInfo = WUserInfo.getUserInfo(responseObject!)
+                        
+                        self.userInfo =  WUserInfo.getUserInfo(responseObject!)
+                        self.userNameLabel.text = self.userInfo.userName
+                        
+                        self.lessonCountLabel.text = self.userInfo.lessonCount
+                        getRoundImage(self.userImageView)
+                        self.staticLessonLabel.text = (self.userInfo.lessonCount as NSString).integerValue == 1 ? "LESSON" : "LESSONS"
+                        if (self.userInfo.userImage != "") {
+                            (self.userImageView as CustomImageView).customInit(self.userInfo.userImage)
+                        } else {
+                            self.userImageView.layer.borderColor = UIColor.clear.cgColor
+                        }
+                        
+                        switch(self.userInfo.userLicenseLevel)
+                        {
+                        case "G1":
+                            self.experienceLvlLabel.image = UIImage(imageLiteralResourceName: "expLevelNovice")
+                            break
+                        case "G2":
+                            self.experienceLvlLabel.image = UIImage(imageLiteralResourceName: "expLevelExperienced")
+                            break
+                        case "G":
+                            self.experienceLvlLabel.image = UIImage(imageLiteralResourceName: "expLevelMaster")
+                            break
+                        default:
+                            self.experienceLvlLabel.isHidden = true
+                            break
+                        }
+                        
+                        switch self.userInfo.userRating
+                        {
+                        case let x where x >= 4.8:
+                            self.ratingImageView.image = UIImage(named:"star5")!
+                            break
+                        case let x where x >= 4:
+                            self.ratingImageView.image = UIImage(named:"star4")!
+                            break
+                        case let x where x >= 3:
+                            self.ratingImageView.image = UIImage(named:"star3")!
+                            break
+                        case let x where x >= 2:
+                            self.ratingImageView.image = UIImage(named:"star2")!
+                            break
+                        case let x where x >= 1:
+                            self.ratingImageView.image = UIImage(named:"star1")!
+                            break
+                        default:
+                            self.ratingImageView.image = UIImage(named:"star0")!
+                            break
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func callAPIToConfirmRejectLesson(confirmed: Bool) {
         
         let paramDict = NSMutableDictionary()
         paramDict[WLessonID] = lessonObj.lessonID
-        var apiNameStartLesson = ""
+        paramDict[WConfirmed] = confirmed
         
-        if(self.isDriver) == true {
-            paramDict[WDriverID] = UserDefaults.standard.value(forKey: "wheelzUserID") as? String
-            apiNameStartLesson = kAPINameStartLessonDriver(lessonObj.lessonID, driverId: paramDict.value(forKey: WDriverID) as! String)
-        }
-        else {
-            paramDict[WStudentID] = UserDefaults.standard.value(forKey: "wheelzUserID") as? String
-            apiNameStartLesson = kAPINameStartLessonStudent(lessonObj.lessonID, studentId: paramDict.value(forKey: WStudentID) as! String)
-        }
+        let apiNameConfirmRejectLesson = kAPINameConfirmRejectLesson(lessonObj.lessonID, isConfirmed: confirmed)
         
-        ServiceHelper.sharedInstance.callAPIWithParameters(paramDict, method: .put, apiName: apiNameStartLesson, hudType: .default) { (responseObject :AnyObject?, error:NSError?,data:Data?) in
+        ServiceHelper.sharedInstance.callAPIWithParameters(paramDict, method: .put, apiName: apiNameConfirmRejectLesson, hudType: .default) { (responseObject :AnyObject?, error:NSError?,data:Data?) in
             
             if error != nil {
                 AlertController.alert("",message: (error?.localizedDescription)!)
             } else {
                 if (responseObject != nil) {
                     let message = responseObject?.object(forKey: "message") as? String ?? ""
-                    if message == "OK" {
-                        //TO DO: Redirect to lesson tracking view
-                        DispatchQueue.main.async(execute: {
-                        let drawerController = kAppDelegate.navController!.topViewController as! KYDrawerController
-                        let lessonTrackingView = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WLessonTrackingVCID") as! WLessonTrackingVC
-                        lessonTrackingView.lessonObj = self.lessonObj
-                            
-                        drawerController.mainViewController = UINavigationController(rootViewController : lessonTrackingView)
-                        drawerController.setDrawerState(.closed, animated: true)
+                    if message == "OK" && confirmed {
+                        let lessonTipVc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WConfirmationTipVCID") as! WLessonTipVC
+                           
                         self.removeFromSuperview()
-                        })
-                        
-                        return
+                        kAppDelegate.window?.rootViewController!.present(lessonTipVc, animated: true, completion: nil)
                     } else {
-                        let message = responseObject?.object(forKey: "Message") as? String ?? ""
-                        AlertController.alert("Uh-oh.", message: message)
                         self.removeFromSuperview()
                     }
                 }
             }
-            self.removeFromSuperview()
         }
     }
 

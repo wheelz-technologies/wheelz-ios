@@ -40,6 +40,7 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
     var timer = Timer()
     var startTime = TimeInterval()
     var buttonTimer = Timer()
+    var firstMapLoad = true
     
     // MARK: - UIViewController Life Cycle
     override func viewDidLoad() {
@@ -111,7 +112,10 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
             using:{
                 [weak self] note in
                 self?.updateMapNotificationObserver()
-                self?.userLocationResetAction(UIButton())
+                if(self?.firstMapLoad)! {
+                    self?.userLocationResetAction(UIButton())
+                    self?.firstMapLoad = false
+                }
             })
         if (UserDefaults.standard.value(forKey: "wheelzIsDriver") as? Bool) == true {
             requestLessionButton.isHidden = true
@@ -158,6 +162,7 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
         
         if (UserDefaults.standard.value(forKey: "wheelzIsDriver") as? Bool) == true {
             tipVc.orderedViewControllers = [newViewControllerFromMain(name: "WMapTipVCID"),
+                                            newViewControllerFromMain(name: "WLessonTypesVCID"),
                                             newViewControllerFromMain(name: "WDriverSignUpTip1VCID"),
                                             newViewControllerFromMain(name: "WDriverSignUpTip2VCID"),
                                             newViewControllerFromMain(name: "WDriverSignUpTip3VCID"),
@@ -167,6 +172,7 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
                                             newViewControllerFromMain(name: "WRateLessonTipVCID")]
         } else {
             tipVc.orderedViewControllers = [newViewControllerFromMain(name: "WMapTipVCID"),
+                                            newViewControllerFromMain(name: "WLessonTypesVCID"),
                                             newViewControllerFromMain(name: "WStudentSignUpTip1VCID"),
                                             newViewControllerFromMain(name: "WStudentSignUpTip2VCID"),
                                             newViewControllerFromMain(name: "WStudentSignUpTip3VCID"),
@@ -225,6 +231,9 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
             lessonPosition.subtitle = getTimeFromTimeStamp(lessonObj.lessonTimestamp) 
             lessonPosition.lessonID = lessonObj.lessonID
             lessonPosition.driverID = lessonObj.driverID
+            lessonPosition.studentID = lessonObj.studentID
+            lessonPosition.type = lessonObj.lessonType
+            lessonPosition.isConfirmed = lessonObj.isConfirmed
             lessonPosition.isInstructorRequired = lessonObj.isInstructorRequired
             mapView.addAnnotation(lessonPosition)
         }
@@ -266,13 +275,13 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
         if annotationView == nil {
             annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: "Pin")
             annotationView?.canShowCallout = false
-        }else{
+        } else {
             annotationView?.annotation = annotation
         }
         
-        annotationView?.image = resizeImage(imageName: "wheelzOrange", width: 50, height: 50)
+        annotationView?.image = determineMapMarkerType(marker: (annotation as! WCustomAnnotation))
         
-        if (UserDefaults.standard.value(forKey: "wheelzIsDriver") as? Bool) == true {
+        /*if (UserDefaults.standard.value(forKey: "wheelzIsDriver") as? Bool) == true {
             
             //if lesson is claimed by the active user (driver), show green icon
             if((annotation as! WCustomAnnotation).driverID == (UserDefaults.standard.value(forKey: "wheelzUserID") as? String ?? "")) {
@@ -283,11 +292,14 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
                 annotationView?.image = resizeImage(imageName: "wheelzBlue", width: 55, height: 55)
             }
         } else {
-            //if lesson is claimed, show blue icon, else show orange
-            if (!(annotation as! WCustomAnnotation).driverID.isEmpty) {
+                //if the lesson does not belong to the user, show gray icon
+            if ((annotation as! WCustomAnnotation).studentID != (UserDefaults.standard.value(forKey: "wheelzUserID") as? String ?? "")) {
+                annotationView?.image = resizeImage(imageName: "wheelzGray", width: 48, height: 48)
+            } //if lesson is claimed, show blue icon, else show orange
+            else if (!(annotation as! WCustomAnnotation).driverID.isEmpty) {
                 annotationView?.image = resizeImage(imageName: "wheelzBlue", width: 55, height: 55)
             }
-        }
+        } */
         annotationView?.cornerRadius = (annotationView?.frame.size.width)!/2
         
         let expandTransform:CGAffineTransform = CGAffineTransform(scaleX: 1.1, y: 1.1);
@@ -322,6 +334,11 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
             if customAnnotation.coordinate.latitude  == lessonObj.locLat && customAnnotation.coordinate.longitude == lessonObj.locLon{
                 tempLocArray.add(lessonObj)
             }
+        }
+        
+        if (customAnnotation.studentID != (UserDefaults.standard.value(forKey: "wheelzUserID") as? String ?? "") && (UserDefaults.standard.value(forKey: "wheelzIsDriver") as? Bool) != true)
+        {
+            return;
         }
 
         if tempLocArray.count > 1 {
@@ -370,7 +387,7 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
                  AlertController.alert("", message: msg)
             })
         } else {
-            self.callAPIForGetAvailableLessons()
+            scheduledUpdate()
         }
     }
     
@@ -390,19 +407,20 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
     fileprivate func callAPIForGetAvailableLessons() {
         
         let paramDict = NSMutableDictionary()
+        paramDict["latitude"] = kAppDelegate.location.coordinate.latitude
+        paramDict["longitude"] = kAppDelegate.location.coordinate.longitude
+        
         let userID = UserDefaults.standard.value(forKey: "wheelzUserID") as? String
         var apiNameGetAvailableResources  = String()
         if (UserDefaults.standard.value(forKey: "wheelzIsDriver") as? Bool) == true {
-            apiNameGetAvailableResources = kAPINameGetAvailableDriverLessons(userID!, isInstructor: (UserDefaults.standard.value(forKey: "wheelzIsInstructor") as? Bool)!, lattitude: kAppDelegate.location.coordinate.latitude, longitude: kAppDelegate.location.coordinate.longitude)
+            apiNameGetAvailableResources = kAPINameGetAvailableDriverLessons(userID!, isInstructor: (UserDefaults.standard.value(forKey: "wheelzIsInstructor") as? Bool)!, latitude: kAppDelegate.location.coordinate.latitude, longitude: kAppDelegate.location.coordinate.longitude)
             paramDict[WDriverID] = userID
             paramDict[WUserInstructor] = (UserDefaults.standard.value(forKey: "wheelzIsInstructor") as? Bool)!
-            paramDict["latitude"] = kAppDelegate.location.coordinate.latitude
-            paramDict["longitude"] = kAppDelegate.location.coordinate.longitude
         } else {
-                apiNameGetAvailableResources = kAPINameGetAvailableStudentLessons(userID!)
+                apiNameGetAvailableResources = kAPINameGetAvailableStudentLessons(userID!, latitude: kAppDelegate.location.coordinate.latitude, longitude: kAppDelegate.location.coordinate.longitude)
         }
         
-        ServiceHelper.sharedInstance.callAPIWithParameters(paramDict, method: .get, apiName: apiNameGetAvailableResources, hudType: .default) { (responseObject :AnyObject?, error:NSError?,data:Data?) in
+        ServiceHelper.sharedInstance.callAPIWithParameters(paramDict, method: .get, apiName: apiNameGetAvailableResources, hudType: .smoothProgress) { (responseObject :AnyObject?, error:NSError?,data:Data?) in
             
             if error != nil {
                 //AlertController.alert("",message: (error?.localizedDescription)!)
@@ -460,5 +478,5 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
             }
         }
     }
-
+    
 }

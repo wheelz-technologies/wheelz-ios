@@ -54,7 +54,6 @@ class WLessonTrackingVC: UIViewController, MKMapViewDelegate, CLLocationManagerD
         newCamera.altitude = self.mapView.camera.altitude;
         let annotationsToRemove = mapView.annotations.filter { $0 !== mapView.userLocation }
         mapView.removeAnnotations( annotationsToRemove)
-        //mapView.setUserTrackingMode(MKUserTrackingMode.follow, animated: true)
         
         self.navigationItem.title = "Lesson Progress"
         
@@ -79,7 +78,7 @@ class WLessonTrackingVC: UIViewController, MKMapViewDelegate, CLLocationManagerD
         callAPIForGetRates()
     }
     
-    deinit  {
+    deinit {
         NotificationCenter.default.removeObserver(self)
         timer.invalidate()
         updateTimer.invalidate()
@@ -98,8 +97,9 @@ class WLessonTrackingVC: UIViewController, MKMapViewDelegate, CLLocationManagerD
     
     func backHome(sender: AnyObject) {
         let drawerController = kAppDelegate.navController!.topViewController as! KYDrawerController
-        
         let mapVC = self.storyboard?.instantiateViewController(withIdentifier: "WMapViewControllerID") as! WMapViewController
+        cleanUp()
+        
         drawerController.mainViewController = UINavigationController(rootViewController : mapVC)
         drawerController.setDrawerState(.closed, animated: true)
     }
@@ -160,7 +160,7 @@ class WLessonTrackingVC: UIViewController, MKMapViewDelegate, CLLocationManagerD
                     let message = responseObject?.object(forKey: "message") as? String ?? ""
                     if message == "OK" {
                         //Redirect to "Rate" screen
-                        self.redirectToRateView()
+                        //self.redirectToRateView() //not needed, since the lesson screen will get updated anyway
                     } else {
                         let message = responseObject?.object(forKey: "Message") as? String ?? ""
                         AlertController.alert("Whoops!", message: message)
@@ -177,7 +177,7 @@ class WLessonTrackingVC: UIViewController, MKMapViewDelegate, CLLocationManagerD
 
         let apiNameGetLesson = kAPINameGetLesson(lessonID)
         paramDict[WLessonID] = lessonID
-        ServiceHelper.sharedInstance.callAPIWithParameters(paramDict, method: .get, apiName: apiNameGetLesson, hudType: .default) { (responseObject :AnyObject?, error:NSError?,data:Data?) in
+        ServiceHelper.sharedInstance.callAPIWithParameters(paramDict, method: .get, apiName: apiNameGetLesson, hudType: .smoothProgress) { (responseObject :AnyObject?, error:NSError?,data:Data?) in
             
             if error != nil {
                 AlertController.alert("",message: (error?.localizedDescription)!)
@@ -212,8 +212,8 @@ class WLessonTrackingVC: UIViewController, MKMapViewDelegate, CLLocationManagerD
                 if (responseObject != nil) {
                     let message = responseObject?.object(forKey: "Message") as? String ?? ""
                     if message == "" {
-                        self.regularDriverRate = responseObject?.object(forKey: "regularDriver") as? Double ?? 0.0
-                        self.instructorRate =  responseObject?.object(forKey: "instructor") as? Double ?? 0.0
+                        self.regularDriverRate = responseObject?.object(forKey: "regularDriver") as? Double ?? 30.0
+                        self.instructorRate =  responseObject?.object(forKey: "instructor") as? Double ?? 40.0
                     } else  {
                         AlertController.alert("", message: message,controller: self, buttons: ["OK"], tapBlock: { (alertAction, position) -> Void in
                             if position == 0 {
@@ -231,6 +231,7 @@ class WLessonTrackingVC: UIViewController, MKMapViewDelegate, CLLocationManagerD
         DispatchQueue.main.async(execute: {
             let rateLessonView = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WRateLessonVCID") as! WRateLessonVC
             rateLessonView.lessonObj = self.lessonObj
+            self.cleanUp()
         
             self.navigationController?.pushViewController(rateLessonView, animated: true)
         })
@@ -263,5 +264,14 @@ class WLessonTrackingVC: UIViewController, MKMapViewDelegate, CLLocationManagerD
             return polylineRenderer
         }
         return MKPolylineRenderer()
+    }
+    
+    func cleanUp()
+    {
+        self.updateTimer.invalidate()
+        self.timer.invalidate()
+        
+        self.lessonObj = WLessonInfo()
+        NotificationCenter.default.removeObserver(self)
     }
 }

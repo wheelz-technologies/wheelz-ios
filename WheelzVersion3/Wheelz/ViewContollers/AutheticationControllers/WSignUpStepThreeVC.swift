@@ -37,16 +37,16 @@ class WSignUpStepThreeVC: UIViewController,UIGestureRecognizerDelegate,UITextFie
         
         var isVerified: Bool = false
         
-        if (stepThreeObj.userName.trimWhiteSpace().length == 0) {
+        if (stepThreeObj.userName.length == 0) {
             //presentAlert("", msgStr: "Please enter your email address.", controller: self)
             presentFancyAlert("Whoops!", msgStr: "Please enter your email address.", type: AlertStyle.Info, controller: self)
         } else if (!stepThreeObj.userName.isEmail()) {
             //presentAlert("", msgStr: "Please enter a valid email address.", controller: self)
             presentFancyAlert("Whoops!", msgStr: "Please enter a valid email address.", type: AlertStyle.Info, controller: self)
-        } else if (stepThreeObj.userPassword.trimWhiteSpace().length == 0) {
+        } else if (stepThreeObj.userPassword.length == 0) {
             //presentAlert("", msgStr: "Please enter a password.", controller: self)
             presentFancyAlert("Whoops!", msgStr: "Please enter a password.", type: AlertStyle.Info, controller: self)
-        } else if (stepThreeObj.userPassword.trimWhiteSpace().length < 8 || !stepThreeObj.userPassword.containsAlphaNumericOnly()) {
+        } else if (stepThreeObj.userPassword.length < 8 || !stepThreeObj.userPassword.containsAlphaNumericOnly()) {
             //presentAlert("", msgStr: "Password must be at least 8 characters long.", controller: self)
             presentFancyAlert("Whoops!", msgStr: "Password must be at least 8 characters long.", type: AlertStyle.Info, controller: self)
         } else {
@@ -59,9 +59,9 @@ class WSignUpStepThreeVC: UIViewController,UIGestureRecognizerDelegate,UITextFie
     // MARK: TextField Delegate Methods
     func textFieldDidEndEditing(_ textField: UITextField) {
         if textField.tag == 500 {
-            stepThreeObj.userName = textField.text!
+            stepThreeObj.userName = textField.text!.trimWhiteSpace()
         } else {
-            stepThreeObj.userPassword = textField.text!
+            stepThreeObj.userPassword = textField.text!.trimWhiteSpace()
             stepThreeObj.userPasswordHash = textField.text!.md5()
         }
     }

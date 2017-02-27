@@ -116,7 +116,7 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
         callAPIForGetLessons(lessonID)
         self.claimLessonButton.isHidden = true
         self.cancelButton.isHidden = true
-//        getRoundImage(self.userPicImageView)
+
        self.userPicImageView.layer.cornerRadius = self.userPicImageView.frame.size.width/2
         self.userPicImageView.clipsToBounds = true
         self.userPicImageView.layer.masksToBounds = true
@@ -150,6 +150,8 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
         lessonPosition.lessonID = lessonObj.lessonID
         lessonPosition.driverID = lessonObj.driverID
         lessonPosition.isInstructorRequired = lessonObj.isInstructorRequired
+        lessonPosition.isConfirmed = lessonObj.isConfirmed
+        lessonPosition.type = lessonObj.lessonType
         newCamera.centerCoordinate = lessonPosition.coordinate
         mapView.addAnnotation(lessonPosition)
         mapView.layer.borderColor = UIColor.lightGray.cgColor
@@ -166,14 +168,15 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
             drawerController.setDrawerState(.closed, animated: true)
             
             delegate?.removeViewWithLessonobj!(lessonObj, isEdit : false,msg:"")
-        } /*else if ((self.isDriver && self.lessonObj.studentStarted && !self.lessonObj.driverStarted) || (!self.isDriver && !self.lessonObj.studentStarted && self.lessonObj.driverStarted)) {
+        } else if (!self.isDriver && !self.lessonObj.driverID.isEmpty && !self.lessonObj.isConfirmed) {
             let confirmLessonView = Bundle.main.loadNibNamed("WLessonStartConfirmationVC", owner: nil, options: nil)?[0] as! WLessonStartConfirmationVC
             confirmLessonView.lessonObj = self.lessonObj
             confirmLessonView.customInit()
             confirmLessonView.frame = (kAppDelegate.window?.bounds)!
             
             kAppDelegate.window?.rootViewController!.view.addSubview(confirmLessonView)
-        }*/ else if (self.lessonObj.finished && self.lessonObj.paid && (!self.isDriver && !self.lessonObj.studentRated || self.isDriver && !self.lessonObj.driverRated)) {
+            delegate?.removeViewWithLessonobj!(lessonObj, isEdit : false,msg:"")
+        } else if (self.lessonObj.finished && self.lessonObj.paid && (!self.isDriver && !self.lessonObj.studentRated || self.isDriver && !self.lessonObj.driverRated)) {
             //redirect to Rate screen
             
             let rateLessonView = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WRateLessonVCID") as! WRateLessonVC
@@ -215,9 +218,9 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
         {
             self.userNameLabel.text = self.lessonObj.lessonHolderName
             self.userPicImageView.setImageWithUrl(URL(string: self.lessonObj.lessonHolderPic)!, placeHolderImage: UIImage(named: "userPic"))
-            self.hatImage.isHidden = true
             self.userTypeLabel.text = "Student"
             driverSelected = false
+            self.switchExperienceImage(self.lessonObj.lessonHolderLicenseLevel)
         } else {
             callAPIToGetUserInfo(userId: lessonObj.driverID)
         }
@@ -327,29 +330,12 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
         }
 
         let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 55, height: 55))
-        imageView.image = UIImage(named: "wheelzOrange");
-        
-        if (UserDefaults.standard.value(forKey: "wheelzIsDriver") as? Bool) == true {
-            
-            //if lesson is claimed by the active user (driver), show green icon
-            if((annotation as! WCustomAnnotation).driverID == userId) {
-                    imageView.image = UIImage(named: "wheelzGreen");
-            } else
-                //if instructor is required, show blue icon, else show orange
-                if ((annotation as! WCustomAnnotation).isInstructorRequired) {
-                    imageView.image = UIImage(named: "wheelzBlue");
-            }
-        } else {
-            //if lesson is claimed, show blue icon, else show orange
-            if (!(annotation as! WCustomAnnotation).driverID.isEmpty) {
-                    imageView.image = UIImage(named: "wheelzBlue");
-            }
-        }
+        imageView.image = determineMapMarkerType(marker: annotation as! WCustomAnnotation)
         
         imageView.layer.cornerRadius = imageView.layer.frame.size.width / 2
         imageView.layer.masksToBounds = true
         
-        anView!.calloutOffset = CGPoint(x: -35, y: -35)
+        //anView!.calloutOffset = CGPoint(x: -35, y: -35)
         anView!.frame = imageView.frame
         anView!.addSubview(imageView)
         
@@ -359,6 +345,11 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
     //MARK:- UIButton Action Methods
     @IBAction func editLessonButtonAction(_ sender: UIButton) {
         if(self.claimLessonButton.titleLabel?.text == "START LESSON") {
+            if !self.lessonObj.isConfirmed {
+                //the lesson is not confirmed
+                presentFancyAlert("Confirmation needed", msgStr: "The student still has to confirm your lesson claim. Sit tight - we'll let you know when that happens!", type: AlertStyle.Info, controller: self)
+                return
+            } else
             if self.lessonObj.lessonTimestamp > Date().addingTimeInterval(600).timeIntervalSince1970 {
                 //the lesson is more than 10 minutes from now
                 presentFancyAlert("A bit too soon!", msgStr: "You can only start your lesson within 10 minutes of scheduled time.", type: AlertStyle.Info, controller: self)
@@ -470,7 +461,7 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
         
         let apiNameGetLesson = kAPINameGetLesson(lessonID)
         paramDict[WLessonID] = lessonID
-        ServiceHelper.sharedInstance.callAPIWithParameters(paramDict, method: .get, apiName: apiNameGetLesson, hudType: .default) { (responseObject :AnyObject?, error:NSError?,data:Data?) in
+        ServiceHelper.sharedInstance.callAPIWithParameters(paramDict, method: .get, apiName: apiNameGetLesson, hudType: .smoothProgress) { (responseObject :AnyObject?, error:NSError?,data:Data?) in
             
             if error != nil {
                 AlertController.alert("",message: (error?.localizedDescription)!)
@@ -483,29 +474,21 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
                                                         } else {
                         self.lessonObj = WLessonInfo.getLessonInfo(responseObject! as! NSMutableDictionary)
                         self.durationLabel.text = self.getExactTime(String(format:"%.2f", self.lessonObj.lessonDuration))
-                        self.userNameLabel.text = self.lessonObj.lessonHolderName                        
-                        self.userPicImageView.setImageWithUrl(URL(string: self.lessonObj.lessonHolderPic)!, placeHolderImage: UIImage(named: "userPic"))
-                        
-                        //self.userPicImageView.layer.borderColor = UIColor.lightGray.cgColor
-                        //self.userPicImageView.layer.borderWidth = 2.0
-                        
-                        if (self.lessonObj.lessonHolderPic != "") {
-                            (self.userPicImageView as! CustomImageView).customInit(self.lessonObj.lessonHolderPic)
-                        }
+
                         self.timeLabel.text = self.getTimeFromTimeStamp(self.lessonObj.lessonTimestamp)
                         self.dateLabel.text = self.getDateFromTimeStamp(self.lessonObj.lessonTimestamp)
-
-                        /*DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high).async(execute: {
-                            for i in stride(from: 0, to: self.lessonObj.lessonAmount + 1, by: 1) {
-                                usleep(40000); // sleep in microseconds
-                                DispatchQueue.main.async(execute: {
-                                       self.priceLabel.text = String(format:"$%.0f", i)
-                                    });
+                        
+                        if(!self.driverSelected) {
+                            self.userNameLabel.text = self.lessonObj.lessonHolderName
+                            self.userPicImageView.setImageWithUrl(URL(string: self.lessonObj.lessonHolderPic)!, placeHolderImage: UIImage(named: "userPic"))
+                            
+                            
+                            if (self.lessonObj.lessonHolderPic != "") {
+                                (self.userPicImageView as! CustomImageView).customInit(self.lessonObj.lessonHolderPic)
                             }
-                            DispatchQueue.main.async(execute: {
-                                self.priceLabel.text = String(format:"$%.0f", self.lessonObj.lessonAmount)
-                            });
-                        }) */
+                            
+                            self.switchExperienceImage(self.lessonObj.lessonHolderLicenseLevel)
+                        }
                         
                         DispatchQueue.main.async(execute: {
                             self.priceLabel.text = String(format:"$%.0f", self.lessonObj.lessonAmount)
@@ -515,6 +498,17 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
                         {
                             self.claimLessonButton.isHidden = true
                             self.cancelButton.isHidden = true
+                            
+                            for subview in self.subviews {
+                                for constraint in subview.constraints as [NSLayoutConstraint] {
+                                    if constraint.identifier == "faresLabelBottomConstraint" {
+                                        constraint.constant = -90
+                                        self.layoutIfNeeded()
+                                        break
+                                    }
+                                }
+                            }
+                            
                         } else {
                         if (self.isDriver) == true {
                             if(self.lessonObj.driverID == "") {
@@ -532,8 +526,10 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
                                 } else {
                                     self.hideCancelButton()
                                     if(!self.lessonObj.driverStarted) {
-                                        self.claimLessonButton.isEnabled = true
-                                        self.claimLessonButton.backgroundColor = kAppLightBlueColor
+                                        if(self.lessonObj.isConfirmed) {
+                                            self.claimLessonButton.isEnabled = true
+                                            self.claimLessonButton.backgroundColor = kAppLightBlueColor
+                                        }
                                     } else {
                                         //if lesson is already started by user (driver)
                                         self.claimLessonButton.isHidden = true
@@ -560,8 +556,10 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
                                 } else {
                                     self.hideCancelButton()
                                         if(!self.lessonObj.studentStarted) {
-                                            self.claimLessonButton.isEnabled = true
-                                            self.claimLessonButton.backgroundColor = kAppLightBlueColor
+                                            if(self.lessonObj.isConfirmed) {
+                                                self.claimLessonButton.isEnabled = true
+                                                self.claimLessonButton.backgroundColor = kAppLightBlueColor
+                                            }
                                         } else {
                                             //if lesson is already started by user (student)
                                             self.claimLessonButton.isHidden = true
@@ -571,7 +569,7 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
                                             }
                                         }
                                 }
-                            }
+                              }
                             }
                         }
                         self.mapView.delegate = self
@@ -821,12 +819,7 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
                             self.driverInfo = WUserInfo.getUserInfo(responseObject!)
                                 self.userNameLabel.text = self.driverInfo!.userFName
                                 self.userPicImageView.setImageWithUrl(URL(string: self.driverInfo!.userImage)!, placeHolderImage: UIImage(named: "userPic"))
-                                if(self.driverInfo!.isRegisteredDriver)
-                                {
-                                    self.hatImage.isHidden = false
-                                } else {
-                                    self.hatImage.isHidden = true
-                                }
+                                self.switchExperienceImage(self.driverInfo!.userLicenseLevel)
                                 self.userTypeLabel.text = "Driver"
                                 self.driverSelected = true
                         }
@@ -855,6 +848,25 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
                     }
                 }
             }
+        }
+    }
+    
+    func switchExperienceImage(_ level: String)
+    {
+        switch(level)
+        {
+        case "G1":
+            self.hatImage.image = UIImage(imageLiteralResourceName: "expLevelNovice")
+            break
+        case "G2":
+            self.hatImage.image = UIImage(imageLiteralResourceName: "expLevelExperienced")
+            break
+        case "G":
+            self.hatImage.image = UIImage(imageLiteralResourceName: "expLevelMaster")
+            break
+        default:
+            self.hatImage.isHidden = true
+            break
         }
     }
 }

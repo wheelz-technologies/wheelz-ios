@@ -45,17 +45,17 @@ class WSignUpStepTwoVC: UIViewController,UIGestureRecognizerDelegate,UITextField
         
         var isVerified: Bool = false
         
-        if (stepTwoObj.userFName.trimWhiteSpace().length == 0) {
+        if (stepTwoObj.userFName.length == 0) {
             presentFancyAlert("Whoops!", msgStr: "Please, enter your first name.", type: AlertStyle.Info, controller: self)
         } else if (!stepTwoObj.userFName.containsAlphabetsOnly()) {
             //presentAlert("", msgStr: "Please enter valid first name.", controller: self)
             presentFancyAlert("Whoops!", msgStr: "Please enter a valid first name.", type: AlertStyle.Info, controller: self)
         }
-        else if (stepTwoObj.isDriver && stepTwoObj.userLName.trimWhiteSpace().length == 0) {
+        else if (stepTwoObj.isDriver && stepTwoObj.userLName.length == 0) {
             //presentAlert("", msgStr: "Please, enter your last name.", controller: self)
             presentFancyAlert("Whoops!", msgStr: "Please, enter your last name.", type: AlertStyle.Info, controller: self)
         }
-        else if (!stepTwoObj.userLName.containsAlphabetsOnly() && stepTwoObj.userLName.trimWhiteSpace().length > 0) {
+        else if (!stepTwoObj.userLName.containsAlphabetsOnly() && stepTwoObj.userLName.length > 0) {
             //presentAlert("", msgStr: "Please enter valid last name.", controller: self)
             presentFancyAlert("Whoops!", msgStr: "Please enter a valid last name.", type: AlertStyle.Info, controller: self)
         } else {
@@ -68,9 +68,9 @@ class WSignUpStepTwoVC: UIViewController,UIGestureRecognizerDelegate,UITextField
     // MARK: TextField Delegate Methods
     func textFieldDidEndEditing(_ textField: UITextField) {
         if textField.tag == 500 {
-            stepTwoObj.userFName = textField.text!
+            stepTwoObj.userFName = textField.text!.trimWhiteSpace()
         } else {
-            stepTwoObj.userLName = textField.text!
+            stepTwoObj.userLName = textField.text!.trimWhiteSpace()
         }
     }
     

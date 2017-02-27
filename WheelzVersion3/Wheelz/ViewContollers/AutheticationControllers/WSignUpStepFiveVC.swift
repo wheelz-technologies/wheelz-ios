@@ -58,7 +58,6 @@ class WSignUpStepFiveVC: UIViewController,UIImagePickerControllerDelegate,UINavi
     
     fileprivate func getCountryAndCityForUser(_ lat : CLLocationDegrees, lon : CLLocationDegrees) {
         let location = CLLocation(latitude: lat, longitude: lon) //changed!!!
-        print(location)
         
         CLGeocoder().reverseGeocodeLocation(location, completionHandler: {(placemarks, error) -> Void in
             print(location)
@@ -218,6 +217,7 @@ class WSignUpStepFiveVC: UIViewController,UIImagePickerControllerDelegate,UINavi
                                 let tipVc = self.storyboard?.instantiateViewController(withIdentifier: "WTipManagerVCID") as! WTipManagerVC
                                 tipVc.orderedViewControllers = [newViewControllerFromMain(name: "WSignUpTipVCID"),
                                                                 newViewControllerFromMain(name: "WStudentSignUpTip1VCID"),
+                                                                newViewControllerFromMain(name: "WLessonTypesVCID"),
                                                                 newViewControllerFromMain(name: "WStudentSignUpTip2VCID"),
                                                                 newViewControllerFromMain(name: "WStudentSignUpTip3VCID")]
                                 

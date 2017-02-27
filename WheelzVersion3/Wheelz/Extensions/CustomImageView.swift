@@ -28,7 +28,9 @@ class CustomImageView: UIImageView {
             self.sd_setImage(with: url, placeholderImage: UIImage(named: "default.png"), options: .cacheMemoryOnly , progress: { [weak self](receivedSize, expectedSize) -> Void in
                 self!.progressIndicatorView.progress = CGFloat(receivedSize)/CGFloat(expectedSize)
             }) { [weak self](image, error, _, _) -> Void in
-                self!.progressIndicatorView.reveal()
+                if (self != nil) {
+                   self!.progressIndicatorView.reveal()
+                }
             }
         }
     }

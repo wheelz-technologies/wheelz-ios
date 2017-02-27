@@ -8,11 +8,11 @@
 
 import UIKit
 
-class WRateLessonVC: UIViewController {
+class WRateLessonVC: UIViewController, UITextViewDelegate {
     
-    @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var totalPriceLabel: UILabel!
     @IBOutlet weak var yourPayLabel: UILabel!
+    @IBOutlet weak var reviewTextField: UITextView!
     
     var regularDriverRate : Double = 0.0
     var instructorRate : Double = 0.0
@@ -20,6 +20,7 @@ class WRateLessonVC: UIViewController {
     
     var lessonObj : WLessonInfo!
     var rating = 3;
+    var reviewText = ""
     var isDriver = UserDefaults.standard.value(forKey: "wheelzIsDriver") as! Bool
     
     //MARK:- View Life Cycle
@@ -41,10 +42,19 @@ class WRateLessonVC: UIViewController {
     func customInit() -> Void {
         self.navigationItem.title = "Rate Lesson"
         callAPIForGetRates()
-        callAPIForGetLessons(lessonObj.lessonID)
         
         self.navigationItem.leftBarButtonItem = nil
         self.navigationItem.setHidesBackButton(true, animated:true);
+        
+        let tapRecognizer = UITapGestureRecognizer()
+        tapRecognizer.addTarget(self, action: #selector(WRateLessonVC.didTapView))
+        self.view.addGestureRecognizer(tapRecognizer)
+        
+        reviewTextField.delegate = self
+    }
+    
+    func didTapView(){
+        self.view.endEditing(true)
     }
     
     //MARK:- UIButton Action Methods
@@ -53,29 +63,50 @@ class WRateLessonVC: UIViewController {
         switch sender.selectedSegmentIndex
         {
         case 0:
-            descriptionLabel.text = "I faced major issues during the lesson.";
+            reviewTextField.text = "[Tap to edit] I faced major issues during the lesson.";
             self.rating = 1
             break
         case 1:
-            descriptionLabel.text = "The overall experience was pretty bad.";
+            reviewTextField.text = "[Tap to edit] The overall experience was pretty bad.";
             self.rating = 2
             break
         case 2:
-            descriptionLabel.text = "Lesson wasn't outstanding, but I didn't have any major issues.";
+            reviewTextField.text = "[Tap to edit] Lesson wasn't outstanding, but I didn't have any major issues.";
             self.rating = 3
             break
         case 3:
-            descriptionLabel.text = "I've had a great time and haven't had any issues at all.";
+            reviewTextField.text = "[Tap to edit] I've had a great time and haven't had any issues at all.";
             self.rating = 4
             break
         default:
-            descriptionLabel.text = "The lesson was absolutely perfect!";
+            reviewTextField.text = "[Tap to edit] The lesson was absolutely perfect!";
             self.rating = 5
             break;
         }
+        
+        reviewTextField.textColor = UIColor.lightGray
+        reviewTextField.endEditing(true)
+        self.reviewText = ""
+    }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        let newText = (textView.text as NSString).replacingCharacters(in: range, with: text)
+        let numberOfChars = newText.characters.count
+        return numberOfChars <= 140;
+    }
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        reviewTextField.textColor = UIColor.black
+        reviewTextField.text = ""
+        self.reviewText = ""
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        self.reviewText = textView.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
     }
     
     @IBAction func submitButtonClicked(_ sender: AnyObject) {
+        self.view.endEditing(true)
         callAPIForRateLesson()
     }
     
@@ -88,8 +119,10 @@ class WRateLessonVC: UIViewController {
         paramDict[WUserID] = userId
         paramDict[WRating] = String(self.rating)
         paramDict[WLessonID] = lessonObj.lessonID
+        paramDict[WText] = self.reviewText.trimWhiteSpace()
         
-        let apiRateLesson = kAPINameRateLesson(paramDict.value(forKey: WUserID) as! String, rating: paramDict.value(forKey: WRating) as! String, lessonId: paramDict.value(forKey: WLessonID) as! String)
+        //let apiRateLesson = kAPINameRateLesson(paramDict.value(forKey: WUserID) as! String, rating: paramDict.value(forKey: WRating) as! String, lessonId: paramDict.value(forKey: WLessonID) as! String)
+        let apiRateLesson = kAPINameRateLesson()
         
         ServiceHelper.sharedInstance.callAPIWithParameters(paramDict, method: .put, apiName: apiRateLesson, hudType: .default) { (responseObject :AnyObject?, error:NSError?,data:Data?) in
             
@@ -139,7 +172,7 @@ class WRateLessonVC: UIViewController {
                         
                         if(self.isDriver) {
                             //calculate the pay
-                            var wheelzShare : Double = self.lessonObj.lessonAmount * self.share / 100
+                            let wheelzShare : Double = self.lessonObj.lessonAmount * (self.share / 100)
                             self.yourPayLabel.text = String(format: "your pay: $%.2f", self.lessonObj.lessonAmount - wheelzShare)
                             self.yourPayLabel.isHidden = false
                         }
@@ -161,21 +194,13 @@ class WRateLessonVC: UIViewController {
                 AlertController.alert("",message: (error?.localizedDescription)!)
             } else {
                 if (responseObject != nil) {
-                    let message = responseObject?.object(forKey: "Message") as? String ?? ""
-                    if message == "" {
-                        self.regularDriverRate = responseObject?.object(forKey: "regularDriver") as? Double ?? 0.0
-                        self.instructorRate =  responseObject?.object(forKey: "instructor") as? Double ?? 0.0
-                        self.share = responseObject?.object(forKey: "share") as? Double ?? 0.0
-                    } else  {
-                        AlertController.alert("", message: message,controller: self, buttons: ["OK"], tapBlock: { (alertAction, position) -> Void in
-                            if position == 0 {
-                                // do nothing
-                            }
-                        })
-                    }
+                    self.regularDriverRate = responseObject?.object(forKey: "regularDriver") as? Double ?? 30.0
+                    self.instructorRate =  responseObject?.object(forKey: "instructor") as? Double ?? 40.0
+                    self.share = responseObject?.object(forKey: "share") as? Double ?? 19.0
                 }
             }
             
+            self.callAPIForGetLessons(self.lessonObj.lessonID)
         }
     }
 }

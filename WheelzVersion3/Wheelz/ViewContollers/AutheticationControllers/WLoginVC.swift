@@ -88,16 +88,16 @@ class WLoginVC: UIViewController,UITextFieldDelegate,UIGestureRecognizerDelegate
         
         var isVerified: Bool = false
         
-        if (userObj.userName.trimWhiteSpace().length == 0) {
+        if (userObj.userName.length == 0) {
             //presentAlert("", msgStr: "Please enter your username.", controller: self)
             presentFancyAlert("Whoops!", msgStr: "Please enter your username.", type: AlertStyle.Info, controller: self)
         } else if (!userObj.userName.isEmail()) {
             //presentAlert("", msgStr: "Please enter a valid username.", controller: self)
             presentFancyAlert("Sorry :(", msgStr: "Please enter a valid username.", type: AlertStyle.Info, controller: self)
-        } else if (userObj.userPassword.trimWhiteSpace().length == 0) {
+        } else if (userObj.userPassword.length == 0) {
             //presentAlert("", msgStr: "Please enter your password.", controller: self)
             presentFancyAlert("Sorry :(", msgStr: "Please enter your password.", type: AlertStyle.Info, controller: self)
-        } else if (userObj.userPassword.trimWhiteSpace().length < 8 || !userObj.userPassword.containsAlphaNumericOnly()) {
+        } else if (userObj.userPassword.length < 8 || !userObj.userPassword.containsAlphaNumericOnly()) {
             //presentAlert("", msgStr: "Password must be at least 8 characters long.", controller: self)
             presentFancyAlert("Sorry :(", msgStr: "Password must be at least 8 characters long.", type: AlertStyle.Info, controller: self)
         } else {
@@ -110,9 +110,9 @@ class WLoginVC: UIViewController,UITextFieldDelegate,UIGestureRecognizerDelegate
     // MARK: TextField Delegate Methods
     func textFieldDidEndEditing(_ textField: UITextField) {
         if textField.tag == 500 {
-            userObj.userName = textField.text!
+            userObj.userName = textField.text!.trimWhiteSpace()
         } else {
-            userObj.userPassword = textField.text!
+            userObj.userPassword = textField.text!.trimWhiteSpace()
             userObj.userPasswordHash = textField.text!.md5()
         }
     }
@@ -131,11 +131,11 @@ class WLoginVC: UIViewController,UITextFieldDelegate,UIGestureRecognizerDelegate
         var str:NSString = textField.text! as NSString
         str = str.replacingCharacters(in: range, with: string) as NSString
         if textField.tag == 500 {
-            if (str.length>55) {
+            if (str.length > 55) {
                 return false
             }
         } else {
-            if (str.length>16) {
+            if (str.length > 16) {
                 return false
             }
             

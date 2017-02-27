@@ -26,6 +26,7 @@ class WStartLessonTipVC: UIViewController {
         {
             let notificationSettings = UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: nil)
             UIApplication.shared.registerUserNotificationSettings(notificationSettings)
+            UIApplication.shared.registerForRemoteNotifications()
         }
     }
 

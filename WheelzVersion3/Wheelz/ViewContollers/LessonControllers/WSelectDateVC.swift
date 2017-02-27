@@ -151,10 +151,14 @@ class WSelectDateVC: UIViewController {
     
     @IBAction func continueButtonAction(_ sender: UIButton) {
         if  ((self.placeTextField.text?.length) > 0) {
-            let instructorVC = self.storyboard?.instantiateViewController(withIdentifier: "WNeedInstructorVCID")as! WNeedInstructorVC
+            /*let instructorVC = self.storyboard?.instantiateViewController(withIdentifier: "WNeedInstructorVCID")as! WNeedInstructorVC
             instructorVC.lessonObj = lessonInfo
             instructorVC.isEdit = self.isEdit
-            self.navigationController?.pushViewController(instructorVC, animated: true)
+            self.navigationController?.pushViewController(instructorVC, animated: true)*/
+            let lessonTypeVC = self.storyboard?.instantiateViewController(withIdentifier: "WSelectSkillVCID") as! WSelectSkillVC
+            lessonTypeVC.lessonObj = lessonInfo
+            lessonTypeVC.isEdit = self.isEdit
+            self.navigationController?.pushViewController(lessonTypeVC, animated: true)
         } else {
             //AlertController.alert("",message: "Please select pickup location.")
             presentFancyAlert("Pickup Location", msgStr: "Please select pickup location.", type: AlertStyle.Info, controller: self)
