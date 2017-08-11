@@ -103,6 +103,7 @@
 		D61164951DEA02990039E267 /* WLessonStartConfirmationVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = D61164931DEA02990039E267 /* WLessonStartConfirmationVC.xib */; };
 		D61164971DEA07D90039E267 /* WLessonTrackingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61164961DEA07D90039E267 /* WLessonTrackingVC.swift */; };
 		D61164991DEA78CA0039E267 /* WThankYouVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61164981DEA78CA0039E267 /* WThankYouVC.swift */; };
+		D6171C161E821C6100A54519 /* profileBg.png in Resources */ = {isa = PBXBuildFile; fileRef = D6171C151E821C6100A54519 /* profileBg.png */; };
 		D61979E61E19E7040032B833 /* whiteLeftArrowIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = D61979E51E19E7040032B833 /* whiteLeftArrowIcon.png */; };
 		D61AEBC71DEE879D00436192 /* SignalRManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61AEBC61DEE879D00436192 /* SignalRManager.swift */; };
 		D61C452D1D8DDCD100B2B95A /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61C452C1D8DDCD100B2B95A /* CustomImageView.swift */; };
@@ -154,6 +155,7 @@
 		D64CA3361DA6DF7400FDF3F1 /* WSetupDriverPaymentsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64CA3351DA6DF7400FDF3F1 /* WSetupDriverPaymentsVC.swift */; };
 		D64E36D31E0C33A4005F479C /* AirshipAppExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D64E36CA1E0C3355005F479C /* AirshipAppExtensions.framework */; };
 		D657562A1DCE35F0002AC399 /* WRateLessonVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65756291DCE35F0002AC399 /* WRateLessonVC.swift */; };
+		D66190BB1EDA536900C6F165 /* WGenericTipVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66190BA1EDA536900C6F165 /* WGenericTipVC.swift */; };
 		D66FA7BC1E1C7F8E0058BF68 /* WTipStudentPaymentsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66FA7BB1E1C7F8E0058BF68 /* WTipStudentPaymentsVC.swift */; };
 		D66FA7C31E1C7FA30058BF68 /* WTipDriverPaymentsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66FA7C21E1C7FA30058BF68 /* WTipDriverPaymentsVC.swift */; };
 		D67384FF1D9ACD52002A6364 /* WCardInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67384FE1D9ACD52002A6364 /* WCardInfo.swift */; };
@@ -398,6 +400,7 @@
 		D61164931DEA02990039E267 /* WLessonStartConfirmationVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WLessonStartConfirmationVC.xib; sourceTree = "<group>"; };
 		D61164961DEA07D90039E267 /* WLessonTrackingVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WLessonTrackingVC.swift; sourceTree = "<group>"; };
 		D61164981DEA78CA0039E267 /* WThankYouVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WThankYouVC.swift; sourceTree = "<group>"; };
+		D6171C151E821C6100A54519 /* profileBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profileBg.png; sourceTree = "<group>"; };
 		D61979E51E19E7040032B833 /* whiteLeftArrowIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whiteLeftArrowIcon.png; sourceTree = "<group>"; };
 		D61AEBC61DEE879D00436192 /* SignalRManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignalRManager.swift; sourceTree = "<group>"; };
 		D61C452C1D8DDCD100B2B95A /* CustomImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomImageView.swift; sourceTree = "<group>"; };
@@ -468,6 +471,7 @@
 		D64CA3351DA6DF7400FDF3F1 /* WSetupDriverPaymentsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WSetupDriverPaymentsVC.swift; sourceTree = "<group>"; };
 		D64E36C41E0C3355005F479C /* AirshipAppExtensions.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AirshipAppExtensions.xcodeproj; path = AirshipAppExtensions/AirshipAppExtensions.xcodeproj; sourceTree = "<group>"; };
 		D65756291DCE35F0002AC399 /* WRateLessonVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WRateLessonVC.swift; sourceTree = "<group>"; };
+		D66190BA1EDA536900C6F165 /* WGenericTipVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WGenericTipVC.swift; sourceTree = "<group>"; };
 		D66FA7BB1E1C7F8E0058BF68 /* WTipStudentPaymentsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WTipStudentPaymentsVC.swift; sourceTree = "<group>"; };
 		D66FA7C21E1C7FA30058BF68 /* WTipDriverPaymentsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WTipDriverPaymentsVC.swift; sourceTree = "<group>"; };
 		D67384FE1D9ACD52002A6364 /* WCardInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WCardInfo.swift; sourceTree = "<group>"; };
@@ -774,6 +778,7 @@
 		42B8F27D1D34BB64003882A0 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				D6171C151E821C6100A54519 /* profileBg.png */,
 				D68124F61D4EEE3F005B2A21 /* wheelOnly.png */,
 				D64CA3331DA56C3200FDF3F1 /* dollarSign.png */,
 				42B8F2801D34F057003882A0 /* wheelzIconMap.png */,
@@ -870,6 +875,7 @@
 				D6F95C651E202AF60082686A /* WRateLessonTipVC.swift */,
 				D6746B2C1E35BEBB00B71903 /* WPaymentSetupTipVC.swift */,
 				D6005E711E494A03009F7901 /* WSelectSkillVC.swift */,
+				D66190BA1EDA536900C6F165 /* WGenericTipVC.swift */,
 			);
 			path = LessonControllers;
 			sourceTree = "<group>";
@@ -1265,6 +1271,7 @@
 				085837D21D43E9C7006E191D /* stars.php.png in Resources */,
 				D61164951DEA02990039E267 /* WLessonStartConfirmationVC.xib in Resources */,
 				D6293EEB1E231B2100044F0C /* studentInfo1.png in Resources */,
+				D6171C161E821C6100A54519 /* profileBg.png in Resources */,
 				D6293EEF1E231BEC00044F0C /* studentLessonTip2.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1391,6 +1398,7 @@
 				D61C45641D8DE45E00B2B95A /* UIView+WebCacheOperation.m in Sources */,
 				42A33E2F1D33BB01001FD6E3 /* WSignUpStepThreeVC.swift in Sources */,
 				D60489CA1DDBD69D00AE9552 /* WLessonTipVC.swift in Sources */,
+				D66190BB1EDA536900C6F165 /* WGenericTipVC.swift in Sources */,
 				D625E52C1D5CE0FD00863E0B /* WAddCardVC.swift in Sources */,
 				5D5932581D53542F001AEAD9 /* WMenuTVCell.swift in Sources */,
 				42EF428B1D38C002005D30F3 /* PKHUD.swift in Sources */,

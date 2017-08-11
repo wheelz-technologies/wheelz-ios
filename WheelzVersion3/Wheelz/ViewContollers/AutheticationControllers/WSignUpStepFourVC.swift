@@ -49,7 +49,7 @@ class WSignUpStepFourVC: UIViewController,UIGestureRecognizerDelegate,UITextFiel
             stepFourObj.userLicenseLevel = "G1"
             certifiedDriverButton.isHidden = true
         } else {
-            //certifiedDriverButton.isHidden = false
+            certifiedDriverButton.isHidden = false
             licenseLevelSegmetController.selectedSegmentIndex = 2
             licenseLevelSegmetController.setEnabled(false , forSegmentAt: 0)
             licenseLevelSegmetController.setEnabled(false , forSegmentAt: 1)
@@ -70,10 +70,8 @@ class WSignUpStepFourVC: UIViewController,UIGestureRecognizerDelegate,UITextFiel
         var isVerified: Bool = false
         
         if (stepFourObj.userLicenseNumber.length == 0) {
-            //presentAlert("", msgStr: "Please enter your license number.", controller: self)
             presentFancyAlert("Whoops!", msgStr: "Please enter your license number.", type: AlertStyle.Info, controller: self)
         } else if ((!stepFourObj.userLicenseNumber.containsAlphaNumericOnly() || stepFourObj.userLicenseNumber.length != 15) && stepFourObj.userLicenseNumber.length > 0) {
-            //presentAlert("", msgStr: "Please enter a valid license number.", controller: self)
             presentFancyAlert("Whoops!", msgStr: "Please enter a valid license number.", type: AlertStyle.Info, controller: self)
         } else {
             isVerified = true

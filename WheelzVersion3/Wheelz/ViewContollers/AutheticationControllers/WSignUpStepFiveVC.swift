@@ -69,11 +69,10 @@ class WSignUpStepFiveVC: UIViewController,UIImagePickerControllerDelegate,UINavi
             
             if placemarks!.count > 0 {
                 let pm = placemarks![0]
-                print(pm.country)
-                if (pm.country != nil) {
-                    self.stepFiveObj.userCountry = pm.country!
+                
+                if (pm.isoCountryCode != nil) {
+                    self.stepFiveObj.userCountry = pm.isoCountryCode!
                     self.stepFiveObj.userCity = pm.locality!
-                    print(pm.locality)
                 }
             } else {
                 print("Problem with the data received from geocoder")
@@ -160,6 +159,11 @@ class WSignUpStepFiveVC: UIViewController,UIImagePickerControllerDelegate,UINavi
     //MARK:- Web API Section
     fileprivate func callAPIForSignUp(_ skip : Bool) {
         
+        if(Locale.current.regionCode == nil || Locale.current.regionCode!.isEmpty) {
+            presentFancyAlert("Whoops!", msgStr: "We cannot determine your country of origin. Please, enable location tracking.", type: AlertStyle.Error, controller: self)
+            return
+        }
+        
         let paramDict = NSMutableDictionary()
         paramDict[WUserName] = stepFiveObj.userName
         paramDict[WUserPassword] = stepFiveObj.userPasswordHash
@@ -168,7 +172,7 @@ class WSignUpStepFiveVC: UIViewController,UIImagePickerControllerDelegate,UINavi
         paramDict[WUserPic] =  ""
         paramDict[WBase64Pic] = skip ? "" : self.imageData != nil ? self.imageData.base64EncodedString() : ""
         paramDict[WUserCity] = stepFiveObj.userCity
-        paramDict[WUserCountry] = stepFiveObj.userCountry
+        paramDict[WUserCountry] = Locale.current.regionCode
         paramDict[WUserLicenseLevel] = stepFiveObj.userLicenseLevel
         paramDict[WUserLicenseNumber] = stepFiveObj.userLicenseNumber
         paramDict[WUserDriver] = stepFiveObj.isDriver
@@ -219,6 +223,8 @@ class WSignUpStepFiveVC: UIViewController,UIImagePickerControllerDelegate,UINavi
                                                                 newViewControllerFromMain(name: "WStudentSignUpTip1VCID"),
                                                                 newViewControllerFromMain(name: "WLessonTypesVCID"),
                                                                 newViewControllerFromMain(name: "WStudentSignUpTip2VCID"),
+                                                                newViewControllerFromMain(name:
+                                                                    "WStudentLessonTip1VCID"),
                                                                 newViewControllerFromMain(name: "WStudentSignUpTip3VCID")]
                                 
                                 kAppDelegate.window?.rootViewController!.present(tipVc, animated: true, completion: nil)

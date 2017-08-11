@@ -68,6 +68,7 @@ class WProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         self.navigationItem.title = "User Profile"
         //self.navigationItem.leftBarButtonItem = WAppUtils.leftBarButton("backArrow", controller: self)
         self.navigationItem.leftBarButtonItem = self.backBarBackButton("backArrow")
+        //self.navigationItem.rightBarButtonItem = WAppUtils.rightBarButton("messageUserIcon", controller: self)
     }
     
     func leftBarButtonAction(_ button : UIButton) {
@@ -89,6 +90,10 @@ class WProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             lessonDetailView.delegate = self.navigationController!.viewControllers[self.navigationController!.viewControllers.count - 1] as! WHistoryVC
             kAppDelegate.window?.rootViewController!.view.addSubview(lessonDetailView)
         }
+    }
+    
+    func rightBarButtonAction(_ button : UIButton) {
+        //TO DO: implement messaging feature
     }
     
     //MARK:- Tableview Datasource And Delegate Methods

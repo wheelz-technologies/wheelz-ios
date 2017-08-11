@@ -41,7 +41,7 @@ class WLessonStartConfirmationVC: UIView {
         bounceAnimation.toValue = 1.0
         bounceAnimation.duration = 0.7
         theView.layer.add(bounceAnimation, forKey: "bounce")
-        theView.layer.transform = CATransform3DIdentity;
+        theView.layer.transform = CATransform3DIdentity
     }
     
     func customInit() {
@@ -52,7 +52,8 @@ class WLessonStartConfirmationVC: UIView {
     }
     
     @IBAction func confirmBtnAction(_ sender: Any) {
-        callAPIToConfirmRejectLesson(confirmed: true)
+        // check if student has payments setup
+        callAPIToCheckCards(confirmed: true)
     }
 
     @IBAction func startLaterBtnAction(_ sender: Any) {
@@ -177,6 +178,53 @@ class WLessonStartConfirmationVC: UIView {
                         kAppDelegate.window?.rootViewController!.present(lessonTipVc, animated: true, completion: nil)
                     } else {
                         self.removeFromSuperview()
+                    }
+                }
+            }
+        }
+    }
+    
+    func callAPIToCheckCards(confirmed: Bool)
+    {
+        let paramDict = NSMutableDictionary()
+        
+        paramDict[WUserID] = UserDefaults.standard.value(forKey: "wheelzUserID") as? String
+        
+        let apiNameGetCards = kAPINameGetAllCards(paramDict.value(forKey: WUserID) as! String)
+        let parentController = UIApplication.shared.keyWindow?.rootViewController
+        
+        //create dialog window
+        let alert = UIAlertController(title: "Payment method", message: "It looks like you haven't added any payment methods yet. Please add one before confirming a lesson!", preferredStyle: .alert)
+        
+        //setup actions
+        let setupPaymentsAction = UIAlertAction(title: "Add Card", style: .default, handler: { (action: UIAlertAction!) -> Void in
+            
+            let drawerController = kAppDelegate.navController!.topViewController as! KYDrawerController
+            let paymentsVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WPaymentsVCID") as! WPaymentsVC
+            
+            drawerController.mainViewController = UINavigationController(rootViewController : paymentsVC)
+            drawerController.setDrawerState(.closed, animated: true)
+            self.removeFromSuperview()
+        })
+        let defaultAction = UIAlertAction(title: "Not Now", style: .cancel, handler: nil)
+        //add actions to the dialog
+        alert.addAction(defaultAction)
+        alert.addAction(setupPaymentsAction)
+
+        ServiceHelper.sharedInstance.callAPIWithParameters(paramDict, method: .get, apiName: apiNameGetCards, hudType: .default) { (responseObject :AnyObject?, error:NSError?,data:Data?) in
+            
+            if error != nil {
+                AlertController.alert("",message: (error?.localizedDescription)!)
+            } else {
+                if (responseObject != nil) {
+                    let tempArray = responseObject as? NSMutableArray
+                    
+                    //if there is a payment method already
+                    if (tempArray != nil && tempArray!.count >= 1) {
+                        self.callAPIToConfirmRejectLesson(confirmed: confirmed)
+                    } else {
+                        //if there are no payment methods setup
+                        parentController!.present(alert, animated: true, completion: nil)
                     }
                 }
             }

@@ -27,7 +27,6 @@ let kAppDarkGrayColor = RGBA(29, g: 35, b: 34, a: 0.2)
 let showLog = true
 
 let kAppDelegate = UIApplication.shared.delegate as! AppDelegate
-let KAppUserID = UserDefaults.standard.value(forKey: "wheelzUserID")
 
 let Window_Width = UIScreen.main.bounds.size.width
 let Window_Height = UIScreen.main.bounds.size.height
@@ -50,8 +49,8 @@ func getRoundRect(_ obj : UIButton){
 
 func getRoundImage(_ obj : UIImageView){
     obj.layer.cornerRadius = obj.frame.size.height/2
-    //obj.layer.borderColor = UIColor.gray.cgColor
-    //obj.layer.borderWidth = 2.0
+    obj.layer.borderColor = UIColor.white.cgColor
+    obj.layer.borderWidth = 4.0
     obj.clipsToBounds = true
 }
 
@@ -192,7 +191,10 @@ func determineMapMarkerType(marker: WCustomAnnotation) -> UIImage
         return UIImage(imageLiteralResourceName: "wheelzOrange")
     }
     
-    if(marker.driverID.isEmpty)
+    if (UserDefaults.standard.value(forKey: "wheelzIsDriver") as? Bool) != true && marker.studentID != UserDefaults.standard.value(forKey: "wheelzUserID") as? String ?? "" {
+        imageName.append("Gray") // it's another user's lesson
+    }
+    else if(marker.driverID.isEmpty)
     {
         imageName.append("Orange") // New Unclaimed Lesson
     }
@@ -206,7 +208,7 @@ func determineMapMarkerType(marker: WCustomAnnotation) -> UIImage
     }
     else
     {
-        imageName.append("Gray") // otherwise Status is either unknown, or it's another user's lesson
+        imageName.append("Gray") // otherwise Status is unknown
     }
     
     return UIImage(imageLiteralResourceName: imageName)

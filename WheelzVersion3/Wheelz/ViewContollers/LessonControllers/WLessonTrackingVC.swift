@@ -13,6 +13,7 @@ class WLessonTrackingVC: UIViewController, MKMapViewDelegate, CLLocationManagerD
 
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var lessonTimeLabel: UILabel!
+    @IBOutlet weak var stopLessonBtn: WCustomButton!
     
     var latDelta:CLLocationDegrees = 0.50
     var longDelta:CLLocationDegrees = 0.50
@@ -159,8 +160,9 @@ class WLessonTrackingVC: UIViewController, MKMapViewDelegate, CLLocationManagerD
                 if (responseObject != nil) {
                     let message = responseObject?.object(forKey: "message") as? String ?? ""
                     if message == "OK" {
-                        //Redirect to "Rate" screen
-                        //self.redirectToRateView() //not needed, since the lesson screen will get updated anyway
+                        self.stopLessonBtn.isEnabled = false
+                        self.stopLessonBtn.backgroundColor = UIColor.lightGray
+                        //Redirect to "Rate" screen will be automatic during next update cycle
                     } else {
                         let message = responseObject?.object(forKey: "Message") as? String ?? ""
                         AlertController.alert("Whoops!", message: message)

@@ -702,7 +702,7 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
                     } else {
                         if(WPaymentSetupDetails.getPaymentSetupDetails(responseObject!).status == "unverified" &&
                            WPaymentSetupDetails.getPaymentSetupDetails(responseObject!).details != "identity document required") {
-                            AlertController.alert("Payments setup", message: "It looks like you haven't set up your payments yet and might not be able to receive money for this lesson. Set up now?",controller: parentController!, buttons: ["No","Yes"], tapBlock: { (alertAction, position) -> Void in
+                            AlertController.alert("Payments setup", message: "Remember, you won't be able to receive your payment until your bank account is set up. Once you complete the setup, we'll deposit your payments directly on a daily basis. Set up now?",controller: parentController!, buttons: ["Later","Yes"], tapBlock: { (alertAction, position) -> Void in
                                 if position == 1 {
                                     let drawerController = kAppDelegate.navController!.topViewController as! KYDrawerController
                                     let paymentsVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WDriverPaymentsVCID") as! WDriverPaymentsVC
@@ -710,6 +710,8 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
                                     self.delegate?.removeViewWithLessonobj!(self.lessonObj, isEdit : false,msg:"")
                                     drawerController.mainViewController = UINavigationController(rootViewController : paymentsVC)
                                     drawerController.setDrawerState(.closed, animated: true)
+                                } else {
+                                    self.callAPIToCheckForVehicles()
                                 }
                             })
                         }

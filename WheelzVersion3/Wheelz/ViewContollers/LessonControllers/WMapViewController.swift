@@ -147,7 +147,7 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
             let lessonLocation = Location(name: "", location: location,
                                           placemark: MKPlacemark(coordinate: coordinates, addressDictionary: [:]))
             
-            callAPIToRequestLesson(location: lessonLocation)
+            requestLesson(location: lessonLocation)
         }
     }
   
@@ -191,10 +191,10 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
     }
     
     func updateButton() {
-        let expandTransform:CGAffineTransform = CGAffineTransform(scaleX: 1.03, y: 1.03);
+        let expandTransform:CGAffineTransform = CGAffineTransform(scaleX: 1.1, y: 1.1);
         
         self.requestLessionButton.transform = expandTransform
-        UIView.animate(withDuration: 2.0,
+        UIView.animate(withDuration: 1.0,
                        delay: 0.0,
                        options: .curveEaseInOut,
                        animations: {
@@ -202,6 +202,22 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
         }, completion: {
             //Code to run after animating
             (value: Bool) in
+            
+            //rotate wheel icon left and right
+            UIView.animate(withDuration: 0.25, animations: {
+                self.requestLessionButton.transform = CGAffineTransform(rotationAngle: 20.0)
+            }, completion: {
+                (value: Bool) in
+                
+                UIView.animate(withDuration: 0.25, animations: {
+                    self.requestLessionButton.transform = CGAffineTransform(rotationAngle: -120.0)
+                }, completion: {
+                    (value: Bool) in
+                    
+                    UIView.animate(withDuration: 0.25, animations: {
+                        self.requestLessionButton.transform = CGAffineTransform(rotationAngle: 0.0)})
+                })
+            })
             return
         })
     }
@@ -237,6 +253,8 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
             lessonPosition.isInstructorRequired = lessonObj.isInstructorRequired
             mapView.addAnnotation(lessonPosition)
         }
+        
+        callAPIForSaveDriverLocation() //if user is a driver, call API to update latest known location
     }
     
     func getDateFromTimeStamp(_ timeStamp : Double) -> String {
@@ -257,8 +275,7 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
 
     // MARK: - UIButton Action Methods
     @IBAction func onRequestLession(_ sender: AnyObject) {
-        //check if student has payment profiles, otherwise requesting lessons is not allowed
-        callAPIToRequestLesson(location: nil)
+        requestLesson(location: nil)
     }
     
     @IBAction func onDistanceSegment(_ sender: AnyObject) {
@@ -437,46 +454,36 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
         }
     }
     
-    //MARK:- Web API Section
-    func callAPIToRequestLesson(location: Location?) {
+    fileprivate func callAPIForSaveDriverLocation() {
         
         let paramDict = NSMutableDictionary()
         
-        paramDict[WUserID] = UserDefaults.standard.value(forKey: "wheelzUserID") as? String
-        
-        let apiNameGetCards = kAPINameGetAllCards(paramDict.value(forKey: WUserID) as! String)
-        
-        ServiceHelper.sharedInstance.callAPIWithParameters(paramDict, method: .get, apiName: apiNameGetCards, hudType: .default) { (responseObject :AnyObject?, error:NSError?,data:Data?) in
-            
-            if error != nil {
-                AlertController.alert("",message: (error?.localizedDescription)!)
-            } else {
-                if (responseObject != nil) {
-                    let tempArray = responseObject as? NSMutableArray
-                    if ((tempArray?.count)  < 1 || tempArray == nil)  {
-                        AlertController.alert("Payment method", message: "It looks like you haven't added any payment methods yet. Add one now?",controller: self, buttons: ["Not Now","Add Card"], tapBlock: { (alertAction, position) -> Void in
-                            if position == 1 {
-                                let drawerController = kAppDelegate.navController!.topViewController as! KYDrawerController
-                                let paymentsVC = self.storyboard?.instantiateViewController(withIdentifier: "WPaymentsVCID") as! WPaymentsVC
-                                
-                                drawerController.mainViewController = UINavigationController(rootViewController : paymentsVC)
-                                drawerController.setDrawerState(.closed, animated: true)
-                            }
-                        })
-                    } else {
-                        self.calloutView.removeFromSuperview()
-                        let selectDateVC = self.storyboard?.instantiateViewController(withIdentifier: "WSelectDateVCID")as! WSelectDateVC
-                        
-                        if(location != nil) {
-                            selectDateVC.location = location
-                        }
-                        
-                        self.navigationController?.pushViewController(selectDateVC, animated: true)
-                    }
-                    
-                }
-            }
+        paramDict[WDriverID] = UserDefaults.standard.value(forKey: "wheelzUserID") as? String
+        paramDict["latitude"] = kAppDelegate.location.coordinate.latitude
+        paramDict["longitude"] = kAppDelegate.location.coordinate.longitude
+
+        var apiNameSaveDriverLocation  = String()
+        if (UserDefaults.standard.value(forKey: "wheelzIsDriver") as? Bool) == true {
+            apiNameSaveDriverLocation = kAPINameSaveDriverLocation(paramDict.value(forKey: WDriverID) as! String, latitude: kAppDelegate.location.coordinate.latitude, longitude: kAppDelegate.location.coordinate.longitude)
+        } else {
+            return
         }
+        
+        ServiceHelper.sharedInstance.callAPIWithParameters(paramDict, method: .post, apiName: apiNameSaveDriverLocation, hudType: .noProgress) { (responseObject :AnyObject?, error:NSError?,data:Data?) in
+                // we don't really care about the result; if the call fails, so be it!
+        }
+    }
+    
+    func requestLesson(location: Location?) {
+        
+        self.calloutView.removeFromSuperview()
+        let selectDateVC = self.storyboard?.instantiateViewController(withIdentifier: "WSelectDateVCID")as! WSelectDateVC
+        
+        if(location != nil) {
+            selectDateVC.location = location
+        }
+        
+        self.navigationController?.pushViewController(selectDateVC, animated: true)
     }
     
 }

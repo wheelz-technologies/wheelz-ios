@@ -91,12 +91,22 @@ class WSetupDriversBankAccountVC: UIViewController, UITextFieldDelegate {
     
     func generateBankToken() {
         let account = STPBankAccount()
+        
         account.accountHolderName = "\(firstName) \(lastName)"
         account.accountHolderType = STPBankAccountHolderType.individual
-        account.country = "CA"
-        account.currency = "CAD"
         account.routingNumber = routingNumberTextField.text!.trimWhiteSpace()
         account.accountNumber = accountNumberTextField.text!.trimWhiteSpace()
+        
+        if(Locale.current.regionCode == nil || Locale.current.currencyCode == nil)
+        {
+            presentFancyAlert("Whoops!", msgStr: "We cannot determine your country of origin. Please, enable location tracking.", type: AlertStyle.Error, controller: self)
+            return
+        }
+        
+        account.country = Locale.current.regionCode
+        account.currency = Locale.current.currencyCode
+        
+        self.userIdentityObj.country = account.country!
         
         let theCompletionHandler: STPTokenCompletionBlock = {token, error in
             if error != nil {
@@ -119,6 +129,7 @@ class WSetupDriversBankAccountVC: UIViewController, UITextFieldDelegate {
         paramDict[WStripeToken] = token.tokenId
         paramDict[WZipCode] = self.userIdentityObj.zipCode
         paramDict[WState] = self.userIdentityObj.state
+        paramDict[WUserCountry] = self.userIdentityObj.country
         paramDict[WUserCity] = self.userIdentityObj.city
         paramDict[WAddressLine1] = self.userIdentityObj.addressLine1
         paramDict[WBirthDay] = self.userIdentityObj.birthDay

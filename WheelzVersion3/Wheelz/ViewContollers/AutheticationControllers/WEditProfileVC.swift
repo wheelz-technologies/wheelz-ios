@@ -237,10 +237,8 @@ class WEditProfileVC: UIViewController ,UITableViewDelegate,UITableViewDataSourc
 
             cell.commonTextField.isUserInteractionEnabled = false
             cell.commonButton.isHidden = false
-            cell.commonButton.addTarget(self, action: #selector(locationPickerButtonAction(_:)),
-                                        for: .touchUpInside)
-            print(self.userObj.userCountry)
-
+            cell.commonTextField.textColor = UIColor.lightGray
+            //cell.commonButton.addTarget(self, action: #selector(locationPickerButtonAction(_:)), for: .touchUpInside)
             break
             
         case 6:
@@ -366,7 +364,7 @@ class WEditProfileVC: UIViewController ,UITableViewDelegate,UITableViewDataSourc
     }
     
     @IBAction func saveButtonAction(_ sender: UIButton) {
-          self.view .endEditing(true)
+        self.view.endEditing(true)
         VerifyInput()
     }
     
@@ -441,7 +439,7 @@ class WEditProfileVC: UIViewController ,UITableViewDelegate,UITableViewDataSourc
                 if let addressDic = pm.addressDictionary {
                     self.userObj.userCountry = addressDic["Country"] as? String ?? ""
                     self.userObj.userCity = addressDic["City"] as? String ?? ""
-                    print(self.userObj.userCity  ,",",self.userObj.userCountry)
+                    
                     if let lines = addressDic["FormattedAddressLines"] as? [String] {
                         print(lines.joined(separator: ", "))
 //                        completion(lines.joinWithSeparator(", "))
@@ -498,8 +496,8 @@ class WEditProfileVC: UIViewController ,UITableViewDelegate,UITableViewDataSourc
         paramDict[WUserPassword] = userObj.userPasswordHash
         paramDict[WUserFName] = userObj.userFName
         paramDict[WUserLName] = userObj.userLName
-        paramDict[WUserCity ] = userObj.userCity
-        paramDict[WUserCountry] = userObj.userCountry
+        paramDict[WUserCity] = userObj.userCity
+        paramDict[WUserCountry] = userObj.userCountry.isEmpty ? Locale.current.regionCode : userObj.userCountry
         paramDict[WBase64Pic] = self.imageData != nil ? self.imageData.base64EncodedString() : ""
         paramDict[WUserPic] = paramDict.value(forKey: WBase64Pic) as! String
            != "" ? "" : userObj.userImageFileName

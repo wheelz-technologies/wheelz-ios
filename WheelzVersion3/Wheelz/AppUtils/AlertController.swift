@@ -60,7 +60,7 @@ open class AlertController {
     open class func alert(_ title: String, message: String,controller : AnyObject, buttons:[String], tapBlock:((UIAlertAction,Int) -> Void)?) -> UIAlertController {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert, buttons: buttons, tapBlock: tapBlock)
         controller.present(alert, animated: true, completion: nil)
-//        instance.topMostController()?.presentViewController(alert, animated: true, completion: nil)
+        //instance.topMostController()?.present(alert, animated: true, completion: nil)
         return alert
     }
     

@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         case development, production
     }
     
-    let environment:environmentType = .development
+    let environment:environmentType = .production
     
     var window: UIWindow?
     var navController: UINavigationController?
@@ -59,12 +59,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         UAirship.takeOff()
         UAirship.push().notificationOptions = [.alert, .badge, .sound]
-        
-        let settings = UIApplication.shared.currentUserNotificationSettings
-        
-        if(settings!.types.contains(.alert)) {
-            UAirship.push().userPushNotificationsEnabled = true
-        }
         
         /*if #available(iOS 10.0, *) {
             UNUserNotificationCenter.current().requestAuthorization(options: [.alert,.sound]) {(accepted, error) in

@@ -53,6 +53,7 @@ func kAPINameRateLesson() -> String {return "\(apiPrefix)Users/RateUser"}
 func kAPINameSaveDeviceToken(_ userId: String, deviceToken: String) -> String {return "\(apiPrefix)Users/{\(userId)}/Post/{\(deviceToken)}/SaveToken"}
 func kAPINameGetUserReviews(_ userId : String) -> String {return "\(apiPrefix)Users/{\(userId)}/GetUserReviews"}
 func kAPINameConfirmRejectLesson(_ lessonId : String, isConfirmed: Bool) -> String {return "\(apiPrefix)Lessons/\(lessonId)/Put/\(isConfirmed)/ConfirmRejectLesson"}
+func kAPINameSaveDriverLocation(_ driverId: String, latitude: Double,longitude: Double) -> String {return "\(apiPrefix)Users/\(driverId)/Save/\(latitude)/Driver/\(longitude)/Location"}
 
 //Parameters Names
 let WUserID = "userId"

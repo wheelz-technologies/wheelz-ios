@@ -20,6 +20,7 @@ class WUserIdentity: NSObject {
     var birthYear : String = ""
     var personalIdNumber : String = ""
     var ip : String = ""
+    var country : String = ""
     
     class func getUserIdentity(_ dict : AnyObject) -> WUserIdentity {
             

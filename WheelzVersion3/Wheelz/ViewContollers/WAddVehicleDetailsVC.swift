@@ -179,6 +179,7 @@ class WAddVehicleDetailsVC: UIViewController, UIImagePickerControllerDelegate, U
                                                             newViewControllerFromMain(name: "WDriverSignUpTip1VCID"),
                                                             newViewControllerFromMain(name: "WLessonTypesVCID"),
                                                             newViewControllerFromMain(name: "WDriverSignUpTip2VCID"),
+                                                            newViewControllerFromMain(name: "WDriverLessonTip1VCID"),
                                                             newViewControllerFromMain(name: "WDriverSignUpTip3VCID")]
                             
                             kAppDelegate.window?.rootViewController!.present(tipVc, animated: true, completion: nil)
