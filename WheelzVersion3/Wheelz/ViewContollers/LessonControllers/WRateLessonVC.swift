@@ -1,9 +1,9 @@
 //
 //  WRateLessonVC.swift
-//  Wheelz
+//  Fender
 //
 //  Created by Arseniy Nikulchenko on 2016-11-05.
-//  Copyright © 2016 Wheelz Technologies Inc. All rights reserved.
+//  Copyright © 2016 Fender Technologies Inc. All rights reserved.
 //
 
 import UIKit
@@ -96,7 +96,7 @@ class WRateLessonVC: UIViewController, UITextViewDelegate {
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        reviewTextField.textColor = UIColor.black
+        reviewTextField.textColor = UIColor.white
         reviewTextField.text = ""
         self.reviewText = ""
     }
@@ -175,6 +175,24 @@ class WRateLessonVC: UIViewController, UITextViewDelegate {
                             let wheelzShare : Double = self.lessonObj.lessonAmount * (self.share / 100)
                             self.yourPayLabel.text = String(format: "your pay: $%.2f", self.lessonObj.lessonAmount - wheelzShare)
                             self.yourPayLabel.isHidden = false
+                        } else {
+                            if(!self.lessonObj.promoCodeID.isEmpty) {
+                                let apiNameGetPromoCode = kAPINameGetPromoCodeById(self.lessonObj.promoCodeID)
+                                
+                                ServiceHelper.sharedInstance.callAPIWithParameters(NSMutableDictionary(), method: .get, apiName: apiNameGetPromoCode, hudType: .noProgress) { (responseObject :AnyObject?, error:NSError?,data:Data?) in
+                                    
+                                    if error != nil {
+                                        return
+                                    } else {
+                                        if (responseObject != nil) {
+                                            // apply promo code to lesson and proceed
+                                            let discount = responseObject!.object(forKey: "discount") as? Double ?? 0
+                                            let discountAmount : Double = self.lessonObj.lessonAmount * discount / 100.0
+                                            self.totalPriceLabel.text = String(format:"$%.0f", self.lessonObj.lessonAmount - discountAmount)
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }

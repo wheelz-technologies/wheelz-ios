@@ -1,12 +1,14 @@
 //
 //  WLoginVC.swift
-//  Wheelz
+//  Fender
 //
 //  Created by Probir Chakraborty on 11/07/16.
-//  Copyright © 2016 Wheelz Technologies Inc. All rights reserved.
+//  Copyright © 2016 Fender Technologies Inc. All rights reserved.
 //
 
 import UIKit
+import SendBirdSDK
+
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
@@ -237,10 +239,18 @@ class WLoginVC: UIViewController,UITextFieldDelegate,UIGestureRecognizerDelegate
                         UserDefaults.standard.synchronize()
                         WAppData.appInfoSharedInstance.appUserInfo = WUserInfo.getUserInfo(responseObject!)
                         //SignalRManager.sharedInstance.manageConnection()
-                        
-                        DispatchQueue.main.async {
-                            self.navigationController?.pushViewController(kAppDelegate.addSidePanel(), animated: false)
-                        }
+
+                        SBDMain.connect(withUserId: UserDefaults.standard.value(forKey: "wheelzUserID") as!String, completionHandler: { (user, error) in
+                            // Connected successfully
+                            
+                            //if error != nil {
+                            //    return
+                            //}
+                            
+                            DispatchQueue.main.async {
+                                self.navigationController?.pushViewController(kAppDelegate.addSidePanel(), animated: false)
+                            }
+                        })
                     }
                     
                 } else {

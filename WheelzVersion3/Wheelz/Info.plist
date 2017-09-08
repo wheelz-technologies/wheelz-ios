@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Wheelz</string>
+	<string>Fender</string>
 	<key>CFBundleDocumentTypes</key>
 	<array/>
 	<key>CFBundleExecutable</key>
@@ -45,13 +45,13 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>Wheelz would like to access your camera.</string>
+	<string>Fender would like to access your camera.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Wheelz needs your location to display lessons around you and track lesson progress.</string>
+	<string>Fender needs your location to display lessons around you and track lesson progress.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Wheelz needs your location to display lessons around you and track lesson progress.</string>
+	<string>Fender needs your location to display lessons around you and track lesson progress.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Wheelz would like to access your photos.</string>
+	<string>Fender would like to access your photos.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>

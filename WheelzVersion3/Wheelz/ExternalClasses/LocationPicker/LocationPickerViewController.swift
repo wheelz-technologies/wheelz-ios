@@ -3,7 +3,7 @@
 //  LocationPicker
 //
 //  Created by Almas Sapargali on 7/29/15.
-//  Copyright (c) Wheelz Technologies Inc. All rights reserved.
+//  Copyright (c) Fender Technologies Inc. All rights reserved.
 //
 
 import UIKit
@@ -116,7 +116,7 @@ open class LocationPickerViewController: UIViewController {
 	
 	open override func loadView() {
 		mapView = MKMapView(frame: UIScreen.main.bounds)
-        mapView.tintColor = kAppOrangeColor
+        mapView.tintColor = kAppBlueColor
 		mapView.mapType = mapType
 		view = mapView
 		

@@ -1,9 +1,9 @@
 //
 //  WAccountController.swift
-//  Wheelz
+//  Fender
 //
 //  Created by Arseniy Nikulchenko on 2016-08-11.
-//  Copyright © 2016 Wheelz Technologies Inc. All rights reserved.
+//  Copyright © 2016 Fender Technologies Inc. All rights reserved.
 //
 
 import UIKit
@@ -87,10 +87,10 @@ class WAccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "WReviewTVCellID", for: indexPath) as! WReviewTVCell
-        cell.contentView.backgroundColor = RGBA(255, g: 250, b: 250, a: 1)
         
         let userReview = reviewsArray.object(at: indexPath.row) as? WUserReview
-         cell.textView.text = (userReview?.text)!
+        cell.textView.text = (userReview?.text)!
+        cell.textView.textColor = UIColor.lightGray
         
         switch userReview?.rating
         {
@@ -229,8 +229,6 @@ class WAccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
                         self.staticLessonLabel.text = (self.userInfo.lessonCount as NSString).integerValue == 1 ? "LESSON" : "LESSONS"
                         if (self.userInfo.userImage != "") {
                             (self.profileImgView as! CustomImageView).customInit(self.userInfo.userImage)
-                        } else {
-                            self.profileImgView.layer.borderColor = UIColor.clear.cgColor
                         }
 
                         switch self.userInfo.userRating

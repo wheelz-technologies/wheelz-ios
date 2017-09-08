@@ -1,12 +1,13 @@
 //
 //  WMenuVC.swift
-//  Wheelz
+//  Fender
 //
 //  Created by Neha Chhabra on 04/08/16.
-//  Copyright © 2016 Wheelz Technologies Inc. All rights reserved.
+//  Copyright © 2016 Fender Technologies Inc. All rights reserved.
 //
 
 import UIKit
+import SendBirdSDK
 
 class WMenuVC: UIViewController,UITableViewDataSource,UITableViewDelegate {
     var menuArray = NSMutableArray()
@@ -156,15 +157,17 @@ class WMenuVC: UIViewController,UITableViewDataSource,UITableViewDelegate {
                     if position == 0 {
                         // do nothing
                     } else if position == 1 {
-                        UserDefaults.standard.setValue("", forKey: "wheelzUserID")
-                        UserDefaults.standard.setValue("", forKey: "wheelzUserName")
-                        UserDefaults.standard.setValue("", forKey: "wheelzUserPassword")
-                        UserDefaults.standard.set(false, forKey: "wheelzIsDriver")
-                        UserDefaults.standard.set(false, forKey: "wheelzIsInstructor")
-                        UserDefaults.standard.setValue("", forKey: "wheelzUserPic")
-                        UserDefaults.standard.synchronize()
-                        //SignalRManager.sharedInstance.manageConnection()
-                        self.navigationController?.popToRootViewController(animated: true)
+                        SBDMain.disconnect(completionHandler: {
+                            UserDefaults.standard.setValue("", forKey: "wheelzUserID")
+                            UserDefaults.standard.setValue("", forKey: "wheelzUserName")
+                            UserDefaults.standard.setValue("", forKey: "wheelzUserPassword")
+                            UserDefaults.standard.set(false, forKey: "wheelzIsDriver")
+                            UserDefaults.standard.set(false, forKey: "wheelzIsInstructor")
+                            UserDefaults.standard.setValue("", forKey: "wheelzUserPic")
+                            UserDefaults.standard.synchronize()
+                            //SignalRManager.sharedInstance.manageConnection()
+                            self.navigationController?.popToRootViewController(animated: true)
+                        })
                     }
                 })
                 

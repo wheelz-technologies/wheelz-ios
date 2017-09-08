@@ -1,13 +1,14 @@
 //
 //  WMapViewController.swift
-//  Wheelz
+//  Fender
 //
 //  Created by Raj Kumar Sharma on 02/08/16.
-//  Copyright © 2016 Wheelz Technologies Inc. All rights reserved.
+//  Copyright © 2016 Fender Technologies Inc. All rights reserved.
 //
 
 import UIKit
 import MapKit
+
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
@@ -38,8 +39,8 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
     var lessonInfo = NSMutableArray()
     
     var timer = Timer()
-    var startTime = TimeInterval()
-    var buttonTimer = Timer()
+    //var startTime = TimeInterval()
+    //var buttonTimer = Timer()
     var firstMapLoad = true
     
     // MARK: - UIViewController Life Cycle
@@ -50,9 +51,9 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
         // Scheduling timer to update map with the interval of 10 seconds
         timer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(WMapViewController.scheduledUpdate), userInfo: nil, repeats: true)
         
-        let aSelector : Selector = #selector(WMapViewController.updateButton)
-        buttonTimer = Timer.scheduledTimer(timeInterval: 8.0, target: self, selector: aSelector, userInfo: nil, repeats: true)
-        startTime = NSDate.timeIntervalSinceReferenceDate
+        //let aSelector : Selector = #selector(WMapViewController.updateButton)
+        //buttonTimer = Timer.scheduledTimer(timeInterval: 8.0, target: self, selector: aSelector, userInfo: nil, repeats: true)
+        //startTime = NSDate.timeIntervalSinceReferenceDate
     }
     
     func scheduledUpdate() {
@@ -82,14 +83,20 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
     deinit  {
         NotificationCenter.default.removeObserver(self)
         timer.invalidate()
-        buttonTimer.invalidate()
+        //buttonTimer.invalidate()
     }
 
     // MARK: - Private Methods
     fileprivate func customInit() {
         let drawerController = navigationController?.parent as! KYDrawerController
         drawerController.navigationController?.isNavigationBarHidden = true
-        self.navigationItem.title = "Wheelz"
+        
+        let image : UIImage = UIImage(named: "fenderLogoWhite.png")!
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 90, height: 70))
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = image
+        self.navigationItem.titleView = imageView
+        
         self.navigationItem.leftBarButtonItem = WAppUtils.leftBarButton("menuBar",controller : self)
         self.navigationItem.rightBarButtonItem = WAppUtils.rightBarButton("infoIcon",controller : self)
         distanceSegment.isHidden = SignUp.isDriving  ? false : true
@@ -97,7 +104,7 @@ class WMapViewController: UIViewController, MKMapViewDelegate, lessonDetailDeleg
         if CLLocationManager.locationServicesEnabled() {
             switch(CLLocationManager.authorizationStatus()) {
             case .notDetermined, .restricted, .denied:
-                presentFancyAlert("Location Services", msgStr: "Wheelz doesn't know where you are :( Please turn ON location in your Device Settings.", type: AlertStyle.Info, controller: self)
+                presentFancyAlert("Location Services", msgStr: "Fender doesn't know where you are :( Please turn ON location in your Device Settings.", type: AlertStyle.Info, controller: self)
                 break
             case .authorizedAlways, .authorizedWhenInUse:
                 break

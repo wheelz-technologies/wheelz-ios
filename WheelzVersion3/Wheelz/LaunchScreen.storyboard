@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="iMP-uG-5ej">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1611" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="iMP-uG-5ej">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -21,27 +22,37 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="wheelOnly.png" translatesAutoresizingMaskIntoConstraints="NO" id="wLc-VB-UGF">
-                                <rect key="frame" x="87.5" y="233.5" width="200" height="200"/>
+                            <imageView userInteractionEnabled="NO" alpha="0.10000000000000001" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="fenderBlueCityBg.png" translatesAutoresizingMaskIntoConstraints="NO" id="hwe-zb-ysa">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="fenderLogoWhite.png" translatesAutoresizingMaskIntoConstraints="NO" id="wLc-VB-UGF">
+                                <rect key="frame" x="31" y="184" width="313" height="300"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="200" id="DWt-6n-Mcx"/>
-                                    <constraint firstAttribute="height" constant="200" id="ezV-qc-or0"/>
+                                    <constraint firstAttribute="height" constant="300" id="ezV-qc-or0"/>
                                 </constraints>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="0.33481882219999998" blue="0.15788724500000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.18039215689999999" green="0.1764705882" blue="0.18039215689999999" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="tintColor" red="0.18039215689999999" green="0.1764705882" blue="0.18039215689999999" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="wLc-VB-UGF" secondAttribute="trailing" constant="15" id="6rC-mY-84K"/>
                             <constraint firstItem="wLc-VB-UGF" firstAttribute="centerX" secondItem="92N-xS-KM6" secondAttribute="centerX" id="7IQ-pT-L8g"/>
+                            <constraint firstItem="uVJ-9F-nzR" firstAttribute="top" secondItem="hwe-zb-ysa" secondAttribute="bottom" id="UcQ-1e-cNR"/>
                             <constraint firstItem="wLc-VB-UGF" firstAttribute="centerY" secondItem="92N-xS-KM6" secondAttribute="centerY" id="XdN-3V-ITz"/>
+                            <constraint firstItem="hwe-zb-ysa" firstAttribute="top" secondItem="92N-xS-KM6" secondAttribute="top" id="aKx-Mq-gAg"/>
+                            <constraint firstItem="hwe-zb-ysa" firstAttribute="leading" secondItem="92N-xS-KM6" secondAttribute="leading" id="ioz-dR-2QH"/>
+                            <constraint firstAttribute="trailing" secondItem="hwe-zb-ysa" secondAttribute="trailing" id="pFd-wI-0Q0"/>
+                            <constraint firstItem="wLc-VB-UGF" firstAttribute="leading" secondItem="92N-xS-KM6" secondAttribute="leadingMargin" constant="15" id="upW-cM-O1e"/>
                         </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Bsa-Ag-5f0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="319" y="569"/>
+            <point key="canvasLocation" x="317.60000000000002" y="568.06596701649175"/>
         </scene>
     </scenes>
     <resources>
-        <image name="wheelOnly.png" width="1080" height="1080"/>
+        <image name="fenderBlueCityBg.png" width="1990" height="1270"/>
+        <image name="fenderLogoWhite.png" width="2547" height="1669"/>
     </resources>
 </document>

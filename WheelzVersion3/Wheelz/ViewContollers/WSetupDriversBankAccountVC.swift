@@ -1,9 +1,9 @@
 //
 //  WSetupDriversBankAccountVC.swift
-//  Wheelz
+//  Fender
 //
 //  Created by Arseniy Nikulchenko on 2016-10-23.
-//  Copyright © 2016 Wheelz Technologies Inc. All rights reserved.
+//  Copyright © 2016 Fender Technologies Inc. All rights reserved.
 //
 
 import UIKit

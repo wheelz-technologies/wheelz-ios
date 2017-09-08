@@ -1,9 +1,9 @@
 //
 //  WLessonInfo.swift
-//  Wheelz
+//  Fender
 //
 //  Created by Probir Chakraborty on 07/08/16.
-//  Copyright © 2016 Wheelz Technologies Inc. All rights reserved.
+//  Copyright © 2016 Fender Technologies Inc. All rights reserved.
 //
 
 import UIKit
@@ -13,6 +13,7 @@ class WLessonInfo: NSObject {
     var lessonID : String = ""
     var studentID : String = ""
     var driverID : String = ""
+    var promoCodeID : String = ""
     var lessonHolderName : String = ""
     var lessonHolderPic : String = ""
     var pic : String = ""

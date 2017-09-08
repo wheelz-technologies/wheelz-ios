@@ -1,13 +1,14 @@
 //
 //  WSignUpStepFiveVC.swift
-//  Wheelz
+//  Fender
 //
 //  Created by Probir Chakraborty on 11/07/16.
-//  Copyright © 2016 Wheelz Technologies Inc. All rights reserved.
+//  Copyright © 2016 Fender Technologies Inc. All rights reserved.
 //
 
 import UIKit
 import CoreLocation
+import SendBirdSDK
 
 class WSignUpStepFiveVC: UIViewController,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
 
@@ -143,7 +144,7 @@ class WSignUpStepFiveVC: UIViewController,UIImagePickerControllerDelegate,UINavi
         picker .dismiss(animated: true, completion: {
             self.profileImageView.image = info[UIImagePickerControllerOriginalImage] as? UIImage
             UIView.animate(withDuration: 4.0, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 7.0, options: UIViewAnimationOptions(), animations: ({
-                self.skipStepButton.setTitle("Continue", for: UIControlState.normal)
+                self.skipStepButton.setTitle("CONTINUE", for: UIControlState.normal)
                 self.imageUploaded = true;
                 self.view.layoutSubviews()
             }), completion: nil)
@@ -207,29 +208,33 @@ class WSignUpStepFiveVC: UIViewController,UIImagePickerControllerDelegate,UINavi
                         WAppData.appInfoSharedInstance.appUserInfo = WUserInfo.getUserInfo(responseObject!)
                         //SignalRManager.sharedInstance.manageConnection()
                         
-                        DispatchQueue.main.async {
-                            if(self.stepFiveObj.isDriver) {
-                                let addVehicleVC = self.storyboard?.instantiateViewController(withIdentifier: "WAddVehicleVCID") as! WAddVehicleVC
-                                addVehicleVC.isUpdateVehicle = false
-                                addVehicleVC.isMainVehicleExists = false
-                                addVehicleVC.isFirstTime = true
-                                
-                                self.navigationController?.pushViewController(addVehicleVC, animated: true)
+                        SBDMain.connect(withUserId: UserDefaults.standard.value(forKey: "wheelzUserID") as!String, completionHandler: { (user, error) in
+                            // Connected successfully
+                            
+                            DispatchQueue.main.async {
+                                if(self.stepFiveObj.isDriver) {
+                                    let addVehicleVC = self.storyboard?.instantiateViewController(withIdentifier: "WAddVehicleVCID") as! WAddVehicleVC
+                                    addVehicleVC.isUpdateVehicle = false
+                                    addVehicleVC.isMainVehicleExists = false
+                                    addVehicleVC.isFirstTime = true
+                                    
+                                    self.navigationController?.pushViewController(addVehicleVC, animated: true)
+                                }
+                                else {
+                                    self.navigationController?.pushViewController(kAppDelegate.addSidePanel(), animated: false)
+                                    let tipVc = self.storyboard?.instantiateViewController(withIdentifier: "WTipManagerVCID") as! WTipManagerVC
+                                    tipVc.orderedViewControllers = [newViewControllerFromMain(name: "WSignUpTipVCID"),
+                                                                    newViewControllerFromMain(name: "WStudentSignUpTip1VCID"),
+                                                                    newViewControllerFromMain(name: "WLessonTypesVCID"),
+                                                                    newViewControllerFromMain(name: "WStudentSignUpTip2VCID"),
+                                                                    newViewControllerFromMain(name:
+                                                                        "WStudentLessonTip1VCID"),
+                                                                    newViewControllerFromMain(name: "WStudentSignUpTip3VCID")]
+                                    
+                                    kAppDelegate.window?.rootViewController!.present(tipVc, animated: true, completion: nil)
+                                }
                             }
-                            else {
-                                self.navigationController?.pushViewController(kAppDelegate.addSidePanel(), animated: false)
-                                let tipVc = self.storyboard?.instantiateViewController(withIdentifier: "WTipManagerVCID") as! WTipManagerVC
-                                tipVc.orderedViewControllers = [newViewControllerFromMain(name: "WSignUpTipVCID"),
-                                                                newViewControllerFromMain(name: "WStudentSignUpTip1VCID"),
-                                                                newViewControllerFromMain(name: "WLessonTypesVCID"),
-                                                                newViewControllerFromMain(name: "WStudentSignUpTip2VCID"),
-                                                                newViewControllerFromMain(name:
-                                                                    "WStudentLessonTip1VCID"),
-                                                                newViewControllerFromMain(name: "WStudentSignUpTip3VCID")]
-                                
-                                kAppDelegate.window?.rootViewController!.present(tipVc, animated: true, completion: nil)
-                            }
-                        }
+                        })
                     }
                     
                 } else {

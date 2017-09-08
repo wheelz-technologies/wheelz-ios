@@ -13,37 +13,37 @@
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "Icon-Spotlight-iPhone-4-5.png",
+      "filename" : "Icon-App-29x29@2x (2).png",
       "scale" : "2x"
     },
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "Icon-Spotlight@2x.png",
+      "filename" : "Icon-App-29x29@3x (2).png",
       "scale" : "3x"
     },
     {
       "size" : "40x40",
       "idiom" : "iphone",
-      "filename" : "Icon-Spotlight-iPhone-7.png",
+      "filename" : "Icon-App-40x40@2x (1).png",
       "scale" : "2x"
     },
     {
       "size" : "40x40",
       "idiom" : "iphone",
-      "filename" : "Icon-Spotlight@2x-1.png",
+      "filename" : "Icon-App-40x40@3x (2).png",
       "scale" : "3x"
     },
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "Icon-App@2x.png",
+      "filename" : "Icon-App-60x60@3x (2).png",
       "scale" : "2x"
     },
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "Icon-App@3x.png",
+      "filename" : "Icon-App-60x60@3x (3).png",
       "scale" : "3x"
     }
   ],

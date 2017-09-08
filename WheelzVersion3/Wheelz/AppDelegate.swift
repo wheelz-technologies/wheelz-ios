@@ -1,9 +1,9 @@
 //
 //  AppDelegate.swift
-//  Wheelz
+//  Fender
 //
 //  Created by Probir Chakraborty on 11/07/16.
-//  Copyright © 2016 Wheelz Technologies Inc. All rights reserved.
+//  Copyright © 2016 Fender Technologies Inc. All rights reserved.
 //
 
 import UIKit
@@ -12,6 +12,7 @@ import Contacts
 import AddressBookUI
 import Stripe
 import AirshipKit
+import SendBirdSDK
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
@@ -20,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         case development, production
     }
     
-    let environment:environmentType = .production
+    let environment:environmentType = .development
     
     var window: UIWindow?
     var navController: UINavigationController?
@@ -30,6 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     var location = CLLocation()
     var sidePanel = KYDrawerController()
+    var receivedPushChannelUrl: String?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         //Reachability.sharedManager!.startMonitoring()
@@ -53,23 +55,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             STPPaymentConfiguration.shared().publishableKey = "pk_live_JPABMHarWq47QctYseeITJnT"
             print("Production mode enabled.")
         }
-        STPTheme.default().accentColor = UIColor(red: CGFloat(255.0/255.0), green: CGFloat(85.0/255.0), blue: CGFloat(40.0/255.0), alpha: CGFloat(100.0))
-        STPTheme.default().primaryBackgroundColor = UIColor(red: CGFloat(255.0/255.0), green: CGFloat(250.0/255.0), blue: CGFloat(250.0/255.0), alpha: CGFloat(100.0))
+        STPTheme.default().accentColor = UIColor(red: CGFloat(255.0/255.0), green: CGFloat(139.0/255.0), blue: CGFloat(13.0/255.0), alpha: CGFloat(100.0))
+        STPTheme.default().primaryBackgroundColor = UIColor.white
+
         //STPPaymentConfiguration.sharedConfiguration().appleMerchantIdentifier = "apple merchant identifier" //to use Apple Pay
         
         UAirship.takeOff()
         UAirship.push().notificationOptions = [.alert, .badge, .sound]
         
-        /*if #available(iOS 10.0, *) {
-            UNUserNotificationCenter.current().requestAuthorization(options: [.alert,.sound]) {(accepted, error) in
-                
-                if !accepted {
-                    print("Notification access denied")
-                }
-            }
-        } else {
-            // Fallback on earlier versions
-        }*/
+        SBDMain.initWithApplicationId("8D593A52-E254-4B6D-809D-AD14DE6BFB9C")
+        SBDMain.setLogLevel(SBDLogLevel.none)
+        SBDOptions.setUseMemberAsMessageSender(true)
         
         return true
     }
@@ -121,11 +117,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
     
     func initializeNavigationBar() {
-        UINavigationBar.appearance().barTintColor = UIColor(red: 64.0/255.0, green: 67.0/255.0, blue: 74.0/255.0, alpha: 1.0)
-        UINavigationBar.appearance().backgroundColor = UIColor(red: 64.0/255.0, green: 67.0/255.0, blue: 74.0/255.0, alpha: 1.0)
+        UINavigationBar.appearance().barTintColor = UIColor(red: 46.0/255.0, green: 45.0/255.0, blue: 46.0/255.0, alpha: 1.0)
+        UINavigationBar.appearance().backgroundColor = UIColor(red: 46.0/255.0, green: 45.0/255.0, blue: 46.0/255.0, alpha: 1.0)
         
         UINavigationBar.appearance().tintColor = UIColor.white
-        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName : UIColor.white, NSFontAttributeName : KAppHeaderFont]
+        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName : UIColor.white, NSFontAttributeName : KAppHeaderFont!]
     }
     
     func isReachable() -> Bool {
@@ -237,6 +233,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         if(!tokenString.isEmpty)
         {
             if(!userId.isEmpty) {
+                SBDMain.registerDevicePushToken(deviceToken, unique: true) { (status, error) in
+                    if error == nil {
+                        if status == SBDPushTokenRegistrationStatus.pending {
+                            
+                        }
+                        else {
+                            
+                        }
+                    }
+                    else {
+                        
+                    }
+                }
+                
                 let paramDict = NSMutableDictionary()
                 paramDict[WDeviceToken] = tokenString
                 paramDict[WUserID] = userId
@@ -276,6 +286,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        
+        if userInfo["sendbird"] != nil {
+            let sendBirdPayload = userInfo["sendbird"] as! Dictionary<String, Any>
+            let channel = (sendBirdPayload["channel"]  as! Dictionary<String, Any>)["channel_url"] as! String
+            let channelType = sendBirdPayload["channel_type"] as! String
+            if channelType == "group_messaging" {
+                self.receivedPushChannelUrl = channel
+            }
+        }
         
         if (application.applicationState == UIApplicationState.active)
         {

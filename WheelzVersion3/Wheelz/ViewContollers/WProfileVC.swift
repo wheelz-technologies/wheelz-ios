@@ -1,12 +1,14 @@
 //
 //  WProfileVC.swift
-//  Wheelz
+//  Fender
 //
 //  Created by Arseniy Nikulchenko on 2016-12-26.
-//  Copyright © 2016 Wheelz Technologies Inc. All rights reserved.
+//  Copyright © 2016 Fender Technologies Inc. All rights reserved.
 //
 
 import UIKit
+import SendBirdSDK
+
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
@@ -68,7 +70,7 @@ class WProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         self.navigationItem.title = "User Profile"
         //self.navigationItem.leftBarButtonItem = WAppUtils.leftBarButton("backArrow", controller: self)
         self.navigationItem.leftBarButtonItem = self.backBarBackButton("backArrow")
-        //self.navigationItem.rightBarButtonItem = WAppUtils.rightBarButton("messageUserIcon", controller: self)
+        self.navigationItem.rightBarButtonItem = WAppUtils.rightBarButton("messageUserIcon", controller: self)
     }
     
     func leftBarButtonAction(_ button : UIButton) {
@@ -93,7 +95,16 @@ class WProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
     
     func rightBarButtonAction(_ button : UIButton) {
-        //TO DO: implement messaging feature
+        SBDMain.connect(withUserId: UserDefaults.standard.value(forKey: "wheelzUserID") as! String, completionHandler: { (user, error) in
+            // Connected successfully
+            
+            SBDGroupChannel.createChannel(withUserIds: [self.userId], isDistinct: true) { (channel, error) in
+                if error != nil {
+                    NSLog("Error: %@", error!)
+                    return
+                }
+            }
+        })
     }
     
     //MARK:- Tableview Datasource And Delegate Methods
@@ -103,10 +114,10 @@ class WProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "WReviewTVCellID", for: indexPath) as! WReviewTVCell
-        cell.contentView.backgroundColor = RGBA(255, g: 250, b: 250, a: 1)
         
         let userReview = reviewsArray.object(at: indexPath.row) as? WUserReview
         cell.textView.text = (userReview?.text)!
+        cell.textView.textColor = UIColor.lightGray
         
         switch userReview?.rating
         {
@@ -157,7 +168,7 @@ class WProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
                     if ((tempArray?.count)  < 1 || tempArray == nil)  {
                         self.noReviewsLabel.isHidden = false
                         self.reviewsTableView.separatorStyle = UITableViewCellSeparatorStyle.none
-                        self.reviewsTableView.separatorColor = UIColor.white
+                        self.reviewsTableView.separatorColor = UIColor.clear
                         
                             for constraint in self.view.constraints as [NSLayoutConstraint] {
                                 if constraint.identifier == "viewBottomConstraint" {
@@ -211,8 +222,6 @@ class WProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
                         self.staticLessonLabel.text = (self.userInfo.lessonCount as NSString).integerValue == 1 ? "LESSON" : "LESSONS"
                         if (self.userInfo.userImage != "") {
                             (self.profileImgView as! CustomImageView).customInit(self.userInfo.userImage)
-                        } else {
-                            self.profileImgView.layer.borderColor = UIColor.clear.cgColor
                         }
                         
                         if(self.userInfo.isDriver)

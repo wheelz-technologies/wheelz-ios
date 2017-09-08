@@ -1,9 +1,9 @@
 //
 //  WLessonDetailView.swift
-//  Wheelz
+//  Fender
 //
 //  Created by Neha Chhabra on 08/09/16.
-//  Copyright © 2016 Wheelz Technologies Inc. All rights reserved.
+//  Copyright © 2016 Fender Technologies Inc. All rights reserved.
 //
 
 import UIKit
@@ -396,7 +396,7 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
         for subview in self.subviews {
             for constraint in subview.constraints as [NSLayoutConstraint] {
                 if constraint.identifier == "claimBtnBottomConstraint" {
-                    constraint.constant = -45
+                    constraint.constant = -65
                     self.layoutIfNeeded()
                     break
                 }
@@ -492,6 +492,25 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
                         
                         DispatchQueue.main.async(execute: {
                             self.priceLabel.text = String(format:"$%.0f", self.lessonObj.lessonAmount)
+                            
+                            if(!self.lessonObj.promoCodeID.isEmpty && !self.isDriver) {
+                                let apiNameGetPromoCode = kAPINameGetPromoCodeById(self.lessonObj.promoCodeID)
+                                
+                                ServiceHelper.sharedInstance.callAPIWithParameters(NSMutableDictionary(), method: .get, apiName: apiNameGetPromoCode, hudType: .noProgress) { (responseObject :AnyObject?, error:NSError?,data:Data?) in
+                                    
+                                    if error != nil {
+                                        return
+                                    } else {
+                                        if (responseObject != nil) {
+                                            // apply promo code to lesson and proceed
+                                            let discount = responseObject!.object(forKey: "discount") as? Double ?? 0
+                                            let discountAmount : Double = self.lessonObj.lessonAmount * discount / 100.0
+                                            
+                                            self.priceLabel.text = String(format:"$%.0f", self.lessonObj.lessonAmount - discountAmount)
+                                        }
+                                    }
+                                }
+                            }
                         });
                         
                         if(self.lessonObj.finished)
@@ -528,7 +547,7 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
                                     if(!self.lessonObj.driverStarted) {
                                         if(self.lessonObj.isConfirmed) {
                                             self.claimLessonButton.isEnabled = true
-                                            self.claimLessonButton.backgroundColor = kAppLightBlueColor
+                                            self.claimLessonButton.backgroundColor = kAppBlueColor
                                         }
                                     } else {
                                         //if lesson is already started by user (driver)
@@ -558,7 +577,7 @@ class WLessonDetailView: UIView ,MKMapViewDelegate {
                                         if(!self.lessonObj.studentStarted) {
                                             if(self.lessonObj.isConfirmed) {
                                                 self.claimLessonButton.isEnabled = true
-                                                self.claimLessonButton.backgroundColor = kAppLightBlueColor
+                                                self.claimLessonButton.backgroundColor = kAppBlueColor
                                             }
                                         } else {
                                             //if lesson is already started by user (student)

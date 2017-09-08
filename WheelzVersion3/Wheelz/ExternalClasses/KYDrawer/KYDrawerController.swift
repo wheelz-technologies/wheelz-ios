@@ -63,7 +63,7 @@ open class KYDrawerController: UIViewController, UIGestureRecognizerDelegate {
     lazy fileprivate var _containerView: UIView = {
         let view = UIView(frame: self.view.frame)
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor(white: 0.0, alpha: 0)
+        view.backgroundColor = UIColor(red: 46.0/255.0, green: 45.0/255.0, blue: 46.0/255.0, alpha: 1.0)
         view.addGestureRecognizer(self.containerViewTapGesture)
         return view
     }()
@@ -168,8 +168,7 @@ open class KYDrawerController: UIViewController, UIGestureRecognizerDelegate {
 //                    views: viewDictionary
 //                )
 //            )
-            self.view.backgroundColor = UIColor(red: 64.0/255.0, green: 67.0/255.0, blue: 74.0/255.0, alpha: 1.0)
-            
+            self.view.backgroundColor = UIColor(red: 46.0/255.0, green: 45.0/255.0, blue: 46.0/255.0, alpha: 1.0)
             mainViewController.didMove(toParentViewController: self)
             
         }

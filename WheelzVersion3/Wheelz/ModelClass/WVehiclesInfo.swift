@@ -1,9 +1,9 @@
 //
 //  WVehiclesInfo.swift
-//  Wheelz
+//  Fender
 //
 //  Created by PROBIR CHAKRABORTY on 28/08/16.
-//  Copyright © 2016 Wheelz Technologies Inc. All rights reserved.
+//  Copyright © 2016 Fender Technologies Inc. All rights reserved.
 //
 
 import UIKit

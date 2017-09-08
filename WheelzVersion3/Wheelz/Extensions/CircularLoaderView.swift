@@ -1,9 +1,9 @@
 //
 //  CircularLoaderView.swift
-//  Wheelz
+//  Fender
 //
 //  Created by Arseniy Nikulchenko on 2016-09-17.
-//  Copyright © 2016 Wheelz Technologies Inc. All rights reserved.
+//  Copyright © 2016 Fender Technologies Inc. All rights reserved.
 //
 
 import UIKit
@@ -43,7 +43,7 @@ class CircularLoaderView: UIView, CAAnimationDelegate {
         circlePathLayer.frame = bounds
         circlePathLayer.lineWidth = 4
         circlePathLayer.fillColor = UIColor.clear.cgColor
-        circlePathLayer.strokeColor = UIColor(red: CGFloat(255.0/255.0), green: CGFloat(85.0/255.0), blue: CGFloat(40.0/255.0), alpha: CGFloat(100.0)).cgColor
+        circlePathLayer.strokeColor = UIColor(red: CGFloat(255.0/255.0), green: CGFloat(139.0/255.0), blue: CGFloat(13.0/255.0), alpha: CGFloat(100.0)).cgColor //light orange color
         layer.addSublayer(circlePathLayer)
         backgroundColor = UIColor.clear
         progress = 0

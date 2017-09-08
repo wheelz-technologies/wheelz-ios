@@ -1,9 +1,9 @@
 //
 //  WVehiclesControllerVC.swift
-//  Wheelz
+//  Fender
 //
 //  Created by Arseniy Nikulchenko on 2016-08-11.
-//  Copyright © 2016 Wheelz Technologies Inc. All rights reserved.
+//  Copyright © 2016 Fender Technologies Inc. All rights reserved.
 //
 
 import UIKit
@@ -191,7 +191,6 @@ class WVehiclesVC: UIViewController,UITableViewDataSource,UITableViewDelegate,BW
                     let tempArray = responseObject as? NSMutableArray
                     if ((tempArray?.count)  < 1 || tempArray == nil)  {
                         self.staticNoRecordLabel.text = "You don't have any vehicles yet. Add one now!"
-                        self.vehiclesTableView.separatorColor = UIColor.white;
                                           } else {
                          self.staticNoRecordLabel.text = ""
                         

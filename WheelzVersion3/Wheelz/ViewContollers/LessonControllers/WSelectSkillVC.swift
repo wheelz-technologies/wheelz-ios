@@ -1,9 +1,9 @@
 //
 //  WSelectSkillVC.swift
-//  Wheelz
+//  Fender
 //
 //  Created by Arseniy Nikulchenko on 2017-02-06.
-//  Copyright © 2017 Wheelz Technologies Inc. All rights reserved.
+//  Copyright © 2017 Fender Technologies Inc. All rights reserved.
 //
 
 import UIKit
@@ -91,6 +91,25 @@ class WSelectSkillVC: UIViewController, UICollectionViewDelegate, UICollectionVi
         } else {
             fareLabel.text = String(format:"$%.0f",lessonObj.lessonDuration *  regularDriverRate)
             lessonObj.lessonAmount = lessonObj.lessonDuration * regularDriverRate
+        }
+        
+        if(!lessonObj.promoCodeID.isEmpty) {
+            let apiNameGetPromoCode = kAPINameGetPromoCodeById(lessonObj.promoCodeID)
+            
+            ServiceHelper.sharedInstance.callAPIWithParameters(NSMutableDictionary(), method: .get, apiName: apiNameGetPromoCode, hudType: .noProgress) { (responseObject :AnyObject?, error:NSError?,data:Data?) in
+                
+                if error != nil {
+                    return
+                } else {
+                    if (responseObject != nil) {
+                        // apply promo code to lesson and proceed
+                        let discount = responseObject!.object(forKey: "discount") as? Double ?? 0
+                        let discountAmount : Double = self.lessonObj.lessonAmount * discount / 100.0
+                        
+                        self.fareLabel.text = String(format:"$%.0f", self.lessonObj.lessonAmount - discountAmount)
+                    }
+                }
+            }
         }
     }
 

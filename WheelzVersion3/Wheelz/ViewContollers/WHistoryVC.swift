@@ -1,9 +1,9 @@
 //
 //  WHistoryController.swift
-//  Wheelz
+//  Fender
 //
 //  Created by Arseniy Nikulchenko on 2016-08-11.
-//  Copyright © 2016 Wheelz Technologies Inc. All rights reserved.
+//  Copyright © 2016 Fender Technologies Inc. All rights reserved.
 //
 
 import UIKit
@@ -108,7 +108,7 @@ class WHistoryVC: UIViewController,UITableViewDataSource,UITableViewDelegate,les
         cell.lessonId = historyInfo.lessonID
         
         if historyInfo.lessonStatus == "Completed" {
-            cell.statusLabel.textColor = RGBA(0, g: 191, b: 255, a: 1)
+            cell.statusLabel.textColor = kAppBlueColor
             cell.statusLabel.text = historyInfo.lessonStatus
         } else if historyInfo.lessonStatus == "Started" {
             cell.statusLabel.textColor = kAppOrangeColor

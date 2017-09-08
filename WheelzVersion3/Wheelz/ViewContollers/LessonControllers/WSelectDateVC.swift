@@ -1,9 +1,9 @@
 //
 //  WSelectDateVC.swift
-//  Wheelz
+//  Fender
 //
 //  Created by Neha Chhabra on 04/08/16.
-//  Copyright © 2016 Wheelz Technologies Inc. All rights reserved.
+//  Copyright © 2016 Fender Technologies Inc. All rights reserved.
 //
 
 import UIKit
@@ -11,6 +11,8 @@ import CoreLocation
 import MapKit
 import Contacts
 import AddressBookUI
+import SCLAlertView
+
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
@@ -44,6 +46,7 @@ class WSelectDateVC: UIViewController {
     @IBOutlet var placeTextField: UITextField!
     
     var lessonInfo = WLessonInfo()
+    var promoCode = ""
     var isEdit = false
     
     var location: Location? {
@@ -155,14 +158,74 @@ class WSelectDateVC: UIViewController {
             instructorVC.lessonObj = lessonInfo
             instructorVC.isEdit = self.isEdit
             self.navigationController?.pushViewController(instructorVC, animated: true)*/
-            let lessonTypeVC = self.storyboard?.instantiateViewController(withIdentifier: "WSelectSkillVCID") as! WSelectSkillVC
-            lessonTypeVC.lessonObj = lessonInfo
-            lessonTypeVC.isEdit = self.isEdit
-            self.navigationController?.pushViewController(lessonTypeVC, animated: true)
+            
+            if(self.lessonInfo.promoCodeID.isEmpty) {
+            
+            DispatchQueue.main.async {
+                let appearance = SCLAlertView.SCLAppearance(
+                    showCloseButton: false
+                )
+                
+                let alert = SCLAlertView(appearance: appearance)
+                alert.modalPresentationStyle = .overCurrentContext
+                alert.view.layer.zPosition = 1
+                let promoCodeInput = alert.addTextField("Enter promo code")
+                
+                alert.addButton("Add") {
+                    self.promoCode = promoCodeInput.text ?? ""
+                    
+                    if(self.promoCode.isEmpty) {
+                        promoCodeInput.setBorder(kAppOrangeColor, borderWidth: 2.0)
+                        return
+                    }
+                    
+                    // Promo Code logic
+                    let userId = UserDefaults.standard.value(forKey: "wheelzUserID") as? String
+                    
+                    let apiNameGetPromoCode = kAPINameGetPromoCode(userId ?? "", code: self.promoCode)
+                    
+                    ServiceHelper.sharedInstance.callAPIWithParameters(NSMutableDictionary(), method: .get, apiName: apiNameGetPromoCode, hudType: .smoothProgress) { (responseObject :AnyObject?, error:NSError?,data:Data?) in
+                        
+                        if error != nil {
+                            promoCodeInput.setBorder(kAppOrangeColor, borderWidth: 2.0)
+                            return
+                        } else {
+                            if (responseObject != nil) {
+                                // apply promo code to lesson and proceed
+                                self.lessonInfo.promoCodeID = responseObject!.object(forKey: "promoCodeId") as? String ?? ""
+                                }
+                                self.nextStep()
+                            }
+                        }
+                    }
+                
+                    alert.addButton("Skip") {
+                        // skip Promo Code logic
+                        self.nextStep()
+                    }
+                
+                    alert.showEdit(
+                        "Add Promo Code",
+                        subTitle: "Got a promo code? Use it for a discount!",
+                        closeButtonTitle: "Skip",
+                        colorStyle: 185514,
+                        colorTextButton: 0xFFFFFF)
+                }
+            } else {
+            //lesson already has a promo code applied
+            self.nextStep()
+        }
         } else {
             //AlertController.alert("",message: "Please select pickup location.")
             presentFancyAlert("Pickup Location", msgStr: "Please select pickup location.", type: AlertStyle.Info, controller: self)
         }
+    }
+    
+    func nextStep() {
+        let lessonTypeVC = self.storyboard?.instantiateViewController(withIdentifier: "WSelectSkillVCID") as! WSelectSkillVC
+        lessonTypeVC.lessonObj = lessonInfo
+        lessonTypeVC.isEdit = self.isEdit
+        self.navigationController?.pushViewController(lessonTypeVC, animated: true)
     }
     
     func setupLocationPicker() -> LocationPickerViewController {

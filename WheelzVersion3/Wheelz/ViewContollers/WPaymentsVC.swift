@@ -1,9 +1,9 @@
 //
 //  WPaymentsController.swift
-//  Wheelz
+//  Fender
 //
 //  Created by Arseniy Nikulchenko on 2016-08-11.
-//  Copyright © 2016 Wheelz Technologies Inc. All rights reserved.
+//  Copyright © 2016 Fender Technologies Inc. All rights reserved.
 //
 
 import UIKit
@@ -168,7 +168,6 @@ class WPaymentsVC: UIViewController,UITableViewDataSource,UITableViewDelegate, S
                     let tempArray = responseObject as? NSMutableArray
                     if ((tempArray?.count)  < 1 || tempArray == nil)  {
                         self.staticNoRecordLabel.text = "You haven't added any cards yet. Add one now!"
-                        self.paymentTableView.separatorColor = UIColor.white;
                         
                     } else {
                         self.staticNoRecordLabel.text = ""

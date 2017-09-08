@@ -3,7 +3,7 @@
 //  WheelzTests
 //
 //  Created by Probir Chakraborty on 11/07/16.
-//  Copyright © 2016 Wheelz Technologies Inc. All rights reserved.
+//  Copyright © 2016 Fender Technologies Inc. All rights reserved.
 //
 
 import XCTest
@@ -27,9 +27,9 @@ class WheelzTests: XCTestCase {
     
     func testPerformanceExample() {
         // This is an example of a performance test case.
-        self.measure {
+        //self.measure {
             // Put the code you want to measure the time of here.
-        }
+        //}
     }
     
 }

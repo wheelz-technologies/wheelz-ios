@@ -1,9 +1,9 @@
 //
 //  WConstants.swift
-//  Wheelz
+//  Fender
 //
 //  Created by Probir Chakraborty on 13/07/16.
-//  Copyright © 2016 Wheelz Technologies Inc. All rights reserved.
+//  Copyright © 2016 Fender Technologies Inc. All rights reserved.
 //
 
 import UIKit
@@ -12,7 +12,8 @@ import UIKit
 var apiUrl: String = ""
 var ftpName: String = ""
 var ftpPass: String = ""
-var apiPrefix = "/api/v1/"
+var apiPrefix: String = "/api/v1/"
+var SBDAppKey: String = ""
 
 //API Names
 let kAPINameSignUp = "\(apiPrefix)Users/CreateNewUser"
@@ -54,6 +55,9 @@ func kAPINameSaveDeviceToken(_ userId: String, deviceToken: String) -> String {r
 func kAPINameGetUserReviews(_ userId : String) -> String {return "\(apiPrefix)Users/{\(userId)}/GetUserReviews"}
 func kAPINameConfirmRejectLesson(_ lessonId : String, isConfirmed: Bool) -> String {return "\(apiPrefix)Lessons/\(lessonId)/Put/\(isConfirmed)/ConfirmRejectLesson"}
 func kAPINameSaveDriverLocation(_ driverId: String, latitude: Double,longitude: Double) -> String {return "\(apiPrefix)Users/\(driverId)/Save/\(latitude)/Driver/\(longitude)/Location"}
+func kAPINameGetPromoCodeById(_ promoCodeId: String) -> String {return "\(apiPrefix)Lessons/{\(promoCodeId)}/GetPromoCodeById"}
+func kAPINameGetPromoCode(_ userId: String, code: String) -> String {return "\(apiPrefix)Lessons/{\(userId)}/Get/{\(code)}/PromoCode"}
+func kAPINameAddPromoCode(_ userId: String, code: String) -> String {return "\(apiPrefix)Lessons/AddPromoCode"}
 
 //Parameters Names
 let WUserID = "userId"
@@ -107,6 +111,8 @@ var WDeviceToken = "deviceToken"
 var WText = "text"
 var WType = "type"
 var WConfirmed = "isConfirmed"
+var WPromoCodeId = "promoCodeId"
+var WDiscount = "discount"
 
 // Misc
 let numbersCharSet = CharacterSet(charactersIn:"0123456789").inverted

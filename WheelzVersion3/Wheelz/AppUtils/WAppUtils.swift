@@ -1,9 +1,9 @@
 //
 //  WAppUtils.swift
-//  Wheelz
+//  Fender
 //
 //  Created by Probir Chakraborty on 12/07/16.
-//  Copyright © 2016 Wheelz Technologies Inc. All rights reserved.
+//  Copyright © 2016 Fender Technologies Inc. All rights reserved.
 //
 
 import UIKit
@@ -14,13 +14,15 @@ public enum AlertStyle: Int {
 }
 
 // MARK: - Short Terms
-let kAppOrangeColor = RGBA(255, g: 85, b: 40, a: 1)
-let kAppLightBlueColor = RGBA(0, g: 191, b: 255, a: 1)
+let kAppOrangeColor = RGBA(255, g: 139, b: 13, a: 1)
+let kAppLightBlueColor = RGBA(2, g: 212, b: 170, a: 1)
 let KAppWhiteColor = UIColor.white
+let kAppBlueColor = RGBA(2, g: 212, b: 170, a: 1)
 let KAppPlaceholderColor = UIColor.lightGray
 let KAppTextColor = UIColor.darkGray
-let KAppHeaderFont = UIFont.boldSystemFont(ofSize: 18)
+let KAppHeaderFont = UIFont(name:"Helvetica-Bold", size: 20)
 let KAppRegularFont = UIFont.boldSystemFont(ofSize: 18)
+let KAppBoldFont = UIFont(name:"Helvetica-Bold", size: 20)
 //let KAppRegularFont = UIFont(name:"HelveticaNeue", size: 18)!
 let kAppDarkGrayColor = RGBA(29, g: 35, b: 34, a: 0.2)
 
@@ -49,8 +51,8 @@ func getRoundRect(_ obj : UIButton){
 
 func getRoundImage(_ obj : UIImageView){
     obj.layer.cornerRadius = obj.frame.size.height/2
-    obj.layer.borderColor = UIColor.white.cgColor
-    obj.layer.borderWidth = 4.0
+    obj.layer.borderColor = UIColor.gray.cgColor
+    obj.layer.borderWidth = 2.0
     obj.clipsToBounds = true
 }
 
@@ -89,7 +91,7 @@ func presentFancyAlert(_ titleStr : String?, msgStr : String?, type: AlertStyle,
                 duration: 5.0,
                 completeText: "OK",
                 style: SCLAlertViewStyle.notice,
-                colorStyle: 0x40434A,
+                colorStyle: 4483033,
                 colorTextButton: 0xFFFFFF
             )
             break
@@ -100,7 +102,7 @@ func presentFancyAlert(_ titleStr : String?, msgStr : String?, type: AlertStyle,
                 duration: 5.0,
                 completeText: "OK",
                 style: SCLAlertViewStyle.error,
-                colorStyle: 0xd63131,
+                colorStyle: 16747277,
                 colorTextButton: 0xFFFFFF
             )
             break
@@ -111,7 +113,7 @@ func presentFancyAlert(_ titleStr : String?, msgStr : String?, type: AlertStyle,
                 duration: 5.0, // Duration to show before closing automatically, default: 0.0
                 completeText: "OK", // Optional button value, default: ""
                 style: SCLAlertViewStyle.info,
-                colorStyle: 0xff5528,
+                colorStyle: 16747277,
                 colorTextButton: 0xFFFFFF
             )
             break
